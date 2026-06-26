@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Richcrest AI — Content Studio Pro</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --black:#0a0a0a; --surface:#141414; --surface2:#1a1a1a;
+    --border:#222; --border2:#2a2a2a;
+    --white:#fff; --gray3:#888; --gray4:#444;
+    --accent:#6c47ff; --accent-dim:rgba(108,71,255,0.12);
+    --green:#12b76a; --green-dim:rgba(18,183,106,0.12);
+    --yellow:#f5a623; --yellow-dim:rgba(245,166,35,0.12);
+    --red:#f87171; --red-dim:rgba(248,113,113,0.12);
+  }
+  body { background:var(--black); color:var(--white); font-family:'Inter',sans-serif; min-height:100vh; }
+
+  /* HEADER */
+  .header {
+    padding:18px 36px; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .logo { display:flex; align-items:center; gap:10px; }
+  .logo-mark { width:30px; height:30px; background:var(--accent); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:15px; }
+  .logo-name { font-family:'Syne',sans-serif; font-size:17px; font-weight:800; }
+  .logo-name span { color:var(--accent); }
+  .live-badge { font-size:11px; font-weight:600; color:var(--green); background:var(--green-dim); border:1px solid rgba(18,183,106,0.25); padding:4px 10px; border-radius:20px; }
+
+  /* TABS */
+  .tabs {
+    display:flex; border-bottom:1px solid var(--border);
+    padding:0 36px;
+  }
+  .tab {
+    padding:14px 20px; font-size:13px; font-weight:500; color:var(--gray3);
+    cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px;
+    transition:all 0.2s; display:flex; align-items:center; gap:7px;
+  }
+  .tab:hover { color:var(--white); }
+  .tab.active { color:var(--white); border-bottom-color:var(--accent); }
+  .tab-badge {
+    font-size:9px; font-weight:700; padding:2px 7px; border-radius:20px;
+    background:var(--accent-dim); color:#a78bfa;
+    border:1px solid rgba(108,71,255,0.25); text-transform:uppercase;
+  }
+
+  /* PANELS */
+  .panel { display:none; }
+  .panel.active { display:flex; }
+
+  /* ── INTAKE PANEL ── */
+  .intake-panel {
+    flex-direction:column;
+    max-width:680px; margin:0 auto; padding:36px 36px;
+    width:100%;
+  }
+  .intake-title { font-family:'Syne',sans-serif; font-size:22px; font-weight:800; margin-bottom:6px; }
+  .intake-sub { font-size:13px; color:var(--gray3); margin-bottom:32px; line-height:1.6; }
+
+  .intake-section { margin-bottom:28px; }
+  .intake-section-title {
+    font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+    color:var(--accent); margin-bottom:14px; padding-bottom:8px;
+    border-bottom:1px solid var(--border);
+  }
+
+  .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .form-group { display:flex; flex-direction:column; gap:6px; }
+  .form-group.full { grid-column:1/-1; }
+
+  label { font-size:12px; font-weight:500; color:#bbb; }
+  .label-hint { font-size:10px; color:var(--gray3); font-weight:400; margin-left:6px; }
+
+  input, select, textarea {
+    background:var(--surface2); border:1px solid var(--border2);
+    border-radius:8px; color:var(--white);
+    font-family:'Inter',sans-serif; font-size:13px;
+    padding:10px 13px; width:100%; outline:none;
+    transition:border-color 0.2s;
+  }
+  input:focus, select:focus, textarea:focus { border-color:var(--accent); }
+  textarea { resize:vertical; min-height:80px; line-height:1.5; }
+  select option { background:#1a1a1a; }
+
+  .char-count { font-size:10px; color:var(--gray3); text-align:right; margin-top:3px; }
+
+  /* platform + tone pills */
+  .pill-row { display:flex; flex-wrap:wrap; gap:7px; }
+  .pill {
+    padding:7px 14px; border-radius:20px; font-size:12px; font-weight:500;
+    border:1px solid var(--border2); background:var(--surface2); color:var(--gray3);
+    cursor:pointer; transition:all 0.18s; user-select:none;
+    display:flex; align-items:center; gap:6px;
+  }
+  .pill:hover { border-color:#555; color:#ddd; }
+  .pill.active { border-color:var(--accent); background:var(--accent-dim); color:var(--white); }
+
+  /* example posts */
+  .example-row { display:flex; flex-direction:column; gap:10px; }
+  .example-item { display:flex; gap:10px; align-items:flex-start; }
+  .example-num {
+    width:22px; height:22px; border-radius:50%; background:var(--accent-dim);
+    border:1px solid rgba(108,71,255,0.3); color:#a78bfa;
+    font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0; margin-top:10px;
+  }
+
+  /* features */
+  .feature-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .feature-card {
+    background:var(--surface2); border:1px solid var(--border2);
+    border-radius:10px; padding:14px;
+    display:flex; align-items:flex-start; gap:12px;
+    cursor:pointer; transition:all 0.2s; user-select:none;
+  }
+  .feature-card.active { border-color:var(--accent); background:var(--accent-dim); }
+  .feature-card-icon { font-size:22px; flex-shrink:0; }
+  .feature-card-label { font-size:13px; font-weight:600; color:#ccc; }
+  .feature-card-sub { font-size:11px; color:var(--gray3); margin-top:3px; line-height:1.4; }
+
+  .vo-config { margin-top:10px; display:none; }
+  .vo-config.visible { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .api-hint { font-size:10px; color:var(--gray3); margin-top:4px; }
+  .api-hint a { color:var(--accent); text-decoration:none; }
+
+  .generate-btn {
+    width:100%; background:var(--accent); color:white;
+    border:none; border-radius:12px; padding:16px;
+    font-family:'Inter',sans-serif; font-size:15px; font-weight:700;
+    cursor:pointer; transition:all 0.2s;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    margin-top:8px;
+  }
+  .generate-btn:hover { background:#5a3ae0; transform:translateY(-1px); }
+  .generate-btn:disabled { background:var(--surface2); color:#444; cursor:not-allowed; transform:none; }
+
+  .spin {
+    width:16px; height:16px; border:2px solid rgba(255,255,255,0.25);
+    border-top-color:white; border-radius:50%;
+    animation:spin 0.7s linear infinite; display:none;
+  }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  /* ── RESULTS PANEL ── */
+  .results-panel {
+    flex-direction:column; padding:28px 36px; gap:20px;
+  }
+
+  .results-top { display:flex; align-items:center; justify-content:space-between; }
+  .results-title { font-family:'Syne',sans-serif; font-size:20px; font-weight:800; }
+  .results-meta { display:flex; align-items:center; gap:10px; }
+  .meta-tag {
+    font-size:11px; padding:4px 10px; border-radius:20px;
+    background:var(--surface); border:1px solid var(--border);
+    color:var(--gray3);
+  }
+  .meta-tag.green { background:var(--green-dim); border-color:rgba(18,183,106,0.3); color:var(--green); }
+
+  /* Progress */
+  .progress-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:14px; padding:24px 28px; display:none;
+  }
+  .progress-card.visible { display:block; }
+  .progress-header { font-size:14px; font-weight:600; margin-bottom:20px; color:#ccc; }
+  .progress-steps { display:flex; flex-direction:column; gap:14px; }
+  .prog-row { display:flex; align-items:center; gap:14px; }
+  .prog-icon {
+    width:32px; height:32px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:700;
+    background:var(--surface2); border:1px solid var(--border2); color:#444;
+    transition:all 0.3s;
+  }
+  .prog-icon.active { background:var(--accent); border-color:var(--accent); color:white; animation:glow 1s ease-in-out infinite; }
+  .prog-icon.done { background:var(--green); border-color:var(--green); color:white; }
+  @keyframes glow { 0%,100%{box-shadow:0 0 0 0 rgba(108,71,255,0.4)} 50%{box-shadow:0 0 0 6px rgba(108,71,255,0)} }
+  .prog-text { flex:1; }
+  .prog-label { font-size:13px; font-weight:500; color:#555; }
+  .prog-label.active { color:var(--white); }
+  .prog-label.done { color:var(--green); }
+  .prog-sub { font-size:11px; color:#333; margin-top:2px; }
+  .prog-sub.active { color:#888; }
+
+  /* Score badge */
+  .score-badge {
+    padding:3px 9px; border-radius:20px; font-size:10px; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.5px;
+  }
+  .score-a { background:var(--green-dim); color:var(--green); border:1px solid rgba(18,183,106,0.3); }
+  .score-b { background:var(--yellow-dim); color:var(--yellow); border:1px solid rgba(245,166,35,0.3); }
+  .score-c { background:var(--red-dim); color:var(--red); border:1px solid rgba(248,113,113,0.3); }
+
+  /* Posts grid */
+  .posts-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+  .post-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:14px; overflow:hidden;
+    animation:fadeUp 0.4s ease both;
+    display:flex; flex-direction:column;
+  }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+  .card-img-wrap { position:relative; }
+  .card-img { width:100%; height:155px; object-fit:cover; display:block; background:var(--surface2); }
+  .img-overlay { position:absolute; inset:0; background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,0.65) 100%); }
+  .img-badges { position:absolute; top:10px; left:10px; right:10px; display:flex; justify-content:space-between; align-items:flex-start; }
+  .plat-badge {
+    background:rgba(0,0,0,0.65); backdrop-filter:blur(8px);
+    border-radius:20px; padding:4px 10px;
+    font-size:11px; font-weight:600; display:flex; align-items:center; gap:5px;
+  }
+  .type-badge { border-radius:20px; padding:3px 9px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
+  .t-hook { background:var(--yellow-dim); color:var(--yellow); border:1px solid rgba(245,166,35,0.3); }
+  .t-promo { background:var(--accent-dim); color:#a78bfa; border:1px solid rgba(108,71,255,0.3); }
+  .t-story { background:var(--green-dim); color:#34d399; border:1px solid rgba(18,183,106,0.3); }
+  .t-engage { background:var(--red-dim); color:var(--red); border:1px solid rgba(248,113,113,0.3); }
+
+  .img-placeholder { width:100%; height:155px; background:var(--surface2); display:flex; align-items:center; justify-content:center; color:#2a2a2a; font-size:32px; position:relative; }
+
+  .card-body { padding:14px 15px; flex:1; display:flex; flex-direction:column; gap:10px; }
+
+  .card-score-row { display:flex; align-items:center; justify-content:space-between; }
+  .card-score-label { font-size:10px; color:var(--gray3); }
+
+  .card-caption { font-size:12.5px; line-height:1.68; color:#ddd; white-space:pre-wrap; word-break:break-word; }
+  .card-hashtags { font-size:11.5px; color:#6c8fef; line-height:1.6; }
+
+  /* Why it works panel */
+  .card-why {
+    background:var(--surface2); border:1px solid var(--border2);
+    border-radius:8px; padding:10px 12px;
+  }
+  .why-label { font-size:10px; font-weight:700; color:var(--accent); letter-spacing:1px; text-transform:uppercase; margin-bottom:5px; }
+  .why-text { font-size:11px; color:#888; line-height:1.55; }
+
+  .card-music {
+    background:var(--surface2); border:1px solid var(--border2);
+    border-radius:8px; padding:9px 12px;
+    display:flex; align-items:center; gap:9px;
+  }
+  .music-icon { font-size:14px; }
+  .music-info { flex:1; }
+  .music-title { font-size:11px; font-weight:600; color:#ccc; }
+  .music-sub { font-size:10px; color:var(--gray3); margin-top:1px; }
+  .music-link { font-size:10px; color:var(--accent); text-decoration:none; font-weight:500; white-space:nowrap; }
+
+  .card-vo { background:var(--surface2); border:1px solid var(--border2); border-radius:8px; padding:10px 12px; }
+  .vo-header-row { display:flex; align-items:center; gap:8px; margin-bottom:7px; }
+  .vo-lbl { font-size:11px; font-weight:600; color:#ccc; }
+  .vo-bdg { font-size:9px; font-weight:600; padding:2px 7px; border-radius:20px; background:var(--accent-dim); color:#a78bfa; border:1px solid rgba(108,71,255,0.25); text-transform:uppercase; }
+  .vo-loading-txt { font-size:11px; color:var(--gray3); display:flex; align-items:center; gap:7px; }
+  .vo-audio { width:100%; height:32px; }
+  .vo-err { font-size:11px; color:var(--red); }
+
+  .card-footer {
+    padding:10px 15px 13px; border-top:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .card-time { font-size:10px; color:#444; }
+  .card-actions { display:flex; gap:6px; }
+  .act-btn {
+    background:var(--surface2); border:1px solid var(--border2);
+    border-radius:6px; color:#666; font-family:'Inter',sans-serif;
+    font-size:11px; font-weight:500; padding:5px 10px;
+    cursor:pointer; transition:all 0.18s; display:flex; align-items:center; gap:4px;
+  }
+  .act-btn:hover { border-color:var(--accent); color:var(--white); }
+  .act-btn.copied { border-color:var(--green); color:var(--green); }
+
+  .bottom-strip {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; padding:16px 22px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+  }
+  .strip-left { display:flex; align-items:center; gap:12px; }
+  .strip-icon { font-size:22px; }
+  .strip-title { font-size:13px; font-weight:600; }
+  .strip-sub { font-size:11px; color:var(--gray3); margin-top:2px; }
+  .strip-btn { background:var(--accent); color:white; border:none; border-radius:8px; padding:9px 18px; font-family:'Inter',sans-serif; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap; }
+  .strip-btn:hover { background:#5a3ae0; }
+
+  .empty {
+    flex:1; display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    gap:12px; text-align:center; padding:80px 20px;
+  }
+  .empty-icon { font-size:44px; opacity:0.2; }
+  .empty-title { font-size:15px; font-weight:600; color:#333; }
+  .empty-sub { font-size:12px; color:#252525; line-height:1.6; max-width:260px; }
+
+  .err-box { background:var(--red-dim); border:1px solid rgba(248,113,113,0.2); border-radius:10px; padding:16px 20px; font-size:13px; color:var(--red); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">
+    <div class="logo-mark">✦</div>
+    <div class="logo-name">Richcrest <span>AI</span> Studio</div>
+  </div>
+  <div class="live-badge">● Pro Version</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('intake')" id="tab-intake">
+    📋 Client Intake
+  </div>
+  <div class="tab" onclick="switchTab('results')" id="tab-results">
+    ✦ Generated Content <span class="tab-badge" id="resultsBadge" style="display:none">Ready</span>
+  </div>
+</div>
+
+<!-- ══ INTAKE PANEL ══ -->
+<div class="panel active intake-panel" id="panel-intake">
+
+  <div class="intake-title">Client Content Brief</div>
+  <div class="intake-sub">The more detail you add here, the better and more specific every post will be. This is your unfair advantage.</div>
+
+  <!-- Business basics -->
+  <div class="intake-section">
+    <div class="intake-section-title">Business Details</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Business Name</label>
+        <input id="bizName" type="text" placeholder="Pristine Home Cleaning" value="Pristine Home Cleaning" />
+      </div>
+      <div class="form-group">
+        <label>Business Type</label>
+        <select id="bizType">
+          <option value="house cleaning">House Cleaning</option>
+          <option value="barbershop">Barbershop</option>
+          <option value="restaurant">Restaurant</option>
+          <option value="real estate">Real Estate</option>
+          <option value="hair salon">Hair Salon</option>
+          <option value="personal trainer">Personal Trainer</option>
+          <option value="church">Church</option>
+          <option value="landscaping">Landscaping</option>
+          <option value="nail salon">Nail Salon</option>
+          <option value="food truck">Food Truck</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>City / Area Served</label>
+        <input id="city" type="text" placeholder="Gilbert, AZ / East Valley" value="Gilbert, AZ" />
+      </div>
+      <div class="form-group">
+        <label>Target Customer <span class="label-hint">be specific</span></label>
+        <input id="targetCustomer" type="text" placeholder="Busy moms, ages 30–50" value="Busy homeowners ages 30–55" />
+      </div>
+      <div class="form-group full">
+        <label>What makes you different from competitors?</label>
+        <textarea id="differentiator" placeholder="e.g. We use only eco-friendly products, we're fully insured, same team every visit...">We use eco-friendly products, same trusted team every visit, fully insured and bonded, 100% satisfaction guarantee.</textarea>
+      </div>
+      <div class="form-group full">
+        <label>Current offer or focus <span class="label-hint">optional</span></label>
+        <textarea id="offer" placeholder="e.g. 20% off first deep clean this month, new location opening, just hit 100 five-star reviews..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Voice & tone -->
+  <div class="intake-section">
+    <div class="intake-section-title">Brand Voice</div>
+    <div class="form-grid">
+      <div class="form-group full">
+        <label>Top 3 customer compliments <span class="label-hint">what do they always say about you?</span></label>
+        <input id="compliments" type="text" placeholder="e.g. Always on time, so thorough, smells amazing after" value="Always on time, so thorough, they treat our home like their own" />
+      </div>
+      <div class="form-group full">
+        <label>Words you NEVER want used</label>
+        <input id="avoidWords" type="text" placeholder="e.g. cheap, discount, deal" value="cheap, discount" />
+      </div>
+    </div>
+    <div style="margin-top:14px">
+      <label style="margin-bottom:10px;display:block">Tone</label>
+      <div class="pill-row">
+        <div class="pill active" data-t="warm & friendly">☀️ Warm</div>
+        <div class="pill" data-t="professional and trustworthy">💼 Professional</div>
+        <div class="pill" data-t="bold and confident">⚡ Bold</div>
+        <div class="pill" data-t="funny and casual">😄 Funny</div>
+        <div class="pill" data-t="inspirational">🔥 Inspiring</div>
+        <div class="pill" data-t="urgent and promotional">🚨 Urgent</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Example posts -->
+  <div class="intake-section">
+    <div class="intake-section-title">Example Posts You Love <span class="label-hint" style="font-size:10px;color:var(--gray3);text-transform:none;letter-spacing:0">(paste 1–2 real posts that feel right — AI will match this style)</span></div>
+    <div class="example-row">
+      <div class="example-item">
+        <div class="example-num">1</div>
+        <textarea id="ex1" placeholder="Paste a post you love here — could be yours, a competitor's, or anyone whose writing style feels right..." style="min-height:70px">Your home should feel like a sanctuary — not another thing on your to-do list. That's why we show up the same time, every time, with the same team you trust. Gilbert moms, your weekend just got a lot more relaxing. 🌿</textarea>
+      </div>
+      <div class="example-item">
+        <div class="example-num">2</div>
+        <textarea id="ex2" placeholder="Optional second example..." style="min-height:70px"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Platforms -->
+  <div class="intake-section">
+    <div class="intake-section-title">Platforms</div>
+    <div class="pill-row">
+      <div class="pill active" data-p="Instagram">📸 Instagram</div>
+      <div class="pill active" data-p="Facebook">👥 Facebook</div>
+      <div class="pill" data-p="TikTok">🎵 TikTok</div>
+      <div class="pill" data-p="X">✖ X / Twitter</div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="intake-section">
+    <div class="intake-section-title">Features</div>
+    <div class="feature-grid">
+      <div class="feature-card active" id="fc-photos" onclick="toggleFeature('photos')">
+        <div class="feature-card-icon">🖼️</div>
+        <div>
+          <div class="feature-card-label">Auto Photos</div>
+          <div class="feature-card-sub">Real photos via Pexels matched to each post</div>
+        </div>
+      </div>
+      <div class="feature-card active" id="fc-music" onclick="toggleFeature('music')">
+        <div class="feature-card-icon">🎵</div>
+        <div>
+          <div class="feature-card-label">Music Match</div>
+          <div class="feature-card-sub">Royalty-free track suggestion per post</div>
+        </div>
+      </div>
+      <div class="feature-card active" id="fc-score" onclick="toggleFeature('score')">
+        <div class="feature-card-icon">📊</div>
+        <div>
+          <div class="feature-card-label">Quality Scoring</div>
+          <div class="feature-card-sub">AI scores and rewrites weak posts automatically</div>
+        </div>
+      </div>
+      <div class="feature-card" id="fc-vo" onclick="toggleFeature('vo')">
+        <div class="feature-card-icon">🎙️</div>
+        <div>
+          <div class="feature-card-label">AI Voiceover</div>
+          <div class="feature-card-sub">ElevenLabs reads every caption aloud</div>
+        </div>
+      </div>
+    </div>
+    <div class="vo-config" id="voConfig">
+      <div class="form-group">
+        <label>ElevenLabs API Key</label>
+        <input type="password" id="elevenKey" placeholder="sk_..." />
+        <div class="api-hint">Free at <a href="https://elevenlabs.io" target="_blank">elevenlabs.io</a> — 10k chars/month</div>
+      </div>
+      <div class="form-group">
+        <label>Voice</label>
+        <select id="voiceSelect">
+          <option value="EXAVITQu4vr4xnSDxMaL">Sarah — Warm Female</option>
+          <option value="TX3LPaxmHKxFdv7VOQHJ">Liam — Friendly Male</option>
+          <option value="XB0fDUnXU5powFXDhCwa">Charlotte — Professional Female</option>
+          <option value="nPczCjzI2devNBz1zQrb">Brian — Deep Male</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <button class="generate-btn" id="genBtn" onclick="generate()">
+    <div class="spin" id="spin"></div>
+    <span id="btnTxt">✦ Generate Content Pack</span>
+  </button>
+
+</div>
+
+<!-- ══ RESULTS PANEL ══ -->
+<div class="panel results-panel" id="panel-results">
+
+  <div class="results-top">
+    <div class="results-title">Content Pack</div>
+    <div class="results-meta">
+      <div class="meta-tag" id="clientTag"></div>
+      <div class="meta-tag green" id="postCountTag" style="display:none"></div>
+    </div>
+  </div>
+
+  <div class="progress-card" id="progressCard">
+    <div class="progress-header">Building your content pack — sit tight...</div>
+    <div class="progress-steps">
+      <div class="prog-row">
+        <div class="prog-icon" id="pi1">1</div>
+        <div class="prog-text">
+          <div class="prog-label" id="pl1">Writing AI captions with client voice</div>
+          <div class="prog-sub" id="ps1">Using your intake brief + example posts as style guide</div>
+        </div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-icon" id="pi2">2</div>
+        <div class="prog-text">
+          <div class="prog-label" id="pl2">Scoring & rewriting weak posts</div>
+          <div class="prog-sub" id="ps2">Second AI pass — only A-grade content makes it through</div>
+        </div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-icon" id="pi3">3</div>
+        <div class="prog-text">
+          <div class="prog-label" id="pl3">Fetching matched photos</div>
+          <div class="prog-sub" id="ps3">Pulling commercial-use photos from Pexels</div>
+        </div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-icon" id="pi4">4</div>
+        <div class="prog-text">
+          <div class="prog-label" id="pl4">Matching music tracks</div>
+          <div class="prog-sub" id="ps4">Royalty-free, mood-matched per post</div>
+        </div>
+      </div>
+      <div class="prog-row" id="voRow" style="display:none">
+        <div class="prog-icon" id="pi5">5</div>
+        <div class="prog-text">
+          <div class="prog-label" id="pl5">Generating voiceovers</div>
+          <div class="prog-sub" id="ps5">ElevenLabs AI voices reading each caption</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="empty" id="emptyState">
+    <div class="empty-icon">✦</div>
+    <div class="empty-title">No content yet</div>
+    <div class="empty-sub">Fill out the intake form and hit Generate to build your content pack.</div>
+  </div>
+
+  <div id="contentArea"></div>
+
+</div>
+
+<script>
+// ── Tab system ──
+function switchTab(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+// ── Pill toggles ──
+document.querySelectorAll('.pill[data-t]').forEach(p => p.addEventListener('click', () => {
+  document.querySelectorAll('.pill[data-t]').forEach(x => x.classList.remove('active'));
+  p.classList.add('active');
+}));
+document.querySelectorAll('.pill[data-p]').forEach(p => p.addEventListener('click', () => p.classList.toggle('active')));
+
+// ── Feature toggles ──
+const features = { photos: true, music: true, score: true, vo: false };
+function toggleFeature(f) {
+  features[f] = !features[f];
+  document.getElementById('fc-' + f).classList.toggle('active', features[f]);
+  if (f === 'vo') document.getElementById('voConfig').classList.toggle('visible', features[f]);
+}
+
+// ── Progress ──
+function setStep(n, state, subText) {
+  const icon = document.getElementById('pi' + n);
+  const lbl = document.getElementById('pl' + n);
+  const sub = document.getElementById('ps' + n);
+  icon.className = 'prog-icon ' + state;
+  lbl.className = 'prog-label ' + state;
+  if (sub) { sub.className = 'prog-sub ' + state; if (subText) sub.textContent = subText; }
+  if (state === 'done') icon.textContent = '✓';
+}
+
+// ── Music library ──
+const musicLib = {
+  warm: { title: 'Warm Mornings', mood: 'Warm & Cozy', url: 'https://pixabay.com/music/search/acoustic/' },
+  professional: { title: 'Clean Slate', mood: 'Professional & Calm', url: 'https://pixabay.com/music/search/corporate/' },
+  inspiring: { title: 'Rise Up', mood: 'Inspiring & Motivational', url: 'https://pixabay.com/music/search/inspiring/' },
+  fun: { title: 'Good Vibes', mood: 'Fun & Playful', url: 'https://pixabay.com/music/search/happy/' },
+  urgent: { title: 'Build Up', mood: 'Energetic & Urgent', url: 'https://pixabay.com/music/search/upbeat/' },
+};
+function pickMusic(tone) {
+  if (tone.includes('warm')) return musicLib.warm;
+  if (tone.includes('professional')) return musicLib.professional;
+  if (tone.includes('inspirational') || tone.includes('inspiring')) return musicLib.inspiring;
+  if (tone.includes('funny') || tone.includes('casual')) return musicLib.fun;
+  if (tone.includes('urgent')) return musicLib.urgent;
+  return musicLib.warm;
+}
+
+// ── Pexels ──
+async function fetchPhoto(query) {
+  try {
+    const r = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=6&orientation=landscape`, {
+      headers: { Authorization: 'j0tVFNxhm6SjHFP3r7rFzXFLMV6Nl2cGBqc52eJ7WfBGW9V8k9gx4hRO' }
+    });
+    if (!r.ok) return null;
+    const data = await r.json();
+    if (!data.photos?.length) return null;
+    const pick = data.photos[Math.floor(Math.random() * Math.min(data.photos.length, 5))];
+    return pick.src.landscape || pick.src.large;
+  } catch { return null; }
+}
+
+// ── ElevenLabs ──
+async function generateVO(text, apiKey, voiceId) {
+  const r = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'xi-api-key': apiKey },
+    body: JSON.stringify({
+      text: text.slice(0, 500),
+      model_id: 'eleven_monolingual_v1',
+      voice_settings: { stability: 0.5, similarity_boost: 0.75 }
+    })
+  });
+  if (!r.ok) throw new Error('ElevenLabs ' + r.status);
+  return URL.createObjectURL(await r.blob());
+}
+
+// ── Score color ──
+function scoreClass(score) {
+  if (score >= 85) return 'score-a';
+  if (score >= 70) return 'score-b';
+  return 'score-c';
+}
+function scoreLabel(score) {
+  if (score >= 85) return 'A — Post Ready';
+  if (score >= 70) return 'B — Good';
+  return 'C — Rewritten';
+}
+
+// ── Render card ──
+function renderCard(post, idx, music, photoUrl, voState) {
+  const typeClass = { hook:'t-hook', promo:'t-promo', story:'t-story', engage:'t-engage' }[post.type] || 't-promo';
+  const picon = { Instagram:'📸', Facebook:'👥', TikTok:'🎵', X:'✖' }[post.platform] || '📱';
+
+  const imgHtml = photoUrl
+    ? `<div class="card-img-wrap">
+        <img class="card-img" src="${photoUrl}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'img-placeholder\\'>🖼️</div>'" />
+        <div class="img-overlay"></div>
+        <div class="img-badges">
+          <div class="plat-badge">${picon} ${post.platform}</div>
+          <div class="type-badge ${typeClass}">${post.type}</div>
+        </div>
+       </div>`
+    : `<div class="img-placeholder">🖼️
+        <div class="img-badges" style="position:absolute;top:10px;left:10px;right:10px;display:flex;justify-content:space-between">
+          <div class="plat-badge">${picon} ${post.platform}</div>
+          <div class="type-badge ${typeClass}">${post.type}</div>
+        </div>
+       </div>`;
+
+  const scoreHtml = features.score && post.score
+    ? `<div class="card-score-row">
+        <span class="card-score-label">Quality Score</span>
+        <span class="score-badge ${scoreClass(post.score)}">${scoreLabel(post.score)}</span>
+       </div>` : '';
+
+  const whyHtml = post.why
+    ? `<div class="card-why">
+        <div class="why-label">Why it works</div>
+        <div class="why-text">${post.why}</div>
+       </div>` : '';
+
+  const musicHtml = music
+    ? `<div class="card-music">
+        <div class="music-icon">🎵</div>
+        <div class="music-info">
+          <div class="music-title">${music.title}</div>
+          <div class="music-sub">${music.mood}</div>
+        </div>
+        <a class="music-link" href="${music.url}" target="_blank">Browse →</a>
+       </div>` : '';
+
+  const voHtml = voState
+    ? `<div class="card-vo">
+        <div class="vo-header-row">
+          <div class="vo-lbl">AI Voiceover</div>
+          <div class="vo-bdg">ElevenLabs</div>
+        </div>
+        <div id="vo-${idx}">${voState}</div>
+       </div>` : '';
+
+  const copyText = (post.caption + '\n\n' + (post.hashtags || '')).trim();
+
+  return `
+    <div class="post-card" style="animation-delay:${idx * 0.07}s">
+      ${imgHtml}
+      <div class="card-body">
+        ${scoreHtml}
+        <div class="card-caption">${post.caption}</div>
+        ${post.hashtags ? `<div class="card-hashtags">${post.hashtags}</div>` : ''}
+        ${whyHtml}
+        ${musicHtml}
+        ${voHtml}
+      </div>
+      <div class="card-footer">
+        <div class="card-time">${post.best_time || ''}</div>
+        <div class="card-actions">
+          <button class="act-btn" onclick="copyPost(${JSON.stringify(copyText)}, this)">⎘ Copy</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function copyPost(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.classList.add('copied'); btn.textContent = '✓ Copied';
+    setTimeout(() => { btn.classList.remove('copied'); btn.textContent = '⎘ Copy'; }, 2000);
+  });
+}
+
+// ── Main generate ──
+async function generate() {
+  const bizName = document.getElementById('bizName').value.trim() || 'My Business';
+  const bizType = document.getElementById('bizType').value;
+  const city = document.getElementById('city').value.trim();
+  const targetCustomer = document.getElementById('targetCustomer').value.trim();
+  const differentiator = document.getElementById('differentiator').value.trim();
+  const offer = document.getElementById('offer').value.trim();
+  const compliments = document.getElementById('compliments').value.trim();
+  const avoidWords = document.getElementById('avoidWords').value.trim();
+  const ex1 = document.getElementById('ex1').value.trim();
+  const ex2 = document.getElementById('ex2').value.trim();
+  const tone = document.querySelector('.pill[data-t].active')?.dataset.t || 'warm & friendly';
+  const platforms = [...document.querySelectorAll('.pill[data-p].active')].map(p => p.dataset.p);
+  const elevenKey = document.getElementById('elevenKey').value.trim();
+  const voiceId = document.getElementById('voiceSelect').value;
+
+  if (!platforms.length) { alert('Pick at least one platform.'); return; }
+  if (features.vo && !elevenKey) { alert('Add your ElevenLabs API key to use voiceovers.'); return; }
+
+  // UI
+  const btn = document.getElementById('genBtn');
+  const spin = document.getElementById('spin');
+  const btnTxt = document.getElementById('btnTxt');
+  btn.disabled = true; spin.style.display = 'block'; btnTxt.textContent = 'Generating...';
+
+  switchTab('results');
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('contentArea').innerHTML = '';
+  document.getElementById('progressCard').classList.add('visible');
+  document.getElementById('postCountTag').style.display = 'none';
+  document.getElementById('clientTag').textContent = bizName;
+  document.getElementById('voRow').style.display = features.vo ? '' : 'none';
+
+  for (let i = 1; i <= 5; i++) {
+    const icon = document.getElementById('pi' + i);
+    if (icon) { icon.className = 'prog-icon'; icon.textContent = i; }
+    const lbl = document.getElementById('pl' + i);
+    if (lbl) lbl.className = 'prog-label';
+  }
+
+  try {
+    // ── STEP 1: Generate captions ──
+    setStep(1, 'active');
+
+    const examplesSection = (ex1 || ex2)
+      ? `\n\nEXAMPLE POSTS THE CLIENT LOVES (match this style closely):\n${ex1 ? `Example 1:\n"${ex1}"\n` : ''}${ex2 ? `Example 2:\n"${ex2}"\n` : ''}`
+      : '';
+
+    const systemPrompt = `You are an expert social media copywriter who specializes in local service businesses.
+You write content that feels 100% human, genuine, and platform-native.
+You never sound corporate, generic, or like it was written by AI.
+You deeply study example posts and mirror their voice, rhythm, and style.
+RESPOND ONLY WITH VALID JSON. No markdown. No backticks. No explanation.`;
+
+    const userPrompt = `Create ${platforms.length * 2} social media posts for:
+
+BUSINESS: "${bizName}" — ${bizType} in ${city || 'local area'}
+TARGET CUSTOMER: ${targetCustomer || 'local homeowners'}
+WHAT MAKES THEM DIFFERENT: ${differentiator || 'great service'}
+CURRENT OFFER/FOCUS: ${offer || 'general awareness'}
+TONE: ${tone}
+WORDS TO NEVER USE: ${avoidWords || 'none'}
+CUSTOMER COMPLIMENTS: ${compliments || 'great service'}
+PLATFORMS: ${platforms.join(', ')}
+${examplesSection}
+
+Return a JSON array. Each post object needs:
+- "platform": one of ${JSON.stringify(platforms)}  
+- "type": one of "hook", "promo", "story", "engage"
+- "caption": full post text, no hashtags, written naturally for that platform
+- "hashtags": 5-7 relevant hashtags as one string
+- "best_time": best posting window e.g. "Best: Tue–Thu, 6–8pm"
+- "photo_query": 3-4 word Pexels image search that fits the post perfectly
+- "score": quality score 1-100 based on engagement potential, authenticity, and platform fit
+- "why": one sentence explaining what makes this post effective
+
+Platform-specific rules:
+- Instagram: conversational storytelling, 1-2 emojis max, 3-5 sentences
+- Facebook: community feel, slightly longer, ask a question at end
+- TikTok: first 4 words must hook immediately, trend-aware, punchy
+- X: under 200 chars, witty, no hashtag spam (1 max)
+
+Make every post feel like it was written by a real human who knows this business personally.
+Never use the words: ${avoidWords || 'cheap, discount'}.
+Return ONLY the JSON array.`;
+
+    const r1 = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userPrompt }]
+      })
+    });
+    const d1 = await r1.json();
+    const raw1 = d1.content?.map(b => b.text || '').join('').trim();
+    let posts = JSON.parse(raw1.replace(/```json|```/g, '').trim());
+    setStep(1, 'done', 'Captions written');
+
+    // ── STEP 2: Score & rewrite ──
+    setStep(2, 'active');
+    if (features.score) {
+      const weakPosts = posts.filter(p => p.score < 80);
+      if (weakPosts.length > 0) {
+        const rewritePrompt = `These social media posts scored below 80/100. Rewrite ONLY the caption to improve engagement, authenticity, and platform fit. Keep everything else the same. 
+Tone: ${tone}. Business: ${bizName} (${bizType}). Never use: ${avoidWords || 'cheap, discount'}.
+${ex1 ? `Match this style: "${ex1}"` : ''}
+Return a JSON array with the same structure but improved captions and updated scores (should be 85+).
+ONLY return the JSON array.
+Posts to improve: ${JSON.stringify(weakPosts)}`;
+
+        const r2 = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-6',
+            max_tokens: 1000,
+            system: 'You are a social media copy editor. Return ONLY valid JSON. No markdown.',
+            messages: [{ role: 'user', content: rewritePrompt }]
+          })
+        });
+        const d2 = await r2.json();
+        const raw2 = d2.content?.map(b => b.text || '').join('').trim();
+        const rewritten = JSON.parse(raw2.replace(/```json|```/g, '').trim());
+        // Merge rewrites back
+        rewritten.forEach(rp => {
+          const idx = posts.findIndex(p => p.platform === rp.platform && p.type === rp.type);
+          if (idx !== -1) posts[idx] = { ...posts[idx], ...rp };
+        });
+      }
+      setStep(2, 'done', `${weakPosts.length} posts improved`);
+    } else {
+      setStep(2, 'done', 'Skipped');
+    }
+
+    // ── STEP 3: Photos ──
+    setStep(3, 'active');
+    let photos = new Array(posts.length).fill(null);
+    if (features.photos) {
+      photos = await Promise.all(posts.map(p => fetchPhoto(p.photo_query || bizType)));
+    }
+    setStep(3, 'done', `${photos.filter(Boolean).length} photos matched`);
+
+    // ── STEP 4: Music ──
+    setStep(4, 'active');
+    await new Promise(res => setTimeout(res, 300));
+    const musics = features.music ? posts.map(() => pickMusic(tone)) : new Array(posts.length).fill(null);
+    setStep(4, 'done', 'Tracks matched');
+
+    // ── STEP 5: Render cards ──
+    setStep(5, 'active');
+    const voLoadingHtml = `<div class="vo-loading-txt"><div class="spin" style="display:block;border-top-color:var(--accent)"></div> Generating...</div>`;
+    const cardsHtml = posts.map((p, i) =>
+      renderCard(p, i, musics[i], photos[i], features.vo ? voLoadingHtml : null)
+    ).join('');
+
+    document.getElementById('progressCard').classList.remove('visible');
+    document.getElementById('contentArea').innerHTML = `
+      <div class="posts-grid">${cardsHtml}</div>
+      <div class="bottom-strip">
+        <div class="strip-left">
+          <div class="strip-icon">🗓️</div>
+          <div>
+            <div class="strip-title">Ready to schedule</div>
+            <div class="strip-sub">Connect Buffer, Later, or Hootsuite to auto-post all ${posts.length} posts</div>
+          </div>
+        </div>
+        <button class="strip-btn">Connect Scheduler →</button>
+      </div>`;
+
+    const countTag = document.getElementById('postCountTag');
+    countTag.textContent = `${posts.length} posts ready`;
+    countTag.style.display = '';
+
+    document.getElementById('resultsBadge').style.display = '';
+
+    // ── Voiceovers async ──
+    if (features.vo && elevenKey) {
+      await Promise.all(posts.map(async (p, i) => {
+        try {
+          const url = await generateVO(p.caption, elevenKey, voiceId);
+          const el = document.getElementById('vo-' + i);
+          if (el) el.innerHTML = `<audio class="vo-audio" controls src="${url}"></audio>`;
+        } catch {
+          const el = document.getElementById('vo-' + i);
+          if (el) el.innerHTML = `<div class="vo-err">⚠ Voiceover failed — check API key</div>`;
+        }
+      }));
+    }
+    setStep(5, 'done', 'All done');
+
+  } catch (err) {
+    document.getElementById('progressCard').classList.remove('visible');
+    document.getElementById('contentArea').innerHTML = `<div class="err-box">Something went wrong. Try again.<br><small style="opacity:0.5;margin-top:6px;display:block">${err.message}</small></div>`;
+  } finally {
+    btn.disabled = false; spin.style.display = 'none'; btnTxt.textContent = '✦ Generate Again';
+  }
+}
+</script>
+</body>
+</html>
