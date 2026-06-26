@@ -791,11 +791,16 @@ async function generate() {
       ? `\n\nEXAMPLE POSTS THE CLIENT LOVES (match this style closely):\n${ex1 ? `Example 1:\n"${ex1}"\n` : ''}${ex2 ? `Example 2:\n"${ex2}"\n` : ''}`
       : '';
  
-    const systemPrompt = `You are an expert social media copywriter who specializes in local service businesses.
-You write content that feels 100% human, genuine, and platform-native.
-You never sound corporate, generic, or like it was written by AI.
-You deeply study example posts and mirror their voice, rhythm, and style.
-RESPOND ONLY WITH VALID JSON. No markdown. No backticks. No explanation.`;
+    const systemPrompt = `You are an expert social media copywriter for local service businesses.
+You write content that feels human, genuine, and platform-native.
+CRITICAL: You must respond with ONLY a valid JSON array. 
+- No markdown formatting
+- No backticks or code blocks
+- No explanation text before or after
+- No single quotes in JSON - use double quotes only
+- No trailing commas
+- Escape any apostrophes in text as \' 
+- Start your response with [ and end with ]`;
  
     const userPrompt = `Create ${platforms.length * 2} social media posts for:
  
@@ -841,7 +846,18 @@ Return ONLY the JSON array.`;
     });
     const d1 = await r1.json();
     const raw1 = d1.content?.map(b => b.text || '').join('').trim();
-    let posts = JSON.parse(raw1.replace(/```json|```/g, '').trim());
+    // Clean the response aggressively before parsing
+    let cleaned1 = raw1
+      .replace(/```json/g, '')
+      .replace(/```/g, '')
+      .trim();
+    // Find the JSON array boundaries
+    const startIdx1 = cleaned1.indexOf('[');
+    const endIdx1 = cleaned1.lastIndexOf(']');
+    if (startIdx1 !== -1 && endIdx1 !== -1) {
+      cleaned1 = cleaned1.substring(startIdx1, endIdx1 + 1);
+    }
+    let posts = JSON.parse(cleaned1);
     setStep(1, 'done', 'Captions written');
  
     // ── STEP 2: Score & rewrite ──
@@ -868,7 +884,11 @@ Posts to improve: ${JSON.stringify(weakPosts)}`;
         });
         const d2 = await r2.json();
         const raw2 = d2.content?.map(b => b.text || '').join('').trim();
-        const rewritten = JSON.parse(raw2.replace(/```json|```/g, '').trim());
+        let cleaned2 = raw2.replace(/```json/g, '').replace(/```/g, '').trim();
+        const startIdx2 = cleaned2.indexOf('[');
+        const endIdx2 = cleaned2.lastIndexOf(']');
+        if (startIdx2 !== -1 && endIdx2 !== -1) { cleaned2 = cleaned2.substring(startIdx2, endIdx2 + 1); }
+        const rewritten = JSON.parse(cleaned2);
         // Merge rewrites back
         rewritten.forEach(rp => {
           const idx = posts.findIndex(p => p.platform === rp.platform && p.type === rp.type);
@@ -961,4 +981,3 @@ Posts to improve: ${JSON.stringify(weakPosts)}`;
 </script>
 </body>
 </html>
- 
