@@ -765,8 +765,7 @@ async function callHaiku(apiKey, systemPrompt, userPrompt) {
 
 function parsePost(raw, platform, type) {
   const get = (key) => {
-    const lines = raw.split('
-');
+    const lines = raw.split('\n');
     for (let i = 0; i < lines.length; i++) {
       if (lines[i].startsWith('|' + key + '|')) {
         return lines[i].replace('|' + key + '|', '').trim();
@@ -799,38 +798,25 @@ async function generateOnePost(apiKey, bizName, bizType, platform, postType, ton
   const offerStr = offer ? 'Current focus or promotion: ' + offer + '.' : '';
   const exampleStr = example ? 'Match the tone and style of this example: ' + example : '';
 
-  const systemPrompt = 'You are a professional social media copywriter. Write in a ' + tone + ' tone. Never use apostrophes in contractions. Write "dont" not "don't". Write "its" not "it's". Write "youre" not "you're". Write "wont" not "won't". No emojis. No hashtags in the caption field.';
+    const systemPrompt = `You are a professional social media copywriter. Write in a ${tone} tone. Never use apostrophes in contractions. Write "dont" not "do not". Write "its" not "it is". Write "youre" not "you are". Write "wont" not "will not". No emojis. No hashtags in the caption field.`;
 
-  const userPrompt = 'Write a ' + postType + ' post for ' + platform + ' for a ' + bizType + ' business called ' + bizName + '.
-' +
-    'Target customer: ' + (targetCustomer || 'local customers') + '.
-' +
-    'Key selling point: ' + (differentiator || 'professional quality service') + '.
-' +
-    offerStr + '
-' +
-    avoidStr + '
-' +
-    exampleStr + '
-' +
-    'Platform style guide: ' + rule + '.
+  const userPrompt = `Write a ${postType} post for ${platform} for a ${bizType} business called ${bizName}.
+Target customer: ${targetCustomer || 'local customers'}.
+Key selling point: ${differentiator || 'professional quality service'}.
+${offerStr}
+${avoidStr}
+${exampleStr}
+Platform style guide: ${rule}.
 
-' +
-    'Respond using EXACTLY this format. Each field on its own line starting with a pipe:
-' +
-    '|CAPTION|Write your caption text here
-' +
-    '|HASHTAGS|#tag1 #tag2 #tag3 #tag4 #tag5
-' +
-    '|BEST_TIME|Best: Tue Thu at 6pm
-' +
-    '|PHOTO_QUERY|three word search
-' +
-    '|SCORE|88
-' +
-    '|WHY|One sentence explaining why this post works';
+Respond using EXACTLY this format. Each field on its own line starting with a pipe:
+|CAPTION|Write your caption text here
+|HASHTAGS|#tag1 #tag2 #tag3 #tag4 #tag5
+|BEST_TIME|Best: Tue Thu at 6pm
+|PHOTO_QUERY|three word search
+|SCORE|88
+|WHY|One sentence explaining why this post works`;
 
-  const raw = await callHaiku(apiKey, systemPrompt, userPrompt);
+    const raw = await callHaiku(apiKey, systemPrompt, userPrompt);
   return parsePost(raw, platform, postType);
 }
 
@@ -903,7 +889,70 @@ async function generate() {
 
     setStep(2, 'done', 'Quality verified');
 
+    // ── STEP 3: Photos ──
+    setStep(3, 'active');
+    let photos = new Array(posts.length).fill(null);
+    if (features.photos) {
+      photos = await Promise.all(posts.map(p => fetchPhoto(p.photo_query || bizType)));
+    }
+    setStep(3, 'done', photos.filter(Boolean).length + ' photos matched');
+
+    // ── STEP 4: Music ──
+    setStep(4, 'active');
+    await new Promise(res => setTimeout(res, 200));
+    const musics = features.music ? posts.map(() => pickMusic(tone)) : new Array(posts.length).fill(null);
+    setStep(4, 'done', 'Tracks matched');
+
+    // ── STEP 5: Render ──
+    setStep(5, 'active');
+    const voLoadingHtml = `<div class="vo-loading-txt"><div class="spin" style="display:block;border-top-color:var(--accent)"></div> Generating...</div>`;
+    const cardsHtml = posts.map((p, i) =>
+      renderCard(p, i, musics[i], photos[i], features.vo ? voLoadingHtml : null)
+    ).join('');
+
+    document.getElementById('progressCard').classList.remove('visible');
+    document.getElementById('contentArea').innerHTML = `
+      <div class="posts-grid">${cardsHtml}</div>
+      <div class="bottom-strip">
+        <div class="strip-left">
+          <div class="strip-icon">🗓️</div>
+          <div>
+            <div class="strip-title">Ready to schedule</div>
+            <div class="strip-sub">Connect Buffer, Later, or Hootsuite to auto-post all ${posts.length} posts</div>
+          </div>
+        </div>
+        <button class="strip-btn">Connect Scheduler</button>
+      </div>`;
+
+    const countTag = document.getElementById('postCountTag');
+    countTag.textContent = posts.length + ' posts ready';
+    countTag.style.display = '';
+    document.getElementById('resultsBadge').style.display = '';
+
+    if (features.vo && elevenKey) {
+      await Promise.all(posts.map(async (p, i) => {
+        try {
+          const url = await generateVO(p.caption, elevenKey, voiceId);
+          const el = document.getElementById('vo-' + i);
+          if (el) el.innerHTML = `<audio class="vo-audio" controls src="${url}"></audio>`;
+        } catch {
+          const el = document.getElementById('vo-' + i);
+          if (el) el.innerHTML = `<div class="vo-err">Voiceover failed. Check API key.</div>`;
+        }
+      }));
+    }
+    setStep(5, 'done', 'All done');
+
+  } catch (err) {
+    document.getElementById('progressCard').classList.remove('visible');
+    document.getElementById('contentArea').innerHTML = `<div class="err-box">Something went wrong. Try again.<br><small style="opacity:0.5;margin-top:6px;display:block">${err.message}</small></div>`;
+  } finally {
+    btn.disabled = false;
+    spin.style.display = 'none';
+    btnTxt.textContent = 'Generate Again';
+  }
 }
+
   // ── Session storage for API key ──
   // Saves key for the browser session so you don't retype it every time
   // Clears automatically when you close the browser tab
