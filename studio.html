@@ -918,139 +918,138 @@ async function generateOnePost(apiKey, bizName, bizType, platform, postType, ton
 
   const systemPrompt = `You are a local business social media strategist. Create content that builds trust and drives action. Never invent proof, results, reviews, testimonials, or client outcomes. No apostrophes in contractions. No emojis. No hype language. No generic marketing phrases like elevate, transform, unlock, or game-changer. Keep content local, specific, and believable. Sound like a real person with experience not a content template.`;
 
-  // ── Hook formulas by platform and post type ──
+  // ── Hook formulas ──
   const hookFormulas = {
     'Instagram': {
-      hook:   ['Nobody talks about [specific problem customer has]. Here is what we see every week.',
-               '[Specific number] out of 10 homes we walk into have this one thing in common.',
-               'The call we get most often starts the same way.',
-               'Most people think [common belief]. Here is what actually happens.',
-               'We showed up to a home last week and the first thing the client said was this.'],
-      promo:  ['What does a [bizType] that actually shows up on time look like.',
-               'Here is what we do differently that nobody else talks about.',
-               'The thing that makes clients stop using other services and stay with us.',
-               'We get asked this question every single week. Here is the honest answer.',
-               'What you should actually look for when hiring a [bizType].'],
-      story:  ['We almost did not take this booking. Here is what changed our mind.',
-               'A client texted us after their first visit and said something we did not expect.',
-               'The first time we walked into a home like this one we did not know where to start.',
-               'Something happened on a job last month that we still think about.',
-               'This client had not had help in over a year. Here is what we found.'],
-      engage: ['What would you do differently if your home was cleaned every week.',
-               'Be honest. When did you last deep clean behind the stove.',
-               'What is the one room in your home you always put off cleaning.',
-               'If someone cleaned your home tomorrow what would you do with that free time.',
-               'What stops most people from hiring a cleaning service. We want to know.']
+      hook:   ['Nobody talks about the cleaning mistakes that cost homeowners the most.',
+               'Three signs your current cleaning routine is not actually working.',
+               'The call we get most often starts with the same four words.',
+               'What we find in almost every home we clean for the first time.',
+               'Most people think a clean home is about product. It is not.'],
+      promo:  ['What a cleaning service that actually shows up on time looks like.',
+               'The one thing that separates a good cleaner from one you keep.',
+               'We get asked this every week. Here is the honest answer.',
+               'What to look for before letting anyone into your home.',
+               'Here is what we do differently and why it matters to you.'],
+      story:  ['We almost turned down this booking. Here is what changed.',
+               'A client texted us after the first visit and said something unexpected.',
+               'Something happened on a job last month we still think about.',
+               'This client had not had help in over a year. Here is what we found.',
+               'We walked into a home last week that reminded us why we do this work.'],
+      engage: ['Be honest. When did you last clean behind the stove.',
+               'What is the one room you always put off cleaning.',
+               'What would you do with four extra hours every weekend.',
+               'What stops most people from hiring a cleaning service.',
+               'Rate your current cleaning situation from one to ten.']
     },
     'Facebook': {
-      hook:   ['Something we hear from almost every new client in [area].',
+      hook:   ['Something we hear from almost every new client around here.',
                'If you have been thinking about this, you are not alone.',
-               'We have been doing this in [area] long enough to notice a pattern.',
+               'We have been doing this long enough to notice a pattern.',
                'A question that comes up constantly from local homeowners.',
-               'The thing most [area] families tell us they wish they had done sooner.'],
-      promo:  ['Here is what sets us apart from every other [bizType] in [area].',
+               'The thing most families tell us they wish they had done sooner.'],
+      promo:  ['Here is what sets us apart from every other cleaning service.',
                'What to look for before you hire anyone to come into your home.',
-               'The [area] families we work with all say the same thing after the first visit.',
-               'This is what a reliable [bizType] actually looks like from the inside.',
-               'We built our whole process around one thing [area] homeowners told us they needed.'],
-      story:  ['Last month a client in [area] told us something that stuck with us.',
-               'A family reached out to us after a really hard few months. Here is their story.',
-               'We did not expect this reaction after a job in [area] last week.',
-               'This is the kind of message that reminds us why we do this work.',
-               'A repeat client sent us a note last week that we want to share.'],
+               'Every client says the same thing after their first visit with us.',
+               'This is what a reliable cleaning company looks like from the inside.',
+               'We built our whole process around one thing our clients told us they needed.'],
+      story:  ['Last month a client told us something that stuck with us.',
+               'A family reached out after a really hard few months. Here is what happened.',
+               'We did not expect this reaction after a job last week.',
+               'This is the kind of message that reminds us why we do this.',
+               'A long-term client sent us a note we want to share.'],
       engage: ['What is one thing you would change about your home if you had more time.',
-               'Local [area] homeowners only. What is your biggest cleaning challenge.',
-               'Drop a comment if you have ever put off calling a [bizType] because of the price.',
                'What matters most to you when someone is coming into your home.',
-               'We are curious. What made you start looking for a [bizType].']
+               'Drop a comment if you have ever hesitated to hire a cleaning service.',
+               'What made you start thinking about getting cleaning help.',
+               'What is your biggest cleaning challenge right now.']
     },
     'TikTok': {
-      hook:   ['Stop hiring [bizType] until you see this.',
-               'Three things most [bizType] will never tell you.',
+      hook:   ['Stop hiring cleaners until you see this.',
+               'Three things most cleaning companies will never tell you.',
                'The reason your home never feels fully clean.',
-               'What happens behind the scenes at a professional clean.',
-               'Most people get this completely wrong when hiring a [bizType].'],
-      promo:  ['This is why the same team every visit matters more than you think.',
-               'We use products you can actually pronounce. Here is why that matters.',
+               'What actually happens during a professional clean.',
+               'Most people get this completely wrong when hiring a cleaner.'],
+      promo:  ['Same team every visit. Here is why that changes everything.',
                'The difference between a quick clean and a real clean.',
                'What insured and bonded actually means for you as a homeowner.',
-               'This one thing separates a good [bizType] from a great one.'],
-      story:  ['POV: You finally hired a cleaning service and this is what happened.',
-               'POV: The cleaning team arrives and your home feels different for the first time.',
+               'We use products you can actually pronounce. Here is why that matters.',
+               'This one thing separates a cleaning service you keep from one you quit.'],
+      story:  ['POV: You finally hired a cleaning service.',
+               'POV: The team leaves and your home feels different for the first time.',
+               'A client left a voicemail after the first visit. We are still thinking about it.',
                'We walked into a home last week that changed how we do our job.',
-               'A client left us a voicemail after their first visit. We are still thinking about it.',
-               'This is what two hours of professional cleaning actually looks like.'],
-      engage: ['Would you rather clean your own home or pay someone to do it. Comment below.',
-               'Rate your current cleaning situation from 1 to 10.',
+               'This is what two hours of real professional cleaning actually looks like.'],
+      engage: ['Would you rather clean your own home or pay someone. Comment below.',
                'What is the one cleaning task you will never do yourself.',
                'Tell us what room in your home causes the most stress.',
-               'What would you do with 4 extra hours every weekend.']
+               'What would you do with your weekends if cleaning was not on the list.',
+               'What is stopping you from hiring a cleaning service right now.']
     },
     'X': {
-      hook:   ['Most [bizType] are selling price. Good ones are selling time back.',
-               'The best [bizType] you hire should feel invisible. Here is what that means.',
-               'Hiring a [bizType] is not about cleaning. It is about capacity.',
-               'The reason people quit [bizType] services is never the cleaning.',
-               'Nobody hires a [bizType] because their home is dirty. They hire one when they are exhausted.'],
-      promo:  ['Same team. Every visit. This is not a bonus. It is the whole product.',
+      hook:   ['Most cleaning services are selling a price. Good ones are selling time back.',
+               'The best cleaning service you hire should feel invisible.',
+               'Hiring a cleaner is not about cleaning. It is about capacity.',
+               'Nobody hires a cleaner because their home is dirty. They hire one when they are exhausted.',
+               'The reason people quit cleaning services is never the cleaning.'],
+      promo:  ['Same team every visit. This is not a bonus. It is the whole product.',
                'Eco-friendly cleaning is not a feature. It is what your family breathes.',
-               'Insured means you are protected. Bonded means your home is protected. Know the difference.',
-               'A [bizType] that shows up late once will show up late every time.',
-               'The right [bizType] does not clean your home. They give you your weekend back.'],
+               'A cleaner that shows up late once will show up late every time.',
+               'Insured means you are protected. Bonded means your home is protected.',
+               'The right cleaning service does not clean your home. They give you your weekend back.'],
       story:  ['A client told us she cried the first time we left her house clean. We understood.',
-               'Started in [area]. Built around one promise. Show up the same way every time.',
-               'The feedback that changed how we train every new team member.',
                'We turned down a job last week. Here is why that was the right call.',
+               'The feedback that changed how we train every new team member.',
+               'Started with one promise. Show up the same way every single time.',
                'Our most loyal client has been with us for three years. She told us why she stays.'],
       engage: ['What would you do with your weekends if cleaning was not on the list.',
                'Unpopular opinion: most people wait too long to hire help.',
-               'What stops you from hiring a [bizType]. Honest answers only.',
-               'The best investment a busy professional makes is not a gym membership.',
-               'You cannot buy more time. But you can buy back some of it.']
+               'What stops you from hiring a cleaner. Honest answers only.',
+               'The best investment a busy person makes is not a gym membership.',
+               'You cannot buy more time. But you can buy some of it back.']
     }
   };
 
-  // Select hook formula
+  // Select hook - this happens in JS not in the AI prompt
   const platformHooks = hookFormulas[platform] || hookFormulas['Instagram'];
   const typeHooks = platformHooks[postType] || platformHooks['hook'];
-  const selectedHook = typeHooks[Math.floor(Math.random() * typeHooks.length)]
-    .replace(/\[bizType\]/g, bizType)
-    .replace(/\[area\]/g, serviceArea || 'your area');
+  const selectedHook = typeHooks[Math.floor(Math.random() * typeHooks.length)];
 
-  const userPrompt = `You are writing a ${postType} post for ${platform} for a ${bizType} business called ${bizName}.
+  // System prompt is now short and strict
+  const strictSystem = `You are a social media copywriter for a local ${bizType} business. You write in a ${tone} tone. Rules: no apostrophes in contractions, no emojis, no hype words, keep it human and specific. ${avoidStr}`;
 
-MANDATORY HOOK - you must use this exact opening line or a very close variation of it:
+  // The hook is injected by us. The AI only writes what comes after it.
+  const userPrompt = `The opening line of this post is already written. It is:
+
 "${selectedHook}"
 
-Do not start with any other opening. Do not start with "Your home" or "At ${bizName}" or any generic opener.
+Your job: write the rest of the post that follows naturally from this opening line.
 
-Business details:
-- Target customer: ${targetCustomer || 'local customers'}
-- Key differentiator: ${differentiator || 'professional quality service'}
+Business: ${bizName} - ${bizType}
+Target customer: ${targetCustomer || 'local homeowners'}
+Key differentiator: ${differentiator || 'professional quality service'}
+${offerStr}
 ${reviewStr}
 ${complimentStr}
-${offerStr}
-${avoidStr}
-${exampleStr}
+${examplesSection ? 'Style reference: ' + ex1.substring(0, 150) : ''}
 
 ${tierInstructions[proofTier]}
 
-Platform rules: ${platformRules}
+Platform: ${platform}
+${platformRules}
 
-${swipeContext}
+Write 2 to 4 sentences after the hook. Do not repeat the hook. Do not start your continuation with "Your home" or the business name. Be specific and direct.
 
-Write the full post continuing naturally from the hook. The hook is already the first line. Continue from there. Do not repeat the hook.
-
-Respond using EXACTLY this format with each field on its own line:
-|CAPTION|The hook followed by the rest of the post. No hashtags.
+Then respond in EXACTLY this format:
+|CAPTION|${selectedHook} [your continuation here]
 |HASHTAGS|#tag1 #tag2 #tag3 #tag4 #tag5
 |BEST_TIME|Best: day and time
 |PHOTO_QUERY|three word Pexels search
 |SCORE|85
-|WHY|One sentence explaining why this post builds trust
-|PROOF_TYPE|The proof type used
+|WHY|One sentence on why this post works
+|PROOF_TYPE|Proof type used
 |NEXT_ASSET|One proof asset to collect next`
-  const raw = await callHaiku(apiKey, systemPrompt, userPrompt);
+  const raw = await callHaiku(apiKey, strictSystem, userPrompt);
   const post = parsePost(raw, platform, postType);
 
   // Save to swipe file
