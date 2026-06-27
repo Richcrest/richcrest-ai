@@ -610,7 +610,7 @@ function pickMusic(tone) {
 async function fetchPhoto(query) {
   try {
     const r = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=6&orientation=landscape`, {
-      headers: { Authorization: 'j0tVFNxhm6SjHFP3r7rFzXFLMV6Nl2cGBqc52eJ7WfBGW9V8k9gx4hRO' }
+      headers: { Authorization: '6lKQ3f3lY8vFxIRKx8R0OH2qOzeHWucuxk1n0h35ceRkRulYyFolArfM' }
     });
     if (!r.ok) return null;
     const data = await r.json();
