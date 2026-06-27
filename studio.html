@@ -831,10 +831,10 @@ function getTierAngle(tier, postType) {
 // ── Platform rules 2026 ──
 function getPlatformRules(platform) {
   const rules = {
-    'Instagram': 'Visual and saveable. 2 to 3 sentences. First line is the only hook that matters. Local geographic references increase reach 40 percent. Carousels outperform single images 3x. Save-worthy beats like-worthy. Best times: Tue Thu at 7pm.',
-    'Facebook': 'Community focused. 3 to 4 sentences. Neighborhood relevance beats polish. End with a community question. Longer captions outperform short ones. Best times: Wed Fri at 11am.',
-    'TikTok': 'First 2 seconds determine everything. Open with a strong pattern interrupt. Under 80 words. POV and behind the scenes outperform ads. Native casual style. Best times: Fri Sat at 7pm.',
-    'X': 'Under 180 characters. Direct and opinionated. One clear point. No hashtag spam. Best times: Tue Thu at 9am.'
+    'Instagram': 'MAXIMUM 3 sentences. Hard limit. Never open with Your home or At or the business name. Open with a specific detail, a moment, or a single sharp observation. No intros. No setup. The first word must earn attention. Save-worthy beats like-worthy. Best times: Tue Thu at 7pm.',
+    'Facebook': 'Community focused. 3 to 5 sentences. Start with a neighborhood observation or a question the community is already thinking. End with a direct question that invites replies. Conversational and warm. Best times: Wed Fri at 11am.',
+    'TikTok': 'First 4 words must stop the scroll. Under 60 words total. Start with a blunt statement, a surprising fact, or a direct challenge. No setup. Drop the reader into the middle. Best times: Fri Sat at 7pm.',
+    'X': 'Under 160 characters total. One sharp opinion or observation. No hedging. Sound like someone with a real point of view. Best times: Tue Thu at 9am.'
   };
   return rules[platform] || rules['Instagram'];
 }
@@ -894,10 +894,19 @@ async function generateOnePost(apiKey, bizName, bizType, platform, postType, ton
   const swipeContext = buildSwipeFileContext(swipeFile);
   const stat = proofTier === 1 ? getRandomStat() : '';
 
+  const openingVariants = {
+    'Instagram': ['Start mid-scene with a specific action or moment.', 'Open with a single concrete detail about the customer experience.', 'Start with the outcome the customer wants, not the service.', 'Open with what the customer is tired of.'],
+    'Facebook': ['Open with a question the neighborhood is already asking.', 'Start with a community observation about home life.', 'Begin with something local customers relate to instantly.', 'Open by naming the exact person this is for.'],
+    'TikTok': ['Open with a blunt challenge or controversial opinion.', 'Start with a specific number or fact.', 'Begin with POV: and drop into the story.', 'Open with the last thing a customer expected to hear.'],
+    'X': ['Start with a counterintuitive truth.', 'Open with a direct unpopular opinion.', 'Begin with a specific observation most people overlook.']
+  };
+  const platformVariants = openingVariants[platform] || openingVariants['Instagram'];
+  const openingInstruction = platformVariants[Math.floor(Math.random() * platformVariants.length)];
+
   const tierInstructions = {
-    1: `This is a Tier 1 business with no proof yet. Use only process proof, competence proof, transparency proof, founder story proof, educational proof, or local relevance proof. Do not make outcome claims. Do not fake testimonials. Use the content angle: "${angle}". ${stat ? 'You may reference this verified industry stat: ' + stat : ''}`,
-    2: `This is a Tier 2 business with some proof. Use review proof, story proof, process proof, or objection-handling proof. Turn small proof into visible trust. Use the content angle: "${angle}". Reference specific details from their proof assets.`,
-    3: `This is a Tier 3 business with strong proof. Use outcome proof, social proof, authority proof, or transformation proof. Turn proof into demand. Use the content angle: "${angle}". Be direct and conversion focused.`
+    1: `This is a Tier 1 business with no proof yet. Use only process proof, competence proof, transparency proof, founder story proof, educational proof, or local relevance proof. Do not make outcome claims. Do not fake testimonials. Use the content angle: "${angle}". ${stat ? 'You may reference this verified industry stat: ' + stat : ''} Opening instruction: ${openingInstruction}`,
+    2: `This is a Tier 2 business with some proof. Use review proof, story proof, process proof, or objection-handling proof. Turn small proof into visible trust. Use the content angle: "${angle}". Reference specific details from their proof assets. Opening instruction: ${openingInstruction}`,
+    3: `This is a Tier 3 business with strong proof. Use outcome proof, social proof, authority proof, or transformation proof. Turn proof into demand. Use the content angle: "${angle}". Be direct and conversion focused. Opening instruction: ${openingInstruction}`
   };
 
   const avoidStr = avoidWords ? `Never use these words: ${avoidWords}.` : '';
