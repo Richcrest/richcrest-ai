@@ -678,7 +678,9 @@ function renderCard(post, idx, music, photoUrl, voState) {
     ? `<div class="card-why">
         <div class="why-label">Why it works</div>
         <div class="why-text">${post.why}</div>
-       </div>` : '';
+       </div>
+       ${post.proof_type ? `<div class="card-why" style="background:var(--green-dim);border:1px solid rgba(18,183,106,0.2)"><div class="why-label" style="color:var(--green)">Proof type</div><div class="why-text">${post.proof_type}</div></div>` : ''}
+       ${post.next_asset ? `<div class="card-why" style="background:var(--yellow-dim);border:1px solid rgba(245,166,35,0.2)"><div class="why-label" style="color:var(--yellow)">Collect next</div><div class="why-text">${post.next_asset}</div></div>` : ''}` : '';
 
   const musicHtml = music
     ? `<div class="card-music">
@@ -781,43 +783,174 @@ function parsePost(raw, platform, type) {
     best_time: get('BEST_TIME') || 'Best: Tue-Thu at 6pm',
     photo_query: get('PHOTO_QUERY') || 'local business service',
     score: parseInt(get('SCORE')) || 85,
-    why: get('WHY') || 'Engaging post for your audience.'
+    why: get('WHY') || 'Engaging post for your audience.',
+    proof_type: get('PROOF_TYPE') || '',
+    next_asset: get('NEXT_ASSET') || ''
   };
 }
 
-async function generateOnePost(apiKey, bizName, bizType, platform, postType, tone, differentiator, offer, targetCustomer, avoidWords, example) {
-  const platformRules = {
-    'Instagram': 'Visual storytelling, 2 to 3 sentences, warm and professional',
-    'Facebook': 'Community focused, 3 to 4 sentences, end with a question',
-    'TikTok': 'Open with a strong hook in first 4 words, punchy, under 80 words',
-    'X': 'Under 200 characters total, direct and clear'
+// ── Classify proof tier from intake data ──
+function classifyProofTier(reviews, photos, differentiator, compliments) {
+  let score = 0;
+  if (reviews && reviews.toLowerCase() !== 'none' && reviews.trim() !== '') score += 2;
+  if (photos && photos === 'yes') score += 1;
+  if (compliments && compliments.trim().length > 20) score += 1;
+  if (differentiator && differentiator.trim().length > 30) score += 1;
+  if (score >= 4) return 3;
+  if (score >= 2) return 2;
+  return 1;
+}
+
+// ── Build tier specific content angle ──
+function getTierAngle(tier, postType) {
+  const angles = {
+    1: {
+      hook: ['How we do it', 'What most people get wrong', 'What to look for before hiring', 'Behind the scenes', 'Common mistakes customers make', 'What we would check first'],
+      promo: ['What to look for before hiring', 'Common mistakes customers make'],
+      story: ['Behind the scenes', 'How we do it'],
+      engage: ['What most people get wrong', 'What we would check first']
+    },
+    2: {
+      hook: ['Here is what clients keep asking us', 'One thing our customers notice right away', 'A common objection and how we handle it'],
+      promo: ['Why our process works', 'What changed after we started doing this'],
+      story: ['What a recent project taught us', 'One thing our customers notice right away'],
+      engage: ['Here is what clients keep asking us', 'A common objection and how we handle it']
+    },
+    3: {
+      hook: ['What happened after', 'Why customers choose us', 'Before vs after'],
+      promo: ['Why this beats the alternative', 'What the result looked like'],
+      story: ['How we solved this problem', 'What happened after'],
+      engage: ['Why customers choose us', 'Before vs after']
+    }
+  };
+  const tierAngles = angles[tier] || angles[1];
+  const typeAngles = tierAngles[postType] || tierAngles.hook;
+  return typeAngles[Math.floor(Math.random() * typeAngles.length)];
+}
+
+// ── Platform rules 2026 ──
+function getPlatformRules(platform) {
+  const rules = {
+    'Instagram': 'Visual and saveable. 2 to 3 sentences. First line is the only hook that matters. Local geographic references increase reach 40 percent. Carousels outperform single images 3x. Save-worthy beats like-worthy. Best times: Tue Thu at 7pm.',
+    'Facebook': 'Community focused. 3 to 4 sentences. Neighborhood relevance beats polish. End with a community question. Longer captions outperform short ones. Best times: Wed Fri at 11am.',
+    'TikTok': 'First 2 seconds determine everything. Open with a strong pattern interrupt. Under 80 words. POV and behind the scenes outperform ads. Native casual style. Best times: Fri Sat at 7pm.',
+    'X': 'Under 180 characters. Direct and opinionated. One clear point. No hashtag spam. Best times: Tue Thu at 9am.'
+  };
+  return rules[platform] || rules['Instagram'];
+}
+
+// ── Verified stats for tier 1 ──
+const verifiedStats = [
+  '77 percent of small businesses say lack of time is their biggest social media barrier',
+  'Local businesses posting 3 to 5 times per week see 3x more profile visits',
+  '90 percent of consumers read reviews before visiting a local business',
+  'Posts with local geographic references get 40 percent higher engagement',
+  'FAQ and educational posts are saved 7x more than promotional posts',
+  'Carousels get 3x more reach than single image posts on Instagram'
+];
+
+function getRandomStat() {
+  return verifiedStats[Math.floor(Math.random() * verifiedStats.length)];
+}
+
+// ── Swipe file storage ──
+function saveToSwipeFile(hook, postType, platform, whyItWorks) {
+  try {
+    const swipeFile = JSON.parse(sessionStorage.getItem('rc_swipe_file') || '[]');
+    swipeFile.push({
+      hook: hook.substring(0, 100),
+      type: postType,
+      platform: platform,
+      why: whyItWorks,
+      timesUsed: 1,
+      status: 'active',
+      timestamp: new Date().toISOString()
+    });
+    // Keep only last 20 entries
+    if (swipeFile.length > 20) swipeFile.shift();
+    sessionStorage.setItem('rc_swipe_file', JSON.stringify(swipeFile));
+  } catch(e) { console.log('Swipe file save failed:', e); }
+}
+
+function getSwipeFile() {
+  try {
+    return JSON.parse(sessionStorage.getItem('rc_swipe_file') || '[]');
+  } catch(e) { return []; }
+}
+
+function buildSwipeFileContext(swipeFile) {
+  if (!swipeFile.length) return '';
+  const active = swipeFile.filter(s => s.status === 'active').slice(-5);
+  if (!active.length) return '';
+  const lines = active.map(s => '- Hook type: ' + s.type + ' | Platform: ' + s.platform + ' | Why it worked: ' + s.why).join('\n');
+  return 'SWIPE FILE - winning patterns from previous generations. Reuse the structure not the wording:\n' + lines;
+}
+
+async function generateOnePost(apiKey, bizName, bizType, platform, postType, tone, differentiator, offer, targetCustomer, avoidWords, example, proofTier, reviews, compliments, serviceArea) {
+
+  const angle = getTierAngle(proofTier, postType);
+  const platformRules = getPlatformRules(platform);
+  const swipeFile = getSwipeFile();
+  const swipeContext = buildSwipeFileContext(swipeFile);
+  const stat = proofTier === 1 ? getRandomStat() : '';
+
+  const tierInstructions = {
+    1: `This is a Tier 1 business with no proof yet. Use only process proof, competence proof, transparency proof, founder story proof, educational proof, or local relevance proof. Do not make outcome claims. Do not fake testimonials. Use the content angle: "${angle}". ${stat ? 'You may reference this verified industry stat: ' + stat : ''}`,
+    2: `This is a Tier 2 business with some proof. Use review proof, story proof, process proof, or objection-handling proof. Turn small proof into visible trust. Use the content angle: "${angle}". Reference specific details from their proof assets.`,
+    3: `This is a Tier 3 business with strong proof. Use outcome proof, social proof, authority proof, or transformation proof. Turn proof into demand. Use the content angle: "${angle}". Be direct and conversion focused.`
   };
 
-  const rule = platformRules[platform] || 'Professional and engaging';
-  const avoidStr = avoidWords ? 'Never use these words: ' + avoidWords + '.' : '';
-  const offerStr = offer ? 'Current focus or promotion: ' + offer + '.' : '';
-  const exampleStr = example ? 'Match the tone and style of this example: ' + example : '';
+  const avoidStr = avoidWords ? `Never use these words: ${avoidWords}.` : '';
+  const offerStr = offer ? `Current promotion: ${offer}.` : '';
+  const exampleStr = example ? `Match the tone and style of this example post, not the wording: "${example.substring(0, 200)}"` : '';
+  const reviewStr = reviews && reviews !== 'none' ? `Reviews available: ${reviews}.` : '';
+  const complimentStr = compliments ? `What customers always say: ${compliments}.` : '';
+  const areaStr = serviceArea ? `Service area: ${serviceArea}.` : '';
 
-    const systemPrompt = `You are a professional social media copywriter. Write in a ${tone} tone. Never use apostrophes in contractions. Write "dont" not "do not". Write "its" not "it is". Write "youre" not "you are". Write "wont" not "will not". No emojis. No hashtags in the caption field.`;
+  const systemPrompt = `You are a local business social media strategist. Create content that builds trust and drives action. Never invent proof, results, reviews, testimonials, or client outcomes. No apostrophes in contractions. No emojis. No hype language. No generic marketing phrases like elevate, transform, unlock, or game-changer. Keep content local, specific, and believable. Sound like a real person with experience not a content template.`;
 
-  const userPrompt = `Write a ${postType} post for ${platform} for a ${bizType} business called ${bizName}.
+  const userPrompt = `Create a ${postType} post for ${platform} for a ${bizType} business called ${bizName}.
+${areaStr}
 Target customer: ${targetCustomer || 'local customers'}.
-Key selling point: ${differentiator || 'professional quality service'}.
+Key differentiator: ${differentiator || 'professional quality service'}.
+${reviewStr}
+${complimentStr}
 ${offerStr}
 ${avoidStr}
 ${exampleStr}
-Platform style guide: ${rule}.
 
-Respond using EXACTLY this format. Each field on its own line starting with a pipe:
-|CAPTION|Write your caption text here
+${tierInstructions[proofTier]}
+
+Platform rules: ${platformRules}
+
+${swipeContext}
+
+Strategy scan before writing:
+- What is the strongest credible claim available?
+- What does the target customer fear most?
+- What does the target customer want most?
+- What local detail makes this specific?
+- What would a competitor never say?
+
+Respond using EXACTLY this format with each field on its own line:
+|CAPTION|Write the post caption here with no hashtags
 |HASHTAGS|#tag1 #tag2 #tag3 #tag4 #tag5
-|BEST_TIME|Best: Tue Thu at 6pm
-|PHOTO_QUERY|three word search
-|SCORE|88
-|WHY|One sentence explaining why this post works`;
+|BEST_TIME|Best: day and time
+|PHOTO_QUERY|three word Pexels search
+|SCORE|85
+|WHY|One sentence explaining why this post builds trust
+|PROOF_TYPE|The proof type used
+|NEXT_ASSET|One proof asset to collect next`;
 
-    const raw = await callHaiku(apiKey, systemPrompt, userPrompt);
-  return parsePost(raw, platform, postType);
+  const raw = await callHaiku(apiKey, systemPrompt, userPrompt);
+  const post = parsePost(raw, platform, postType);
+
+  // Save to swipe file
+  if (post.caption && post.score > 80) {
+    saveToSwipeFile(post.caption.split('.')[0], postType, platform, post.why || '');
+  }
+
+  return post;
 }
 
 async function generate() {
@@ -870,8 +1003,18 @@ async function generate() {
       queue.push({ platform, type: postTypes[2 + Math.floor(Math.random() * 2)] });
     });
 
-    const postPromises = queue.map(({ platform, type }) =>
-      generateOnePost(apiKey, bizName, bizType, platform, type, tone, differentiator, offer, targetCustomer, avoidWords, ex1)
+    // Get proof tier fields from intake form
+  const reviews = document.getElementById('f-compliments')?.value.trim() || '';
+  const compliments = document.getElementById('f-compliments')?.value.trim() || '';
+  const serviceArea = document.getElementById('city')?.value.trim() || '';
+  const proofTier = classifyProofTier(reviews, features.photos ? 'yes' : 'no', differentiator, compliments);
+
+  // Show proof tier in UI
+  const tierLabels = { 1: 'Tier 1 - Building Trust', 2: 'Tier 2 - Growing Proof', 3: 'Tier 3 - Converting' };
+  document.getElementById('pl1').textContent = 'Writing content - ' + (tierLabels[proofTier] || 'Tier 1');
+
+  const postPromises = queue.map(({ platform, type }) =>
+      generateOnePost(apiKey, bizName, bizType, platform, type, tone, differentiator, offer, targetCustomer, avoidWords, ex1, proofTier, reviews, compliments, serviceArea)
         .catch(err => ({
           platform, type,
           caption: 'Generation failed. Please try again.',
