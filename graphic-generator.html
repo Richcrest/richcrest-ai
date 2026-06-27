@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Richcrest AI — Graphic Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --black:#0a0a0a; --surface:#141414; --surface2:#1a1a1a;
+    --border:#222; --border2:#2a2a2a;
+    --white:#fff; --gray:#888; --light:#ccc;
+    --accent:#6c47ff; --accent-dim:rgba(108,71,255,0.1);
+    --green:#12b76a; --green-dim:rgba(18,183,106,0.1);
+  }
+  body { background:var(--black); color:var(--white); font-family:'Plus Jakarta Sans',sans-serif; min-height:100vh; }
+
+  /* NAV */
+  nav { padding:18px 36px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; background:var(--surface); }
+  .logo { display:flex; align-items:center; gap:9px; text-decoration:none; }
+  .logo-mark { width:30px; height:30px; background:var(--accent); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14px; }
+  .logo-name { font-family:'Fraunces',serif; font-size:17px; font-weight:700; color:var(--white); }
+  .logo-name span { color:var(--accent); }
+  .nav-badge { font-size:11px; font-weight:600; color:var(--green); background:var(--green-dim); border:1px solid rgba(18,183,106,0.25); padding:4px 10px; border-radius:20px; }
+
+  /* LAYOUT */
+  .main { display:grid; grid-template-columns:360px 1fr; min-height:calc(100vh - 61px); }
+
+  /* LEFT PANEL */
+  .left { border-right:1px solid var(--border); padding:28px 24px; display:flex; flex-direction:column; gap:20px; overflow-y:auto; }
+  .panel-label { font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--gray); }
+
+  label { font-size:12px; font-weight:500; color:var(--light); display:block; margin-bottom:6px; }
+  input[type=text], input[type=url], textarea, select {
+    background:var(--surface2); border:1px solid var(--border2); border-radius:8px;
+    color:var(--white); font-family:'Plus Jakarta Sans',sans-serif; font-size:13px;
+    padding:10px 13px; width:100%; outline:none; transition:border-color 0.2s;
+  }
+  input:focus, textarea:focus, select:focus { border-color:var(--accent); }
+  textarea { resize:vertical; min-height:80px; line-height:1.5; }
+  select option { background:#1a1a1a; }
+
+  /* Color pickers */
+  .color-row { display:flex; gap:10px; align-items:center; }
+  input[type=color] { width:44px; height:38px; border-radius:8px; padding:2px; cursor:pointer; border:1px solid var(--border2); background:var(--surface2); flex-shrink:0; }
+
+  /* Format pills */
+  .format-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
+  .fmt-pill {
+    background:var(--surface2); border:1px solid var(--border2);
+    border-radius:9px; padding:10px 8px; text-align:center;
+    cursor:pointer; transition:all 0.18s; user-select:none;
+  }
+  .fmt-pill:hover { border-color:#444; }
+  .fmt-pill.active { border-color:var(--accent); background:var(--accent-dim); }
+  .fmt-icon { font-size:18px; margin-bottom:4px; }
+  .fmt-label { font-size:10px; font-weight:600; color:var(--light); }
+  .fmt-size { font-size:9px; color:var(--gray); margin-top:2px; }
+
+  /* Style pills */
+  .style-grid { display:flex; flex-wrap:wrap; gap:7px; }
+  .style-pill {
+    padding:6px 13px; border-radius:20px; font-size:11px; font-weight:500;
+    border:1px solid var(--border2); background:var(--surface2); color:var(--gray);
+    cursor:pointer; transition:all 0.18s; user-select:none;
+  }
+  .style-pill:hover { border-color:#444; color:#ddd; }
+  .style-pill.active { border-color:var(--accent); background:var(--accent-dim); color:var(--white); }
+
+  /* Logo upload */
+  .upload-zone {
+    border:2px dashed var(--border2); border-radius:10px;
+    padding:20px; text-align:center; cursor:pointer; transition:all 0.2s;
+    position:relative;
+  }
+  .upload-zone:hover { border-color:var(--accent); background:var(--accent-dim); }
+  .upload-zone input { position:absolute; inset:0; opacity:0; cursor:pointer; }
+  .upload-icon { font-size:24px; margin-bottom:6px; opacity:0.5; }
+  .upload-label { font-size:12px; color:var(--gray); }
+  .logo-preview { margin-top:10px; }
+  .logo-preview img { height:48px; border-radius:6px; border:1px solid var(--border2); padding:4px; background:white; }
+
+  /* Text layout selector */
+  .layout-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .layout-card {
+    background:var(--surface2); border:1px solid var(--border2);
+    border-radius:8px; padding:10px; cursor:pointer; transition:all 0.18s;
+    text-align:center; user-select:none;
+  }
+  .layout-card:hover { border-color:#444; }
+  .layout-card.active { border-color:var(--accent); background:var(--accent-dim); }
+  .layout-preview { width:100%; height:48px; border-radius:4px; background:var(--border2); margin-bottom:6px; display:flex; align-items:center; justify-content:center; font-size:9px; color:var(--gray); overflow:hidden; position:relative; }
+  .layout-name { font-size:10px; font-weight:600; color:var(--light); }
+
+  /* Generate btn */
+  .gen-btn {
+    background:var(--accent); color:white; border:none; border-radius:10px;
+    padding:14px; font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:700;
+    cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px;
+    margin-top:auto;
+  }
+  .gen-btn:hover { background:#5a3ae0; transform:translateY(-1px); }
+  .gen-btn:active { transform:none; }
+
+  /* RIGHT PANEL */
+  .right { padding:32px; display:flex; flex-direction:column; gap:24px; overflow-y:auto; }
+  .right-title { font-family:'Fraunces',serif; font-size:22px; font-weight:800; }
+  .right-sub { font-size:13px; color:var(--gray); margin-top:4px; }
+
+  /* Canvas area */
+  .canvas-wrap {
+    display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start;
+  }
+
+  .canvas-container {
+    position:relative; flex-shrink:0;
+    box-shadow:0 8px 40px rgba(0,0,0,0.4);
+    border-radius:4px; overflow:hidden;
+  }
+
+  #mainCanvas { display:block; }
+
+  /* Download options */
+  .download-panel {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:14px; padding:24px; min-width:220px; flex:1;
+  }
+  .dl-title { font-size:13px; font-weight:700; color:var(--white); margin-bottom:16px; }
+
+  .dl-btn {
+    display:flex; align-items:center; gap:10px;
+    background:var(--surface2); border:1px solid var(--border2);
+    border-radius:9px; padding:12px 16px; cursor:pointer;
+    transition:all 0.2s; width:100%; margin-bottom:10px;
+    text-decoration:none; font-family:'Plus Jakarta Sans',sans-serif;
+  }
+  .dl-btn:hover { border-color:var(--accent); }
+  .dl-btn-icon { font-size:20px; }
+  .dl-btn-text { }
+  .dl-btn-label { font-size:13px; font-weight:600; color:var(--white); }
+  .dl-btn-sub { font-size:10px; color:var(--gray); margin-top:1px; }
+
+  .dl-primary { background:var(--accent); border-color:var(--accent); }
+  .dl-primary:hover { background:#5a3ae0; border-color:#5a3ae0; }
+
+  /* Variation strip */
+  .variation-strip {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:14px; padding:20px 24px;
+  }
+  .var-title { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--gray); margin-bottom:14px; }
+  .var-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  .var-thumb {
+    border-radius:6px; overflow:hidden; cursor:pointer;
+    border:2px solid transparent; transition:border-color 0.2s;
+    aspect-ratio:1;
+  }
+  .var-thumb:hover, .var-thumb.active { border-color:var(--accent); }
+  .var-thumb canvas { width:100%; height:100%; display:block; }
+
+  /* Empty state */
+  .empty-canvas {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:16px; padding:80px 32px; text-align:center;
+  }
+  .empty-icon { font-size:48px; margin-bottom:16px; opacity:0.3; }
+  .empty-title { font-family:'Fraunces',serif; font-size:20px; font-weight:700; color:var(--light); margin-bottom:8px; }
+  .empty-sub { font-size:13px; color:var(--gray); line-height:1.6; max-width:300px; margin:0 auto; }
+
+  /* Spin */
+  .spin { width:16px; height:16px; border:2px solid rgba(255,255,255,0.25); border-top-color:white; border-radius:50%; animation:spin 0.7s linear infinite; display:none; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="studio.html">
+    <div class="logo-mark">✦</div>
+    <div class="logo-name">Richcrest <span>AI</span></div>
+  </a>
+  <div class="nav-badge">Graphic Generator</div>
+</nav>
+
+<div class="main">
+
+  <!-- LEFT -->
+  <div class="left">
+    <div class="panel-label">Content</div>
+
+    <div>
+      <label>Hook / Headline</label>
+      <input type="text" id="hookText" placeholder="The call we get most often starts the same way." value="The call we get most often starts the same way." oninput="livePreview()" />
+    </div>
+
+    <div>
+      <label>Body Text <span style="color:var(--gray);font-size:10px">(optional — short posts only)</span></label>
+      <textarea id="bodyText" placeholder="Leave blank for hook-only graphic..." oninput="livePreview()"></textarea>
+    </div>
+
+    <div>
+      <label>Business Name</label>
+      <input type="text" id="bizName" placeholder="Pristine Home Cleaning" value="Pristine Home Cleaning" oninput="livePreview()" />
+    </div>
+
+    <div class="panel-label" style="margin-top:4px">Brand</div>
+
+    <div>
+      <label>Primary Color</label>
+      <div class="color-row">
+        <input type="color" id="color1" value="#2350d4" oninput="syncHex('color1','hex1'); livePreview()" />
+        <input type="text" id="hex1" value="#2350d4" placeholder="#2350d4" oninput="syncPicker('hex1','color1'); livePreview()" />
+      </div>
+    </div>
+
+    <div>
+      <label>Accent Color</label>
+      <div class="color-row">
+        <input type="color" id="color2" value="#ffffff" oninput="syncHex('color2','hex2'); livePreview()" />
+        <input type="text" id="hex2" value="#ffffff" placeholder="#ffffff" oninput="syncPicker('hex2','color2'); livePreview()" />
+      </div>
+    </div>
+
+    <div>
+      <label>Logo <span style="color:var(--gray);font-size:10px">(PNG recommended)</span></label>
+      <div class="upload-zone" id="logoZone">
+        <input type="file" id="logoInput" accept="image/*" onchange="loadLogo(this)" />
+        <div class="upload-icon">🏷️</div>
+        <div class="upload-label">Tap to upload logo</div>
+      </div>
+      <div class="logo-preview" id="logoPreview"></div>
+    </div>
+
+    <div>
+      <label>Background Photo URL <span style="color:var(--gray);font-size:10px">(paste Pexels URL)</span></label>
+      <input type="url" id="bgPhoto" placeholder="https://images.pexels.com/..." oninput="loadBgPhoto()" />
+      <div style="margin-top:6px;font-size:10px;color:var(--gray)">Or choose a style below without a photo.</div>
+    </div>
+
+    <div class="panel-label" style="margin-top:4px">Format</div>
+
+    <div class="format-grid">
+      <div class="fmt-pill active" data-size="1080,1080" onclick="setFormat(this,1080,1080)">
+        <div class="fmt-icon">⬛</div>
+        <div class="fmt-label">Square</div>
+        <div class="fmt-size">1080×1080</div>
+      </div>
+      <div class="fmt-pill" data-size="1080,1920" onclick="setFormat(this,1080,1920)">
+        <div class="fmt-icon">📱</div>
+        <div class="fmt-label">Story</div>
+        <div class="fmt-size">1080×1920</div>
+      </div>
+      <div class="fmt-pill" data-size="1200,628" onclick="setFormat(this,1200,628)">
+        <div class="fmt-icon">🖼️</div>
+        <div class="fmt-label">Facebook</div>
+        <div class="fmt-size">1200×628</div>
+      </div>
+    </div>
+
+    <div class="panel-label" style="margin-top:4px">Style</div>
+
+    <div class="style-grid">
+      <div class="style-pill active" data-style="dark-gradient" onclick="setStyle(this)">Dark Gradient</div>
+      <div class="style-pill" data-style="split" onclick="setStyle(this)">Split Panel</div>
+      <div class="style-pill" data-style="minimal" onclick="setStyle(this)">Minimal</div>
+      <div class="style-pill" data-style="bold" onclick="setStyle(this)">Bold Color</div>
+      <div class="style-pill" data-style="overlay" onclick="setStyle(this)">Photo Overlay</div>
+      <div class="style-pill" data-style="card" onclick="setStyle(this)">Card</div>
+    </div>
+
+    <div class="panel-label" style="margin-top:4px">Text Position</div>
+
+    <div class="layout-grid">
+      <div class="layout-card active" data-pos="bottom" onclick="setPosition(this)">
+        <div class="layout-preview">
+          <div style="position:absolute;bottom:4px;left:4px;right:4px;height:16px;background:rgba(255,255,255,0.3);border-radius:2px"></div>
+        </div>
+        <div class="layout-name">Bottom</div>
+      </div>
+      <div class="layout-card" data-pos="top" onclick="setPosition(this)">
+        <div class="layout-preview">
+          <div style="position:absolute;top:4px;left:4px;right:4px;height:16px;background:rgba(255,255,255,0.3);border-radius:2px"></div>
+        </div>
+        <div class="layout-name">Top</div>
+      </div>
+      <div class="layout-card" data-pos="center" onclick="setPosition(this)">
+        <div class="layout-preview">
+          <div style="position:absolute;top:50%;left:4px;right:4px;height:16px;background:rgba(255,255,255,0.3);border-radius:2px;transform:translateY(-50%)"></div>
+        </div>
+        <div class="layout-name">Center</div>
+      </div>
+      <div class="layout-card" data-pos="left" onclick="setPosition(this)">
+        <div class="layout-preview">
+          <div style="position:absolute;top:4px;bottom:4px;left:4px;width:16px;background:rgba(255,255,255,0.3);border-radius:2px"></div>
+        </div>
+        <div class="layout-name">Left Panel</div>
+      </div>
+    </div>
+
+    <button class="gen-btn" onclick="generateVariations()">
+      <div class="spin" id="spin"></div>
+      <span id="btnTxt">✦ Generate Variations</span>
+    </button>
+
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+    <div>
+      <div class="right-title">Graphic Preview</div>
+      <div class="right-sub">Edit fields on the left and your graphic updates live. Download when ready.</div>
+    </div>
+
+    <div id="emptyState" class="empty-canvas">
+      <div class="empty-icon">🎨</div>
+      <div class="empty-title">Your graphic appears here</div>
+      <div class="empty-sub">Fill in your content and brand details on the left to see a live preview.</div>
+    </div>
+
+    <div class="canvas-wrap" id="canvasWrap" style="display:none">
+      <div class="canvas-container" id="canvasContainer">
+        <canvas id="mainCanvas"></canvas>
+      </div>
+
+      <div class="download-panel">
+        <div class="dl-title">Download</div>
+
+        <a class="dl-btn dl-primary" id="dlPng" href="#" onclick="downloadPNG(event)">
+          <div class="dl-btn-icon">⬇️</div>
+          <div class="dl-btn-text">
+            <div class="dl-btn-label">Download PNG</div>
+            <div class="dl-btn-sub">Full resolution, ready to post</div>
+          </div>
+        </a>
+
+        <a class="dl-btn" id="dlJpg" href="#" onclick="downloadJPG(event)">
+          <div class="dl-btn-icon">🖼️</div>
+          <div class="dl-btn-text">
+            <div class="dl-btn-label">Download JPG</div>
+            <div class="dl-btn-sub">Smaller file size</div>
+          </div>
+        </a>
+
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+          <div class="dl-title">Canvas Size</div>
+          <div style="font-size:12px;color:var(--gray);margin-top:6px" id="sizeDisplay">1080 × 1080 px</div>
+        </div>
+
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+          <div class="dl-title">Copy Caption</div>
+          <div style="font-size:12px;color:var(--gray);margin-top:6px;line-height:1.5" id="captionDisplay"></div>
+          <button onclick="copyCaption()" style="margin-top:10px;background:var(--surface2);border:1px solid var(--border2);color:var(--light);font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:600;padding:7px 14px;border-radius:7px;cursor:pointer;width:100%">⎘ Copy Caption</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Variation strip -->
+    <div class="variation-strip" id="varStrip" style="display:none">
+      <div class="var-title">Style Variations — Click to Apply</div>
+      <div class="var-grid" id="varGrid"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── State ──
+let canvasW = 1080, canvasH = 1080;
+let currentStyle = 'dark-gradient';
+let currentPosition = 'bottom';
+let logoImg = null;
+let bgImg = null;
+let renderTimeout = null;
+let currentCaption = '';
+
+// ── Color sync ──
+function syncHex(colorId, hexId) {
+  document.getElementById(hexId).value = document.getElementById(colorId).value;
+}
+function syncPicker(hexId, colorId) {
+  const val = document.getElementById(hexId).value;
+  if (/^#[0-9A-Fa-f]{6}$/.test(val)) document.getElementById(colorId).value = val;
+}
+
+// ── Format ──
+function setFormat(el, w, h) {
+  document.querySelectorAll('.fmt-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  canvasW = w; canvasH = h;
+  document.getElementById('sizeDisplay').textContent = w + ' x ' + h + ' px';
+  livePreview();
+}
+
+// ── Style ──
+function setStyle(el) {
+  document.querySelectorAll('.style-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  currentStyle = el.dataset.style;
+  livePreview();
+}
+
+// ── Position ──
+function setPosition(el) {
+  document.querySelectorAll('.layout-card').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  currentPosition = el.dataset.pos;
+  livePreview();
+}
+
+// ── Logo upload ──
+function loadLogo(input) {
+  if (!input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    logoImg = new Image();
+    logoImg.onload = () => {
+      document.getElementById('logoPreview').innerHTML = '<img src="' + e.target.result + '" />';
+      livePreview();
+    };
+    logoImg.src = e.target.result;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+// ── Background photo ──
+function loadBgPhoto() {
+  const url = document.getElementById('bgPhoto').value.trim();
+  if (!url) { bgImg = null; livePreview(); return; }
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = () => { bgImg = img; livePreview(); };
+  img.onerror = () => { bgImg = null; };
+  img.src = url;
+}
+
+// ── Live preview with debounce ──
+function livePreview() {
+  clearTimeout(renderTimeout);
+  renderTimeout = setTimeout(() => renderGraphic('mainCanvas', canvasW, canvasH, currentStyle, currentPosition), 100);
+}
+
+// ── Text wrap helper ──
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(' ');
+  let line = '';
+  const lines = [];
+  for (let i = 0; i < words.length; i++) {
+    const testLine = line + words[i] + ' ';
+    const metrics = ctx.measureText(testLine);
+    if (metrics.width > maxWidth && i > 0) {
+      lines.push(line.trim());
+      line = words[i] + ' ';
+    } else {
+      line = testLine;
+    }
+  }
+  lines.push(line.trim());
+  lines.forEach((l, i) => ctx.fillText(l, x, y + (i * lineHeight)));
+  return lines.length;
+}
+
+// ── Main render engine ──
+function renderGraphic(canvasId, w, h, style, position, returnCanvas) {
+  const hook = document.getElementById('hookText').value.trim() || 'Your hook goes here';
+  const body = document.getElementById('bodyText').value.trim();
+  const bizName = document.getElementById('bizName').value.trim() || 'Business Name';
+  const color1 = document.getElementById('color1').value || '#2350d4';
+  const color2 = document.getElementById('color2').value || '#ffffff';
+
+  currentCaption = hook + (body ? '\n\n' + body : '');
+  document.getElementById('captionDisplay').textContent = hook.substring(0, 80) + (hook.length > 80 ? '...' : '');
+
+  const canvas = returnCanvas ? document.createElement('canvas') : document.getElementById(canvasId);
+  canvas.width = w;
+  canvas.height = h;
+
+  // Scale for display
+  if (!returnCanvas) {
+    const maxDisplay = Math.min(520, window.innerWidth - 440);
+    const scale = maxDisplay / Math.max(w, h);
+    canvas.style.width = (w * scale) + 'px';
+    canvas.style.height = (h * scale) + 'px';
+    document.getElementById('emptyState').style.display = 'none';
+    document.getElementById('canvasWrap').style.display = 'flex';
+  }
+
+  const ctx = canvas.getContext('2d');
+  const pad = Math.round(w * 0.072);
+
+  // ── STYLE: Dark Gradient ──
+  if (style === 'dark-gradient') {
+    if (bgImg) {
+      // Draw background photo
+      const scale = Math.max(w / bgImg.width, h / bgImg.height);
+      const bw = bgImg.width * scale, bh = bgImg.height * scale;
+      const bx = (w - bw) / 2, by = (h - bh) / 2;
+      ctx.drawImage(bgImg, bx, by, bw, bh);
+      // Dark gradient overlay
+      const grad = ctx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, 'rgba(0,0,0,0.2)');
+      grad.addColorStop(0.5, 'rgba(0,0,0,0.45)');
+      grad.addColorStop(1, 'rgba(0,0,0,0.82)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+    } else {
+      const grad = ctx.createLinearGradient(0, 0, w, h);
+      grad.addColorStop(0, color1);
+      grad.addColorStop(1, shadeColor(color1, -40));
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
+      // Pattern overlay
+      ctx.fillStyle = 'rgba(255,255,255,0.03)';
+      for (let i = 0; i < w; i += 40) {
+        ctx.fillRect(i, 0, 1, h);
+      }
+    }
+    // Accent bar at bottom
+    ctx.fillStyle = color2;
+    ctx.fillRect(0, h - 6, w, 6);
+    // Text
+    drawTextBlock(ctx, hook, body, bizName, w, h, pad, color2, color1, position, 'light');
+  }
+
+  // ── STYLE: Split Panel ──
+  else if (style === 'split') {
+    // Left color panel
+    ctx.fillStyle = color1;
+    ctx.fillRect(0, 0, w * 0.42, h);
+    // Right photo or light bg
+    if (bgImg) {
+      const sw = w * 0.58, sh = h;
+      const scale = Math.max(sw / bgImg.width, sh / bgImg.height);
+      const bw = bgImg.width * scale, bh = bgImg.height * scale;
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(w * 0.42, 0, sw, sh);
+      ctx.clip();
+      ctx.drawImage(bgImg, w * 0.42, (h - bh) / 2, bw, bh);
+      ctx.restore();
+    } else {
+      ctx.fillStyle = '#f0ede7';
+      ctx.fillRect(w * 0.42, 0, w * 0.58, h);
+    }
+    // Accent line
+    ctx.fillStyle = color2;
+    ctx.fillRect(w * 0.42 - 4, 0, 8, h);
+    // Text on left panel
+    const textColor = getContrastColor(color1);
+    ctx.fillStyle = color2 === '#ffffff' ? 'rgba(255,255,255,0.4)' : color2;
+    ctx.fillRect(pad, pad, w * 0.32, 4);
+    drawSplitText(ctx, hook, body, bizName, w * 0.38, h, pad, textColor, color2);
+  }
+
+  // ── STYLE: Minimal ──
+  else if (style === 'minimal') {
+    ctx.fillStyle = '#f8f6f2';
+    ctx.fillRect(0, 0, w, h);
+    // Accent top bar
+    ctx.fillStyle = color1;
+    ctx.fillRect(0, 0, w, 8);
+    ctx.fillRect(0, 0, pad / 2, h);
+    // Text
+    drawMinimalText(ctx, hook, body, bizName, w, h, pad, color1, '#1c1a17');
+  }
+
+  // ── STYLE: Bold Color ──
+  else if (style === 'bold') {
+    ctx.fillStyle = color1;
+    ctx.fillRect(0, 0, w, h);
+    // Large circle decoration
+    ctx.beginPath();
+    ctx.arc(w * 1.1, h * -0.1, w * 0.7, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,255,255,0.05)';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(w * -0.1, h * 1.1, w * 0.5, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,255,255,0.04)';
+    ctx.fill();
+    // Accent bar
+    ctx.fillStyle = color2;
+    ctx.fillRect(pad, h - pad - 4, w * 0.15, 4);
+    // Text
+    const boldTextColor = getContrastColor(color1);
+    drawBoldText(ctx, hook, body, bizName, w, h, pad, boldTextColor, color2);
+  }
+
+  // ── STYLE: Photo Overlay ──
+  else if (style === 'overlay') {
+    if (bgImg) {
+      const scale = Math.max(w / bgImg.width, h / bgImg.height);
+      const bw = bgImg.width * scale, bh = bgImg.height * scale;
+      ctx.drawImage(bgImg, (w - bw) / 2, (h - bh) / 2, bw, bh);
+    } else {
+      ctx.fillStyle = color1;
+      ctx.fillRect(0, 0, w, h);
+    }
+    // Color tint overlay
+    ctx.fillStyle = hexToRgba(color1, 0.65);
+    ctx.fillRect(0, 0, w, h);
+    // Text
+    const overlayTextColor = getContrastColor(color1);
+    drawTextBlock(ctx, hook, body, bizName, w, h, pad, overlayTextColor, color2, position, 'light');
+  }
+
+  // ── STYLE: Card ──
+  else if (style === 'card') {
+    // Background
+    ctx.fillStyle = '#f0ede7';
+    ctx.fillRect(0, 0, w, h);
+    if (bgImg) {
+      const scale = Math.max(w / bgImg.width, (h * 0.5) / bgImg.height);
+      const bw = bgImg.width * scale, bh = bgImg.height * scale;
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, 0, w, h * 0.5);
+      ctx.clip();
+      ctx.drawImage(bgImg, (w - bw) / 2, 0, bw, bh);
+      ctx.restore();
+      const grad = ctx.createLinearGradient(0, h * 0.35, 0, h * 0.55);
+      grad.addColorStop(0, 'rgba(240,237,231,0)');
+      grad.addColorStop(1, 'rgba(240,237,231,1)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, h * 0.35, w, h * 0.2);
+    }
+    // White card
+    roundRect(ctx, pad, h * 0.42, w - pad * 2, h * 0.5, 24);
+    ctx.fillStyle = '#ffffff';
+    ctx.shadowColor = 'rgba(0,0,0,0.08)';
+    ctx.shadowBlur = 30;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    // Accent bar on card
+    ctx.fillStyle = color1;
+    roundRect(ctx, pad, h * 0.42, w - pad * 2, 6, [6, 6, 0, 0]);
+    ctx.fill();
+    drawCardText(ctx, hook, body, bizName, w, h, pad, color1, '#1c1a17');
+  }
+
+  // ── Logo ──
+  if (logoImg) {
+    const logoSize = Math.round(w * 0.12);
+    const logoX = w - pad - logoSize;
+    const logoY = pad;
+    ctx.save();
+    roundRect(ctx, logoX - 8, logoY - 8, logoSize + 16, logoSize + 16, 12);
+    ctx.fillStyle = 'rgba(255,255,255,0.15)';
+    ctx.fill();
+    const lScale = Math.min(logoSize / logoImg.width, logoSize / logoImg.height);
+    const lw = logoImg.width * lScale, lh = logoImg.height * lScale;
+    ctx.drawImage(logoImg, logoX + (logoSize - lw) / 2, logoY + (logoSize - lh) / 2, lw, lh);
+    ctx.restore();
+  }
+
+  if (returnCanvas) return canvas;
+}
+
+// ── Text drawing helpers ──
+function drawTextBlock(ctx, hook, body, bizName, w, h, pad, textColor, accentColor, position, mode) {
+  const fontSize = Math.round(w * 0.055);
+  const bodySize = Math.round(w * 0.036);
+  const bizSize = Math.round(w * 0.028);
+  const maxW = w - pad * 2;
+
+  let textY;
+  if (position === 'bottom') textY = h - pad - fontSize * 4;
+  else if (position === 'top') textY = pad + fontSize;
+  else textY = h / 2 - fontSize * 2;
+
+  // Hook
+  ctx.font = '700 ' + fontSize + 'px Fraunces, serif';
+  ctx.fillStyle = textColor;
+  ctx.textBaseline = 'top';
+  const hookLines = getWrappedLines(ctx, hook, maxW);
+  hookLines.forEach((line, i) => {
+    ctx.fillText(line, pad, textY + i * (fontSize * 1.2));
+  });
+  let nextY = textY + hookLines.length * (fontSize * 1.2) + fontSize * 0.5;
+
+  // Body
+  if (body) {
+    ctx.font = '400 ' + bodySize + 'px Plus Jakarta Sans, sans-serif';
+    ctx.fillStyle = textColor === '#ffffff' ? 'rgba(255,255,255,0.8)' : 'rgba(28,26,23,0.75)';
+    const bodyLines = getWrappedLines(ctx, body, maxW);
+    bodyLines.forEach((line, i) => {
+      ctx.fillText(line, pad, nextY + i * (bodySize * 1.45));
+    });
+    nextY += bodyLines.length * (bodySize * 1.45) + bodySize * 0.5;
+  }
+
+  // Biz name
+  ctx.font = '600 ' + bizSize + 'px Plus Jakarta Sans, sans-serif';
+  ctx.fillStyle = accentColor === '#ffffff' ? 'rgba(255,255,255,0.6)' : accentColor;
+  ctx.fillText(bizName.toUpperCase(), pad, nextY);
+}
+
+function drawSplitText(ctx, hook, body, bizName, maxW, h, pad, textColor, accentColor) {
+  const fontSize = Math.round(maxW * 0.1);
+  const bodySize = Math.round(maxW * 0.065);
+  const bizSize = Math.round(maxW * 0.055);
+  const startY = h * 0.25;
+
+  ctx.font = '800 ' + fontSize + 'px Fraunces, serif';
+  ctx.fillStyle = textColor;
+  ctx.textBaseline = 'top';
+  const hookLines = getWrappedLines(ctx, hook, maxW - pad);
+  hookLines.forEach((line, i) => ctx.fillText(line, pad, startY + i * (fontSize * 1.2)));
+  let nextY = startY + hookLines.length * (fontSize * 1.2) + fontSize * 0.6;
+
+  if (body) {
+    ctx.font = '400 ' + bodySize + 'px Plus Jakarta Sans, sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.75)';
+    const bodyLines = getWrappedLines(ctx, body, maxW - pad);
+    bodyLines.forEach((line, i) => ctx.fillText(line, pad, nextY + i * (bodySize * 1.5)));
+    nextY += bodyLines.length * (bodySize * 1.5) + bodySize;
+  }
+
+  ctx.font = '600 ' + bizSize + 'px Plus Jakarta Sans, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.fillText(bizName.toUpperCase(), pad, h - pad - bizSize);
+}
+
+function drawMinimalText(ctx, hook, body, bizName, w, h, pad, accentColor, darkColor) {
+  const fontSize = Math.round(w * 0.062);
+  const bodySize = Math.round(w * 0.038);
+  const bizSize = Math.round(w * 0.03);
+  const maxW = w - pad * 3;
+  const startX = pad * 1.5;
+  const startY = h * 0.3;
+
+  ctx.font = '800 ' + fontSize + 'px Fraunces, serif';
+  ctx.fillStyle = darkColor;
+  ctx.textBaseline = 'top';
+  const hookLines = getWrappedLines(ctx, hook, maxW);
+  hookLines.forEach((line, i) => ctx.fillText(line, startX, startY + i * (fontSize * 1.15)));
+  let nextY = startY + hookLines.length * (fontSize * 1.15) + fontSize * 0.6;
+
+  if (body) {
+    ctx.font = '400 ' + bodySize + 'px Plus Jakarta Sans, sans-serif';
+    ctx.fillStyle = '#6b6560';
+    const bodyLines = getWrappedLines(ctx, body, maxW);
+    bodyLines.forEach((line, i) => ctx.fillText(line, startX, nextY + i * (bodySize * 1.5)));
+    nextY += bodyLines.length * (bodySize * 1.5) + bodySize;
+  }
+
+  ctx.font = '700 ' + bizSize + 'px Plus Jakarta Sans, sans-serif';
+  ctx.fillStyle = accentColor;
+  ctx.fillText(bizName.toUpperCase(), startX, h - pad - bizSize);
+}
+
+function drawBoldText(ctx, hook, body, bizName, w, h, pad, textColor, accentColor) {
+  const fontSize = Math.round(w * 0.068);
+  const bodySize = Math.round(w * 0.04);
+  const bizSize = Math.round(w * 0.03);
+  const maxW = w - pad * 2;
+  const startY = h * 0.28;
+
+  ctx.font = '800 ' + fontSize + 'px Fraunces, serif';
+  ctx.fillStyle = textColor;
+  ctx.textBaseline = 'top';
+  const hookLines = getWrappedLines(ctx, hook, maxW);
+  hookLines.forEach((line, i) => ctx.fillText(line, pad, startY + i * (fontSize * 1.15)));
+  let nextY = startY + hookLines.length * (fontSize * 1.15) + fontSize * 0.7;
+
+  if (body) {
+    ctx.font = '400 ' + bodySize + 'px Plus Jakarta Sans, sans-serif';
+    ctx.fillStyle = textColor === '#ffffff' ? 'rgba(255,255,255,0.75)' : 'rgba(28,26,23,0.75)';
+    const bodyLines = getWrappedLines(ctx, body, maxW);
+    bodyLines.forEach((line, i) => ctx.fillText(line, pad, nextY + i * (bodySize * 1.5)));
+  }
+
+  ctx.font = '600 ' + bizSize + 'px Plus Jakarta Sans, sans-serif';
+  ctx.fillStyle = accentColor === '#ffffff' ? 'rgba(255,255,255,0.5)' : accentColor;
+  ctx.fillText(bizName.toUpperCase(), pad, h - pad - bizSize);
+}
+
+function drawCardText(ctx, hook, body, bizName, w, h, pad, accentColor, darkColor) {
+  const cardTop = h * 0.44;
+  const cardPad = pad * 1.4;
+  const maxW = w - pad * 4;
+  const fontSize = Math.round(w * 0.052);
+  const bodySize = Math.round(w * 0.034);
+  const bizSize = Math.round(w * 0.026);
+  const startY = cardTop + cardPad * 0.8;
+
+  ctx.font = '700 ' + fontSize + 'px Fraunces, serif';
+  ctx.fillStyle = darkColor;
+  ctx.textBaseline = 'top';
+  const hookLines = getWrappedLines(ctx, hook, maxW);
+  hookLines.forEach((line, i) => ctx.fillText(line, cardPad, startY + i * (fontSize * 1.2)));
+  let nextY = startY + hookLines.length * (fontSize * 1.2) + fontSize * 0.5;
+
+  if (body) {
+    ctx.font = '400 ' + bodySize + 'px Plus Jakarta Sans, sans-serif';
+    ctx.fillStyle = '#6b6560';
+    const bodyLines = getWrappedLines(ctx, body, maxW);
+    bodyLines.forEach((line, i) => ctx.fillText(line, cardPad, nextY + i * (bodySize * 1.5)));
+  }
+
+  ctx.font = '600 ' + bizSize + 'px Plus Jakarta Sans, sans-serif';
+  ctx.fillStyle = accentColor;
+  ctx.fillText(bizName.toUpperCase(), cardPad, h - pad * 1.2 - bizSize);
+}
+
+// ── Utility helpers ──
+function getWrappedLines(ctx, text, maxWidth) {
+  const words = text.split(' ');
+  const lines = [];
+  let line = '';
+  for (let i = 0; i < words.length; i++) {
+    const test = line + words[i] + ' ';
+    if (ctx.measureText(test).width > maxWidth && line !== '') {
+      lines.push(line.trim());
+      line = words[i] + ' ';
+    } else {
+      line = test;
+    }
+  }
+  if (line.trim()) lines.push(line.trim());
+  return lines;
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  if (typeof r === 'number') r = [r, r, r, r];
+  ctx.beginPath();
+  ctx.moveTo(x + r[0], y);
+  ctx.lineTo(x + w - r[1], y);
+  ctx.arcTo(x + w, y, x + w, y + r[1], r[1]);
+  ctx.lineTo(x + w, y + h - r[2]);
+  ctx.arcTo(x + w, y + h, x + w - r[2], y + h, r[2]);
+  ctx.lineTo(x + r[3], y + h);
+  ctx.arcTo(x, y + h, x, y + h - r[3], r[3]);
+  ctx.lineTo(x, y + r[0]);
+  ctx.arcTo(x, y, x + r[0], y, r[0]);
+  ctx.closePath();
+}
+
+function shadeColor(hex, pct) {
+  const num = parseInt(hex.slice(1), 16);
+  const r = Math.min(255, Math.max(0, (num >> 16) + pct));
+  const g = Math.min(255, Math.max(0, ((num >> 8) & 0xff) + pct));
+  const b = Math.min(255, Math.max(0, (num & 0xff) + pct));
+  return '#' + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1);
+}
+
+function hexToRgba(hex, alpha) {
+  const num = parseInt(hex.replace('#',''), 16);
+  return `rgba(${(num>>16)&255},${(num>>8)&255},${num&255},${alpha})`;
+}
+
+function getContrastColor(hex) {
+  const num = parseInt(hex.replace('#',''), 16);
+  const r = (num >> 16) & 255, g = (num >> 8) & 255, b = num & 255;
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance > 0.5 ? '#1c1a17' : '#ffffff';
+}
+
+// ── Generate variations ──
+function generateVariations() {
+  const btn = document.getElementById('spin');
+  btn.style.display = 'block';
+  document.getElementById('btnTxt').textContent = 'Generating...';
+
+  const styles = ['dark-gradient', 'split', 'minimal', 'bold', 'overlay', 'card'];
+  const varGrid = document.getElementById('varGrid');
+  varGrid.innerHTML = '';
+
+  setTimeout(() => {
+    styles.forEach((style, i) => {
+      const thumb = document.createElement('div');
+      thumb.className = 'var-thumb' + (i === 0 ? ' active' : '');
+      const c = renderGraphic(null, 400, 400, style, currentPosition, true);
+      c.style.width = '100%';
+      c.style.height = '100%';
+      thumb.appendChild(c);
+      thumb.onclick = () => {
+        document.querySelectorAll('.var-thumb').forEach(t => t.classList.remove('active'));
+        thumb.classList.add('active');
+        setStyle(document.querySelector('.style-pill[data-style="' + style + '"]'));
+      };
+      varGrid.appendChild(thumb);
+    });
+    document.getElementById('varStrip').style.display = 'block';
+    btn.style.display = 'none';
+    document.getElementById('btnTxt').textContent = '✦ Generate Variations';
+  }, 300);
+}
+
+// ── Downloads ──
+function downloadPNG(e) {
+  e.preventDefault();
+  const c = renderGraphic(null, canvasW, canvasH, currentStyle, currentPosition, true);
+  const link = document.createElement('a');
+  link.download = 'richcrest-graphic.png';
+  link.href = c.toDataURL('image/png');
+  link.click();
+}
+
+function downloadJPG(e) {
+  e.preventDefault();
+  const c = renderGraphic(null, canvasW, canvasH, currentStyle, currentPosition, true);
+  const link = document.createElement('a');
+  link.download = 'richcrest-graphic.jpg';
+  link.href = c.toDataURL('image/jpeg', 0.92);
+  link.click();
+}
+
+function copyCaption() {
+  navigator.clipboard.writeText(currentCaption).then(() => {
+    const btn = event.target;
+    btn.textContent = '✓ Copied';
+    setTimeout(() => btn.textContent = '⎘ Copy Caption', 2000);
+  });
+}
+
+// ── Init ──
+window.addEventListener('load', () => {
+  livePreview();
+});
+</script>
+</body>
+</html>
