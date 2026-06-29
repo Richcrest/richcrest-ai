@@ -277,8 +277,15 @@
     </div>
 
     <div>
-      <label>Background Photo <span style="color:var(--gray);font-size:10px">paste image URL</span></label>
+      <label>Background Photo <span style="color:var(--gray);font-size:10px">paste image URL or pick a sample</span></label>
       <input type="url" id="bgPhoto" placeholder="https://images.pexels.com/photos/..." oninput="loadBgPhoto()" />
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:7px">
+        <div class="quick-btn" style="font-size:10px" onclick="loadSample('cleaning')">🧹 Cleaning</div>
+        <div class="quick-btn" style="font-size:10px" onclick="loadSample('barber')">✂️ Barber</div>
+        <div class="quick-btn" style="font-size:10px" onclick="loadSample('food')">🍽️ Food</div>
+        <div class="quick-btn" style="font-size:10px" onclick="loadSample('fitness')">💪 Fitness</div>
+        <div class="quick-btn" style="font-size:10px" onclick="loadSample('realestate')">🏠 Real Estate</div>
+      </div>
     </div>
 
     <div class="section-label" style="margin-top:4px">Format</div>
@@ -532,6 +539,21 @@ function loadLogo(input) {
   };
   reader.readAsDataURL(input.files[0]);
 }
+// ── Sample photos per business type ──
+const samplePhotos = {
+  cleaning: 'https://images.pexels.com/photos/4107120/pexels-photo-4107120.jpeg?w=1080&q=80',
+  barber: 'https://images.pexels.com/photos/1813272/pexels-photo-1813272.jpeg?w=1080&q=80',
+  food: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?w=1080&q=80',
+  fitness: 'https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?w=1080&q=80',
+  realestate: 'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?w=1080&q=80'
+};
+
+function loadSample(type) {
+  const url = samplePhotos[type];
+  document.getElementById('bgPhoto').value = url;
+  loadBgPhoto();
+}
+
 function loadBgPhoto() {
   const url = document.getElementById('bgPhoto').value.trim();
   if (!url) { bgImg = null; debouncedPreview(); return; }
@@ -591,12 +613,29 @@ function addGrain(ctx, w, h, intensity) {
   ctx.putImageData(imageData, 0, 0);
 }
 
-// ── Draw background photo ──
+// ── Vignette effect ──
+function addVignette(ctx, w, h, intensity) {
+  const grad = ctx.createRadialGradient(w/2, h/2, h*0.2, w/2, h/2, h*0.85);
+  grad.addColorStop(0, 'rgba(0,0,0,0)');
+  grad.addColorStop(1, 'rgba(0,0,0,' + intensity + ')');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, w, h);
+}
+
+// ── Color grade overlay ──
+function addColorGrade(ctx, w, h, color, opacity) {
+  ctx.fillStyle = hexToRgba(color, opacity);
+  ctx.fillRect(0, 0, w, h);
+}
+
+// ── Draw background photo with enhancements ──
 function drawBgPhoto(ctx, w, h) {
   if (!bgImg) return false;
   const s = Math.max(w/bgImg.width, h/bgImg.height);
   const bw = bgImg.width*s, bh = bgImg.height*s;
   ctx.drawImage(bgImg, (w-bw)/2, (h-bh)/2, bw, bh);
+  // Add vignette for depth
+  addVignette(ctx, w, h, 0.45);
   return true;
 }
 
@@ -633,14 +672,17 @@ function drawHierarchyText(ctx, hook, body, bizName, x, maxW, startY, hookSize, 
   hookLines.forEach((line, i) => ctx.fillText(line, x, startY + i * (hookSize * 1.18)));
   let nextY = startY + hookLines.length * (hookSize * 1.18);
 
-  // Accent underline under first line
+  // Accent underline under hook first line only
   if (document.getElementById('toggleUnderline').checked) {
+    ctx.save();
     ctx.shadowBlur = 0;
-    const lineW = Math.min(ctx.measureText(hookLines[0]).width, maxW * 0.5);
+    ctx.shadowColor = 'transparent';
+    ctx.font = '800 ' + hookSize + 'px Fraunces, serif';
+    const firstLineW = Math.min(ctx.measureText(hookLines[0]).width * 0.55, maxW * 0.45);
     ctx.fillStyle = accentColor;
-    ctx.fillRect(x, nextY + hookSize * 0.12, lineW, Math.max(3, hookSize * 0.045));
-    ctx.fillStyle = textColor;
-    if (shadow) { ctx.shadowColor = 'rgba(0,0,0,0.6)'; ctx.shadowBlur = 16; }
+    const underlineY = startY + hookLines.length * (hookSize * 1.18) + Math.max(6, hookSize * 0.08);
+    ctx.fillRect(x, underlineY, firstLineW, Math.max(3, hookSize * 0.038));
+    ctx.restore();
   }
 
   nextY += hookSize * 0.55;
@@ -680,19 +722,35 @@ function renderCanvas(canvas, w, h, style, forVariation) {
   // ── GRADIENT STYLE ──
   if (style === 'dark-gradient') {
     if (drawBgPhoto(ctx, w, h)) {
+      // Cinematic gradient - heavy at bottom for text legibility
       const grad = ctx.createLinearGradient(0,0,0,h);
-      grad.addColorStop(0,'rgba(0,0,0,0.1)');
-      grad.addColorStop(0.45,'rgba(0,0,0,0.4)');
-      grad.addColorStop(1,'rgba(0,0,0,0.88)');
+      grad.addColorStop(0,'rgba(0,0,0,0.05)');
+      grad.addColorStop(0.35,'rgba(0,0,0,0.25)');
+      grad.addColorStop(0.65,'rgba(0,0,0,0.6)');
+      grad.addColorStop(1,'rgba(0,0,0,0.92)');
       ctx.fillStyle = grad; ctx.fillRect(0,0,w,h);
+      // Subtle color tint matching brand
+      addColorGrade(ctx, w, h, c1, 0.18);
     } else {
-      const grad = ctx.createLinearGradient(0,0,w*0.6,h);
-      grad.addColorStop(0,c1);
-      grad.addColorStop(1,shadeColor(c1,-50));
+      // Rich diagonal gradient without photo
+      const grad = ctx.createLinearGradient(0,0,w*0.7,h);
+      grad.addColorStop(0, shadeColor(c1, 20));
+      grad.addColorStop(0.5, c1);
+      grad.addColorStop(1, shadeColor(c1, -60));
       ctx.fillStyle = grad; ctx.fillRect(0,0,w,h);
+      // Subtle circle decoration
+      ctx.beginPath();
+      ctx.arc(w*0.85, h*0.15, w*0.38, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(255,255,255,0.04)';
+      ctx.fill();
     }
-    if (useGrain && !forVariation) addGrain(ctx,w,h,18);
-    ctx.fillStyle = c2; ctx.fillRect(0, h-6, w, 6);
+    if (useGrain && !forVariation) addGrain(ctx,w,h,16);
+    // Bottom accent bar
+    ctx.fillStyle = c2;
+    ctx.fillRect(0, h-6, w, 6);
+    // Left accent line
+    ctx.fillStyle = hexToRgba(c2, 0.3);
+    ctx.fillRect(0, 0, 4, h);
     // Calculate text block height to position from bottom
     ctx.font = '800 ' + hookSize + 'px Fraunces, serif';
     const hLines = getLines(ctx, hook, maxW);
@@ -765,12 +823,21 @@ function renderCanvas(canvas, w, h, style, forVariation) {
     if (useGrain && !forVariation) addGrain(ctx,w,h,20);
     const tc = contrastColor(c1);
     ctx.font = '800 '+hookSize+'px Fraunces, serif';
-    const hLines = getLines(ctx, hook, maxW);
-    const startY = h*0.26;
-    drawHierarchyText(ctx, hook, body, bizName, pad, maxW, startY, hookSize, bodySize, bizSize, tc, c2, false);
+    ctx.font = '800 ' + hookSize + 'px Fraunces, serif';
+    const hLinesBold = getLines(ctx, hook, maxW);
+    ctx.font = '400 ' + bodySize + 'px Plus Jakarta Sans, sans-serif';
+    const bLinesBold = body ? getLines(ctx, body, maxW) : [];
+    const totalHBold = hLinesBold.length*(hookSize*1.18) + hookSize*0.55 + (body ? bLinesBold.length*(bodySize*1.5)+bodySize*0.4 : 0);
+    const startYBold = (h - totalHBold) / 2 - hookSize * 0.2;
+    drawHierarchyText(ctx, hook, body, bizName, pad, maxW, startYBold, hookSize, bodySize, bizSize, tc, c2, false);
     ctx.font = '600 '+bizSize+'px Plus Jakarta Sans, sans-serif';
     ctx.fillStyle = tc === '#ffffff' ? 'rgba(255,255,255,0.4)' : 'rgba(28,26,23,0.4)';
     ctx.textBaseline = 'bottom';
+    // Business name with separator line above
+    ctx.fillStyle = tc === '#ffffff' ? 'rgba(255,255,255,0.2)' : 'rgba(28,26,23,0.15)';
+    ctx.fillRect(pad, h - pad - bizSize - 14, w * 0.12, 1);
+    ctx.fillStyle = tc === '#ffffff' ? 'rgba(255,255,255,0.45)' : 'rgba(28,26,23,0.45)';
+    ctx.font = '600 '+bizSize+'px Plus Jakarta Sans, sans-serif';
     ctx.fillText(bizName.toUpperCase(), pad, h-pad);
   }
 
