@@ -657,43 +657,49 @@ function drawLogo(ctx, w, h, pad) {
 // ── Core text renderer with hierarchy ──
 function drawHierarchyText(ctx, hook, body, bizName, x, maxW, startY, hookSize, bodySize, bizSize, textColor, accentColor, shadow) {
   ctx.save();
+  ctx.textBaseline = 'top';
+
+  // Pre-measure for vertical centering if needed
+  ctx.font = '800 ' + hookSize + 'px Fraunces, serif';
+  const hookLines = getLines(ctx, hook, maxW);
+  ctx.font = '400 ' + bodySize + 'px Plus Jakarta Sans, sans-serif';
+  const bodyLinesCount = body ? getLines(ctx, body, maxW).length : 0;
+  const blockH = hookLines.length*(hookSize*1.18) + hookSize*0.55 + bodyLinesCount*(bodySize*1.5);
+
   if (shadow) {
-    ctx.shadowColor = 'rgba(0,0,0,0.6)';
-    ctx.shadowBlur = 16;
+    ctx.shadowColor = 'rgba(0,0,0,0.65)';
+    ctx.shadowBlur = 18;
     ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 2;
+    ctx.shadowOffsetY = 3;
   }
 
-  // Hook — large, heavy weight
+  // Hook — large heavy Fraunces
   ctx.font = '800 ' + hookSize + 'px Fraunces, serif';
   ctx.fillStyle = textColor;
-  ctx.textBaseline = 'top';
-  const hookLines = getLines(ctx, hook, maxW);
   hookLines.forEach((line, i) => ctx.fillText(line, x, startY + i * (hookSize * 1.18)));
   let nextY = startY + hookLines.length * (hookSize * 1.18);
 
-  // Accent underline under hook first line only
+  // Accent underline — sits below hook block
   if (document.getElementById('toggleUnderline').checked) {
     ctx.save();
-    ctx.shadowBlur = 0;
-    ctx.shadowColor = 'transparent';
+    ctx.shadowBlur = 0; ctx.shadowColor = 'transparent';
     ctx.font = '800 ' + hookSize + 'px Fraunces, serif';
-    const firstLineW = Math.min(ctx.measureText(hookLines[0]).width * 0.55, maxW * 0.45);
+    const ulW = Math.min(ctx.measureText(hookLines[0]).width * 0.48, maxW * 0.38);
     ctx.fillStyle = accentColor;
-    const underlineY = startY + hookLines.length * (hookSize * 1.18) + Math.max(6, hookSize * 0.08);
-    ctx.fillRect(x, underlineY, firstLineW, Math.max(3, hookSize * 0.038));
+    ctx.fillRect(x, nextY + hookSize * 0.1, ulW, Math.max(3, hookSize * 0.036));
     ctx.restore();
   }
 
-  nextY += hookSize * 0.55;
+  nextY += hookSize * 0.58;
 
-  // Body — noticeably smaller, lighter weight
+  // Body — smaller Plus Jakarta Sans
   if (body) {
     ctx.font = '400 ' + bodySize + 'px Plus Jakarta Sans, sans-serif';
-    ctx.fillStyle = textColor === '#ffffff' ? 'rgba(255,255,255,0.78)' : 'rgba(28,26,23,0.72)';
+    ctx.fillStyle = textColor === '#ffffff' ? 'rgba(255,255,255,0.76)' : 'rgba(28,26,23,0.70)';
+    if (shadow) { ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 12; }
     const bodyLines = getLines(ctx, body, maxW);
-    bodyLines.forEach((line, i) => ctx.fillText(line, x, nextY + i * (bodySize * 1.5)));
-    nextY += bodyLines.length * (bodySize * 1.5) + bodySize * 0.4;
+    bodyLines.forEach((line, i) => ctx.fillText(line, x, nextY + i * (bodySize * 1.52)));
+    nextY += bodyLines.length * (bodySize * 1.52) + bodySize * 0.4;
   }
 
   ctx.restore();
@@ -751,18 +757,23 @@ function renderCanvas(canvas, w, h, style, forVariation) {
     // Left accent line
     ctx.fillStyle = hexToRgba(c2, 0.3);
     ctx.fillRect(0, 0, 4, h);
-    // Calculate text block height to position from bottom
+    // Anchor text to lower third — classic cinematic layout
     ctx.font = '800 ' + hookSize + 'px Fraunces, serif';
-    const hLines = getLines(ctx, hook, maxW);
+    const hLinesGrad = getLines(ctx, hook, maxW);
     ctx.font = '400 ' + bodySize + 'px Plus Jakarta Sans, sans-serif';
-    const bLines = body ? getLines(ctx, body, maxW) : [];
-    const totalH = hLines.length*(hookSize*1.18) + hookSize*0.55 + (body ? bLines.length*(bodySize*1.5)+bodySize*0.4 : 0) + bizSize*1.6;
-    const startY = h - pad - totalH - 24;
-    drawHierarchyText(ctx, hook, body, bizName, pad, maxW, startY, hookSize, bodySize, bizSize, '#ffffff', c2, useShadow);
+    const bLinesGrad = body ? getLines(ctx, body, maxW) : [];
+    const bizLineH = bizSize * 2.2;
+    const totalHGrad = hLinesGrad.length*(hookSize*1.18) + hookSize*0.58 + (bLinesGrad.length > 0 ? bLinesGrad.length*(bodySize*1.52)+bodySize*0.4 : 0) + bizLineH;
+    const startYGrad = h - pad * 1.4 - totalHGrad;
+    drawHierarchyText(ctx, hook, body, bizName, pad, maxW, startYGrad, hookSize, bodySize, bizSize, '#ffffff', c2, useShadow);
+    // Business name bottom left
+    ctx.save();
     ctx.font = '600 ' + bizSize + 'px Plus Jakarta Sans, sans-serif';
-    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.fillStyle = 'rgba(255,255,255,0.52)';
     ctx.textBaseline = 'bottom';
-    ctx.fillText(bizName.toUpperCase(), pad, h - pad - 12);
+    ctx.shadowBlur = 0;
+    ctx.fillText(bizName.toUpperCase(), pad, h - pad * 0.85);
+    ctx.restore();
   }
 
   // ── SPLIT STYLE ──
