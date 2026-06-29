@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Content Brief — Richcrest AI</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
   * { margin:0; padding:0; box-sizing:border-box; }
   :root {
     --black:#0a0a0a; --surface:#141414; --surface2:#1c1c1c;
@@ -18,7 +18,7 @@
 
   body {
     background: #0f0f0f;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     color: var(--white);
     min-height: 100vh;
   }
@@ -32,7 +32,7 @@
   }
   .logo { display:flex; align-items:center; gap:9px; }
   .logo-mark { width:28px; height:28px; background:var(--accent); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:13px; }
-  .logo-name { font-family:'Syne',sans-serif; font-size:16px; font-weight:800; }
+  .logo-name { font-family:'Fraunces',serif; font-size:16px; font-weight:800; }
   .logo-name span { color:var(--accent); }
   .secure-tag { font-size:11px; color:var(--gray); display:flex; align-items:center; gap:5px; }
 
@@ -49,7 +49,7 @@
     display:flex; align-items:center; justify-content:center; gap:8px;
   }
   .hero-eyebrow::before, .hero-eyebrow::after { content:''; width:30px; height:1px; background:var(--accent); opacity:0.4; }
-  .hero-title { font-family:'Syne',sans-serif; font-size:36px; font-weight:800; line-height:1.1; margin-bottom:14px; }
+  .hero-title { font-family:'Fraunces',serif; font-size:36px; font-weight:800; line-height:1.1; margin-bottom:14px; }
   .hero-title span { color:var(--accent); }
   .hero-sub { font-size:14px; color:var(--gray); max-width:480px; margin:0 auto; line-height:1.7; }
 
@@ -112,7 +112,7 @@
     background:var(--surface2);
     border:1px solid var(--border2);
     border-radius:10px; color:var(--white);
-    font-family:'Inter',sans-serif; font-size:13px;
+    font-family:'Plus Jakarta Sans',sans-serif; font-size:13px;
     padding:11px 14px; width:100%; outline:none;
     transition:border-color 0.2s, box-shadow 0.2s;
     line-height:1.5;
@@ -170,7 +170,7 @@
     border:2px solid #0a0a0a;
   }
   .slider-value {
-    text-align:center; font-family:'Syne',sans-serif;
+    text-align:center; font-family:'Fraunces',serif;
     font-size:20px; font-weight:800; color:var(--accent);
   }
 
@@ -199,7 +199,7 @@
   .submit-btn {
     background:var(--accent); color:white;
     border:none; border-radius:14px;
-    padding:18px 48px; font-family:'Inter',sans-serif;
+    padding:18px 48px; font-family:'Plus Jakarta Sans',sans-serif;
     font-size:15px; font-weight:700; cursor:pointer;
     transition:all 0.2s; width:100%;
     display:flex; align-items:center; justify-content:center; gap:10px;
@@ -222,7 +222,7 @@
     display:flex; align-items:center; justify-content:center;
     font-size:32px; margin:0 auto 24px;
   }
-  .success-title { font-family:'Syne',sans-serif; font-size:28px; font-weight:800; margin-bottom:12px; }
+  .success-title { font-family:'Fraunces',serif; font-size:28px; font-weight:800; margin-bottom:12px; }
   .success-sub { font-size:14px; color:var(--gray); line-height:1.7; margin-bottom:28px; }
   .success-card {
     background:var(--surface); border:1px solid var(--border);
@@ -500,6 +500,90 @@
     </div>
   </div>
 
+  <!-- SECTION 5: Photos and Media -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-icon">📸</div>
+      <div>
+        <div class="section-title">Your Photos and Videos</div>
+        <div class="section-sub">Real content from your business makes every post more authentic and harder to ignore. This is what separates good content from great content.</div>
+      </div>
+    </div>
+    <div class="field-grid">
+
+      <!-- Google Drive Link -->
+      <div class="field-group full">
+        <div class="field-label">Google Drive Link <span class="field-hint">easiest option — share a folder of your photos and videos</span></div>
+        <input type="url" id="f-driveLink" placeholder="https://drive.google.com/drive/folders/..." />
+        <div style="margin-top:6px;font-size:11px;color:var(--gray)">
+          On your phone: Google Drive app, tap New, tap Folder, name it your business name, upload your photos and videos, tap Share, set to Anyone with the link, paste the link here.
+        </div>
+      </div>
+
+      <!-- Photo Upload -->
+      <div class="field-group full">
+        <div class="field-label">Or upload photos directly <span class="field-hint">up to 10 photos, JPG or PNG</span></div>
+        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('photoInput').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+          <input type="file" id="photoInput" class="upload-input" accept="image/jpeg,image/png,image/webp" multiple onchange="handleFiles(this.files)" style="display:none" />
+          <div class="upload-icon">🖼️</div>
+          <div class="upload-title">Drag and drop photos here or tap to browse</div>
+          <div class="upload-sub">JPG, PNG, or WEBP up to 10MB each. Max 10 photos.</div>
+        </div>
+        <div class="upload-preview" id="uploadPreview"></div>
+        <div style="margin-top:6px;font-size:11px;color:var(--gray)" id="uploadCount"></div>
+      </div>
+
+      <!-- Content notes -->
+      <div class="field-group full">
+        <div class="field-label">Tell us about these photos <span class="field-hint">optional but helpful</span></div>
+        <textarea id="f-photoNotes" placeholder="e.g. The first 3 are from last week, the selfie is me and my team, the last one is our most popular service. Use them however you think looks best." style="min-height:72px"></textarea>
+      </div>
+
+      <!-- What they want shown -->
+      <div class="field-group full">
+        <div class="field-label">What do you most want people to see about your business?</div>
+        <div class="pill-select" id="showSelect">
+          <div class="ps-pill active" data-v="Our work and results">✨ Our Work and Results <span class="check">✓</span></div>
+          <div class="ps-pill" data-v="The people behind the business">👥 The People Behind It <span class="check">✓</span></div>
+          <div class="ps-pill" data-v="Behind the scenes">🎬 Behind the Scenes <span class="check">✓</span></div>
+          <div class="ps-pill" data-v="Customer reactions and reviews">⭐ Customer Reactions <span class="check">✓</span></div>
+          <div class="ps-pill" data-v="Before and after transformations">🔄 Before and After <span class="check">✓</span></div>
+          <div class="ps-pill" data-v="Our location and vibe">📍 Our Location and Vibe <span class="check">✓</span></div>
+        </div>
+      </div>
+
+      <!-- Logo upload -->
+      <div class="field-group full">
+        <div class="field-label">Upload your logo <span class="field-hint">optional but recommended for branded graphics</span></div>
+        <div class="upload-zone" id="logoZone" onclick="document.getElementById('logoInput').click()" style="padding:18px">
+          <input type="file" id="logoInput" accept="image/*" onchange="handleLogo(this.files)" style="display:none" />
+          <div class="upload-icon" style="font-size:20px">🏷️</div>
+          <div class="upload-title" style="font-size:12px">Tap to upload your logo</div>
+          <div class="upload-sub">PNG with transparent background works best</div>
+        </div>
+        <div id="logoPreview" style="margin-top:10px"></div>
+      </div>
+
+      <!-- Brand colors -->
+      <div class="field-group">
+        <div class="field-label">Primary brand color <span class="field-hint">optional</span></div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
+          <input type="color" id="f-brandColor1" value="#2350d4" style="width:48px;height:40px;border-radius:8px;padding:2px;cursor:pointer;border:1px solid var(--border2);background:var(--surface2)" />
+          <input type="text" id="f-brandColorHex1" placeholder="#2350d4" style="flex:1" oninput="syncColor(this,'f-brandColor1')" />
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">Secondary brand color <span class="field-hint">optional</span></div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
+          <input type="color" id="f-brandColor2" value="#ffffff" style="width:48px;height:40px;border-radius:8px;padding:2px;cursor:pointer;border:1px solid var(--border2);background:var(--surface2)" />
+          <input type="text" id="f-brandColorHex2" placeholder="#ffffff" style="flex:1" oninput="syncColor(this,'f-brandColor2')" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- SUBMIT -->
   <div class="submit-section">
     <button class="submit-btn" id="submitBtn" onclick="submitForm()">
@@ -527,6 +611,8 @@
     <div class="success-item"><span class="success-check">✓</span> Hashtags, best posting times, and copy-ready captions</div>
     <div class="success-item"><span class="success-check">✓</span> Music suggestions for Reels and TikTok</div>
     <div class="success-item"><span class="success-check">✓</span> All content scored and rewritten for maximum engagement</div>
+    <div class="success-item"><span class="success-check">✓</span> Your photos and logo incorporated into branded graphics</div>
+    <div class="success-item"><span class="success-check">✓</span> Brand colors applied across all content</div>
   </div>
 
   <div class="success-eta">
@@ -570,6 +656,62 @@ function countChars(el, max) {
 function updateSlider(val) {
   document.getElementById('postsPerWeek').textContent = val + ' post' + (val > 1 ? 's' : '') + ' / week';
 }
+
+// ── Photo upload ──
+  let uploadedFiles = [];
+  const MAX_PHOTOS = 10;
+
+  function handleFiles(files) {
+    const remaining = MAX_PHOTOS - uploadedFiles.length;
+    const toAdd = Array.from(files).slice(0, remaining);
+    toAdd.forEach(file => {
+      if (!file.type.startsWith("image/")) return;
+      uploadedFiles.push(file);
+      const reader = new FileReader();
+      reader.onload = e => {
+        const preview = document.getElementById("uploadPreview");
+        const img = document.createElement("img");
+        img.src = e.target.result;
+        img.className = "preview-img";
+        img.title = file.name;
+        preview.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    });
+    updateUploadCount();
+  }
+
+  function updateUploadCount() {
+    const count = uploadedFiles.length;
+    const el = document.getElementById("uploadCount");
+    el.textContent = count > 0 ? count + " of " + MAX_PHOTOS + " photos added" : "";
+    el.style.color = count >= MAX_PHOTOS ? "var(--red)" : "var(--gray)";
+  }
+
+  function handleDragOver(e) { e.preventDefault(); document.getElementById("uploadZone").classList.add("dragover"); }
+  function handleDragLeave(e) { document.getElementById("uploadZone").classList.remove("dragover"); }
+  function handleDrop(e) { e.preventDefault(); document.getElementById("uploadZone").classList.remove("dragover"); handleFiles(e.dataTransfer.files); }
+
+  function handleLogo(files) {
+    if (!files[0]) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      const preview = document.getElementById("logoPreview");
+      preview.innerHTML = "<img src=\"" + e.target.result + "\" style=\"height:60px;border-radius:8px;border:1px solid var(--border);padding:6px;background:#fff;\" /><div style=\"font-size:11px;color:var(--green);margin-top:4px\">Logo uploaded</div>";
+    };
+    reader.readAsDataURL(files[0]);
+  }
+
+  function syncColor(input, pickerId) {
+    const val = input.value;
+    if (/^#[0-9A-Fa-f]{6}$/.test(val)) document.getElementById(pickerId).value = val;
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("f-brandColor1").addEventListener("input", function() { document.getElementById("f-brandColorHex1").value = this.value; });
+    document.getElementById("f-brandColor2").addEventListener("input", function() { document.getElementById("f-brandColorHex2").value = this.value; });
+    initMultiSelect("showSelect");
+  });
 
 // ── Star rating ──
 let starRating = 0;
@@ -647,6 +789,12 @@ function collectFormData() {
     goals: getMulti('goalSelect'),
     postsPerWeek: getVal('f-postsPerWeek'),
     extraNotes: getVal('f-extra'),
+    driveLink: getVal('f-driveLink'),
+    photoNotes: getVal('f-photoNotes'),
+    whatToShow: getMulti('showSelect'),
+    brandColor1: document.getElementById('f-brandColorHex1').value || document.getElementById('f-brandColor1').value,
+    brandColor2: document.getElementById('f-brandColorHex2').value || document.getElementById('f-brandColor2').value,
+    photosUploaded: uploadedFiles.length,
     submittedAt: new Date().toLocaleString()
   };
 }
