@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Richcrest AI — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --black:#0a0a0a; --surface:#141414; --surface2:#1a1a1a;
+    --border:#222; --border2:#2a2a2a;
+    --white:#fff; --gray:#888; --light:#ccc;
+    --accent:#6c47ff; --accent-dim:rgba(108,71,255,0.1);
+    --green:#12b76a; --green-dim:rgba(18,183,106,0.1);
+    --yellow:#f5a623; --yellow-dim:rgba(245,166,35,0.1);
+    --blue:#2350d4; --blue-dim:rgba(35,80,212,0.1);
+    --red:#f87171; --red-dim:rgba(248,113,113,0.1);
+  }
+  html { scroll-behavior:smooth; }
+  body { background:var(--black); color:var(--white); font-family:'Plus Jakarta Sans',sans-serif; min-height:100vh; }
+
+  /* NAV */
+  nav {
+    padding:0 40px; height:64px;
+    background:var(--surface); border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+    position:sticky; top:0; z-index:100;
+  }
+  .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .logo-mark { width:32px; height:32px; background:var(--accent); border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; }
+  .logo-name { font-family:'Fraunces',serif; font-size:18px; font-weight:700; color:var(--white); }
+  .logo-name span { color:var(--accent); }
+  .nav-right { display:flex; align-items:center; gap:12px; }
+  .live-badge { font-size:11px; font-weight:600; color:var(--green); background:var(--green-dim); border:1px solid rgba(18,183,106,0.25); padding:4px 12px; border-radius:20px; }
+  .api-indicator { font-size:11px; color:var(--gray); display:flex; align-items:center; gap:6px; }
+  .api-dot { width:7px; height:7px; border-radius:50%; background:var(--red); }
+  .api-dot.connected { background:var(--green); }
+
+  /* HERO */
+  .hero {
+    padding:52px 40px 40px;
+    background:linear-gradient(135deg, #0f0c1a 0%, var(--black) 60%);
+    border-bottom:1px solid var(--border);
+    position:relative; overflow:hidden;
+  }
+  .hero::before {
+    content:''; position:absolute;
+    width:600px; height:600px;
+    background:radial-gradient(circle, rgba(108,71,255,0.1) 0%, transparent 70%);
+    top:-200px; right:-100px; pointer-events:none;
+  }
+  .hero-eyebrow { font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+  .hero-title { font-family:'Fraunces',serif; font-size:clamp(32px,4vw,52px); font-weight:800; letter-spacing:-1px; line-height:1.08; margin-bottom:12px; }
+  .hero-sub { font-size:15px; color:var(--gray); max-width:520px; line-height:1.7; margin-bottom:32px; }
+
+  /* API KEY BANNER */
+  .api-banner {
+    background:var(--yellow-dim); border:1px solid rgba(245,166,35,0.25);
+    border-radius:12px; padding:16px 20px;
+    display:flex; align-items:center; gap:14px;
+    max-width:680px; margin-bottom:32px;
+  }
+  .api-banner.hidden { display:none; }
+  .api-banner-icon { font-size:22px; flex-shrink:0; }
+  .api-banner-text { flex:1; }
+  .api-banner-title { font-size:13px; font-weight:700; color:var(--yellow); margin-bottom:4px; }
+  .api-banner-sub { font-size:11px; color:rgba(245,166,35,0.7); }
+  .api-input-row { display:flex; gap:8px; margin-top:10px; }
+  .api-input {
+    flex:1; background:rgba(245,166,35,0.08); border:1px solid rgba(245,166,35,0.25);
+    border-radius:8px; color:var(--white); font-family:'Plus Jakarta Sans',sans-serif;
+    font-size:12px; padding:8px 12px; outline:none;
+  }
+  .api-input:focus { border-color:var(--yellow); }
+  .api-save-btn {
+    background:var(--yellow); color:#000; border:none; border-radius:8px;
+    padding:8px 16px; font-family:'Plus Jakarta Sans',sans-serif;
+    font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap;
+  }
+
+  /* QUICK STATS */
+  .stats-row {
+    display:flex; gap:16px; flex-wrap:wrap; margin-bottom:0;
+  }
+  .stat-card {
+    background:rgba(255,255,255,0.04); border:1px solid var(--border2);
+    border-radius:12px; padding:16px 20px; min-width:140px;
+  }
+  .stat-num { font-family:'Fraunces',serif; font-size:28px; font-weight:800; color:var(--white); line-height:1; }
+  .stat-label { font-size:11px; color:var(--gray); margin-top:4px; }
+
+  /* MAIN CONTENT */
+  .content { padding:36px 40px; max-width:1200px; }
+
+  .section-title { font-family:'Fraunces',serif; font-size:22px; font-weight:800; margin-bottom:6px; }
+  .section-sub { font-size:13px; color:var(--gray); margin-bottom:24px; }
+
+  /* TOOL CARDS */
+  .tools-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:48px; }
+
+  .tool-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:16px; overflow:hidden; text-decoration:none;
+    transition:all 0.25s; display:flex; flex-direction:column;
+    position:relative;
+  }
+  .tool-card:hover { transform:translateY(-4px); box-shadow:0 12px 40px rgba(0,0,0,0.3); }
+  .tool-card:hover .tool-arrow { opacity:1; transform:translateX(0); }
+
+  .tool-card-header {
+    padding:24px 24px 20px;
+    display:flex; align-items:flex-start; justify-content:space-between;
+  }
+  .tool-icon-wrap {
+    width:52px; height:52px; border-radius:14px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:24px; flex-shrink:0;
+  }
+  .tool-arrow { font-size:18px; color:var(--gray); opacity:0; transform:translateX(-4px); transition:all 0.2s; }
+
+  .tool-card-body { padding:0 24px 24px; flex:1; }
+  .tool-name { font-family:'Fraunces',serif; font-size:18px; font-weight:700; color:var(--white); margin-bottom:6px; }
+  .tool-desc { font-size:13px; color:var(--gray); line-height:1.6; margin-bottom:16px; }
+
+  .tool-features { display:flex; flex-direction:column; gap:6px; }
+  .tool-feature { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--light); }
+  .tool-feature-dot { width:4px; height:4px; border-radius:50%; flex-shrink:0; }
+
+  .tool-card-footer {
+    padding:14px 24px; border-top:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .tool-badge { font-size:10px; font-weight:700; padding:3px 8px; border-radius:20px; text-transform:uppercase; letter-spacing:0.5px; }
+  .tool-open-btn {
+    font-size:12px; font-weight:600; color:var(--white);
+    background:var(--surface2); border:1px solid var(--border2);
+    border-radius:7px; padding:6px 14px; cursor:pointer;
+    transition:all 0.2s; text-decoration:none;
+  }
+  .tool-open-btn:hover { border-color:var(--accent); }
+
+  /* WORKFLOW SECTION */
+  .workflow-section { margin-bottom:48px; }
+  .workflow-steps { display:grid; grid-template-columns:repeat(5,1fr); gap:0; position:relative; }
+  .workflow-steps::before {
+    content:''; position:absolute;
+    top:28px; left:10%; right:10%;
+    height:2px; background:linear-gradient(to right, var(--accent), var(--green));
+    z-index:0;
+  }
+  .workflow-step { text-align:center; position:relative; z-index:1; padding:0 8px; }
+  .workflow-num {
+    width:56px; height:56px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-size:20px; font-weight:800;
+    margin:0 auto 12px; border:2px solid var(--border2);
+    background:var(--surface); transition:all 0.3s;
+  }
+  .workflow-step:hover .workflow-num { border-color:var(--accent); background:var(--accent-dim); }
+  .workflow-step-title { font-size:12px; font-weight:700; color:var(--white); margin-bottom:4px; }
+  .workflow-step-sub { font-size:11px; color:var(--gray); line-height:1.4; }
+  .workflow-tool { font-size:10px; color:var(--accent); font-weight:600; margin-top:4px; }
+
+  /* RECENT ACTIVITY */
+  .activity-section { margin-bottom:48px; }
+  .activity-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+  .activity-header { padding:16px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+  .activity-title { font-size:13px; font-weight:700; }
+  .activity-empty { padding:40px 20px; text-align:center; color:var(--gray); font-size:13px; }
+  .activity-list { padding:8px 0; }
+  .activity-item { padding:12px 20px; display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--border); transition:background 0.2s; }
+  .activity-item:last-child { border-bottom:none; }
+  .activity-item:hover { background:var(--surface2); }
+  .activity-icon { font-size:20px; width:36px; height:36px; background:var(--surface2); border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .activity-info { flex:1; }
+  .activity-name { font-size:13px; font-weight:600; color:var(--white); }
+  .activity-meta { font-size:11px; color:var(--gray); margin-top:2px; }
+  .activity-time { font-size:11px; color:var(--gray); white-space:nowrap; }
+
+  /* QUICK ACTIONS */
+  .quick-actions { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:48px; }
+  .quick-action {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; padding:16px 20px;
+    display:flex; align-items:center; gap:12px;
+    text-decoration:none; transition:all 0.2s; flex:1; min-width:200px;
+  }
+  .quick-action:hover { border-color:var(--accent); transform:translateY(-2px); }
+  .qa-icon { font-size:24px; }
+  .qa-title { font-size:13px; font-weight:700; color:var(--white); }
+  .qa-sub { font-size:11px; color:var(--gray); margin-top:2px; }
+
+  /* RESOURCES */
+  .resources-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-bottom:48px; }
+  .resource-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px 20px; text-decoration:none; transition:all 0.2s; }
+  .resource-card:hover { border-color:var(--accent); }
+  .resource-icon { font-size:20px; margin-bottom:8px; display:block; }
+  .resource-title { font-size:14px; font-weight:700; color:var(--white); margin-bottom:4px; }
+  .resource-sub { font-size:12px; color:var(--gray); line-height:1.5; }
+
+  /* FOOTER */
+  footer { border-top:1px solid var(--border); padding:24px 40px; display:flex; align-items:center; justify-content:space-between; background:var(--surface); }
+  .footer-logo { font-family:'Fraunces',serif; font-size:15px; font-weight:700; }
+  .footer-logo span { color:var(--accent); }
+  .footer-links { display:flex; gap:20px; }
+  .footer-links a { font-size:12px; color:var(--gray); text-decoration:none; transition:color 0.2s; }
+  .footer-links a:hover { color:var(--white); }
+  .footer-copy { font-size:12px; color:var(--gray); }
+
+  /* RESPONSIVE */
+  @media(max-width:900px) {
+    nav { padding:0 20px; }
+    .hero { padding:36px 20px 32px; }
+    .content { padding:28px 20px; }
+    .tools-grid { grid-template-columns:1fr; }
+    .workflow-steps { grid-template-columns:1fr 1fr; gap:20px; }
+    .workflow-steps::before { display:none; }
+    .resources-grid { grid-template-columns:1fr; }
+    footer { padding:20px; flex-direction:column; gap:12px; text-align:center; }
+    .stats-row { gap:10px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="/">
+    <div class="logo-mark">✦</div>
+    <div class="logo-name">Richcrest <span>AI</span></div>
+  </a>
+  <div class="nav-right">
+    <div class="api-indicator">
+      <div class="api-dot" id="apiDot"></div>
+      <span id="apiStatus">API Key Not Set</span>
+    </div>
+    <div class="live-badge">● Dashboard</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Richcrest AI Content Studio</div>
+  <h1 class="hero-title">Your complete content<br>production system.</h1>
+  <p class="hero-sub">Everything you need to research, write, design, and deliver professional social media content for local businesses — in one place.</p>
+
+  <!-- API Key Banner -->
+  <div class="api-banner" id="apiBanner">
+    <div class="api-banner-icon">🔑</div>
+    <div class="api-banner-text">
+      <div class="api-banner-title">Set your Anthropic API key to enable AI tools</div>
+      <div class="api-banner-sub">Your key is stored in session only. Never saved. Never uploaded.</div>
+      <div class="api-input-row">
+        <input type="password" class="api-input" id="apiKeyInput" placeholder="sk-ant-api03-..." />
+        <button class="api-save-btn" onclick="saveApiKey()">Save Key</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Tools Available</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="packsGenerated">0</div>
+      <div class="stat-label">Packs Generated</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="graphicsCreated">0</div>
+      <div class="stat-label">Graphics Created</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="slidesBuilt">0</div>
+      <div class="stat-label">Slides Built</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="content">
+
+  <!-- TOOLS -->
+  <div class="section-title">Your Tools</div>
+  <div class="section-sub">Click any tool to open it. Each one is a step in your content workflow.</div>
+
+  <div class="tools-grid">
+
+    <!-- Studio -->
+    <a class="tool-card" href="studio.html">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrap" style="background:var(--accent-dim);border:1px solid rgba(108,71,255,0.2)">✦</div>
+        <div class="tool-arrow">→</div>
+      </div>
+      <div class="tool-card-body">
+        <div class="tool-name">Content Studio</div>
+        <div class="tool-desc">AI generates platform-native captions, hashtags, posting times, and strategy for every client. Start here every time.</div>
+        <div class="tool-features">
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--accent)"></div>Three tier proof system</div>
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--accent)"></div>80 hook formulas by platform</div>
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--accent)"></div>Auto photos from Pexels</div>
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--accent)"></div>Quality scoring and rewrite</div>
+        </div>
+      </div>
+      <div class="tool-card-footer">
+        <div class="tool-badge" style="background:var(--accent-dim);color:var(--accent);border:1px solid rgba(108,71,255,0.2)">Step 1</div>
+        <span class="tool-open-btn">Open Studio →</span>
+      </div>
+    </a>
+
+    <!-- Graphic Generator -->
+    <a class="tool-card" href="graphic-generator.html">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrap" style="background:var(--blue-dim);border:1px solid rgba(35,80,212,0.2)">🎨</div>
+        <div class="tool-arrow">→</div>
+      </div>
+      <div class="tool-card-body">
+        <div class="tool-name">Graphic Generator</div>
+        <div class="tool-desc">Turn any hook into a branded 1080x1080 post graphic. Six styles, live preview, download all formats in one click.</div>
+        <div class="tool-features">
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--blue)"></div>Six professional styles</div>
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--blue)"></div>Brand kit auto-load</div>
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--blue)"></div>AI image prompts</div>
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--blue)"></div>Magic Write hook variations</div>
+        </div>
+      </div>
+      <div class="tool-card-footer">
+        <div class="tool-badge" style="background:var(--blue-dim);color:var(--blue);border:1px solid rgba(35,80,212,0.2)">Step 2</div>
+        <span class="tool-open-btn">Open Generator →</span>
+      </div>
+    </a>
+
+    <!-- Story Generator -->
+    <a class="tool-card" href="story-generator.html">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrap" style="background:var(--green-dim);border:1px solid rgba(18,183,106,0.2)">📱</div>
+        <div class="tool-arrow">→</div>
+      </div>
+      <div class="tool-card-body">
+        <div class="tool-name">Story and Carousel</div>
+        <div class="tool-desc">Build five-slide Story sequences, swipeable Carousel posts, and animated motion graphics for TikTok and Reels.</div>
+        <div class="tool-features">
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--green)"></div>Instagram Story sequence</div>
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--green)"></div>Carousel at 3x reach</div>
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--green)"></div>Five animation styles</div>
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--green)"></div>Export as video or PNG</div>
+        </div>
+      </div>
+      <div class="tool-card-footer">
+        <div class="tool-badge" style="background:var(--green-dim);color:var(--green);border:1px solid rgba(18,183,106,0.2)">Step 3</div>
+        <span class="tool-open-btn">Open Story Tool →</span>
+      </div>
+    </a>
+
+    <!-- Intake Form -->
+    <a class="tool-card" href="intake.html">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrap" style="background:var(--yellow-dim);border:1px solid rgba(245,166,35,0.2)">📋</div>
+        <div class="tool-arrow">→</div>
+      </div>
+      <div class="tool-card-body">
+        <div class="tool-name">Client Intake Form</div>
+        <div class="tool-desc">Send this to new clients. They fill in their brand voice, target customer, proof assets, and platforms. You get everything needed to generate great content.</div>
+        <div class="tool-features">
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--yellow)"></div>Brand voice capture</div>
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--yellow)"></div>Logo and color upload</div>
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--yellow)"></div>Google Drive photo link</div>
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--yellow)"></div>Goals and platform selection</div>
+        </div>
+      </div>
+      <div class="tool-card-footer">
+        <div class="tool-badge" style="background:var(--yellow-dim);color:var(--yellow);border:1px solid rgba(245,166,35,0.2)">Client Facing</div>
+        <span class="tool-open-btn">Open Form →</span>
+      </div>
+    </a>
+
+    <!-- Delivery Page -->
+    <a class="tool-card" href="delivery.html">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrap" style="background:var(--red-dim);border:1px solid rgba(248,113,113,0.2)">🔒</div>
+        <div class="tool-arrow">→</div>
+      </div>
+      <div class="tool-card-body">
+        <div class="tool-name">Content Delivery</div>
+        <div class="tool-desc">Send clients their content pack with a watermark lock. They see exactly what they get. You unlock it when payment is confirmed.</div>
+        <div class="tool-features">
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--red)"></div>Watermarked preview</div>
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--red)"></div>Manual unlock on payment</div>
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--red)"></div>Client approval buttons</div>
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--red)"></div>One click copy per post</div>
+        </div>
+      </div>
+      <div class="tool-card-footer">
+        <div class="tool-badge" style="background:var(--red-dim);color:var(--red);border:1px solid rgba(248,113,113,0.2)">Step 4</div>
+        <span class="tool-open-btn">Open Delivery →</span>
+      </div>
+    </a>
+
+    <!-- Landing Page -->
+    <a class="tool-card" href="index.html">
+      <div class="tool-card-header">
+        <div class="tool-icon-wrap" style="background:rgba(255,255,255,0.05);border:1px solid var(--border2)">🌐</div>
+        <div class="tool-arrow">→</div>
+      </div>
+      <div class="tool-card-body">
+        <div class="tool-name">Public Landing Page</div>
+        <div class="tool-desc">Your client-facing website. Professional, SEO optimized, with pricing and a Get Started button that flows into the intake form.</div>
+        <div class="tool-features">
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--gray)"></div>Full SEO with schema markup</div>
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--gray)"></div>Fraunces font branding</div>
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--gray)"></div>Three tier pricing</div>
+          <div class="tool-feature"><div class="tool-feature-dot" style="background:var(--gray)"></div>FAQ and trust signals</div>
+        </div>
+      </div>
+      <div class="tool-card-footer">
+        <div class="tool-badge" style="background:rgba(255,255,255,0.05);color:var(--gray);border:1px solid var(--border2)">Public</div>
+        <span class="tool-open-btn">View Site →</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- WORKFLOW -->
+  <div class="workflow-section">
+    <div class="section-title">Client Workflow</div>
+    <div class="section-sub">Every client follows this five step path from outreach to payment.</div>
+    <div class="workflow-steps">
+      <div class="workflow-step">
+        <div class="workflow-num" style="color:var(--accent)">1</div>
+        <div class="workflow-step-title">Outreach</div>
+        <div class="workflow-step-sub">DM the business with a sample content pack</div>
+        <div class="workflow-tool">Studio</div>
+      </div>
+      <div class="workflow-step">
+        <div class="workflow-num" style="color:var(--blue)">2</div>
+        <div class="workflow-step-title">Intake</div>
+        <div class="workflow-step-sub">Client fills out the brief form</div>
+        <div class="workflow-tool">Intake Form</div>
+      </div>
+      <div class="workflow-step">
+        <div class="workflow-num" style="color:var(--green)">3</div>
+        <div class="workflow-step-title">Produce</div>
+        <div class="workflow-step-sub">Generate content, graphics, and slides</div>
+        <div class="workflow-tool">Studio + Generator</div>
+      </div>
+      <div class="workflow-step">
+        <div class="workflow-num" style="color:var(--yellow)">4</div>
+        <div class="workflow-step-title">Deliver</div>
+        <div class="workflow-step-sub">Send watermarked preview for review</div>
+        <div class="workflow-tool">Delivery Page</div>
+      </div>
+      <div class="workflow-step">
+        <div class="workflow-num" style="color:var(--red)">5</div>
+        <div class="workflow-step-title">Unlock</div>
+        <div class="workflow-step-sub">Client pays, you unlock, they post</div>
+        <div class="workflow-tool">Zelle or Cash App</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK ACTIONS -->
+  <div class="section-title">Quick Actions</div>
+  <div class="section-sub" style="margin-bottom:16px">Jump straight to the most common tasks.</div>
+  <div class="quick-actions">
+    <a class="quick-action" href="studio.html">
+      <div class="qa-icon">✦</div>
+      <div><div class="qa-title">New Content Pack</div><div class="qa-sub">Generate posts for a client</div></div>
+    </a>
+    <a class="quick-action" href="graphic-generator.html">
+      <div class="qa-icon">🎨</div>
+      <div><div class="qa-title">Create a Graphic</div><div class="qa-sub">Turn a hook into a branded image</div></div>
+    </a>
+    <a class="quick-action" href="story-generator.html">
+      <div class="qa-icon">📱</div>
+      <div><div class="qa-title">Build a Story</div><div class="qa-sub">Five slides for Instagram Stories</div></div>
+    </a>
+    <a class="quick-action" href="story-generator.html#carousel">
+      <div class="qa-icon">🎠</div>
+      <div><div class="qa-title">Build a Carousel</div><div class="qa-sub">Highest reach format on Instagram</div></div>
+    </a>
+    <a class="quick-action" href="intake.html" target="_blank">
+      <div class="qa-icon">📋</div>
+      <div><div class="qa-title">Send Client Form</div><div class="qa-sub">Copy link and send to new client</div></div>
+    </a>
+    <a class="quick-action" href="delivery.html">
+      <div class="qa-icon">🔒</div>
+      <div><div class="qa-title">Deliver Content</div><div class="qa-sub">Send watermarked pack for review</div></div>
+    </a>
+  </div>
+
+  <!-- RESOURCES -->
+  <div class="section-title">Pricing Reference</div>
+  <div class="section-sub" style="margin-bottom:16px">What to charge at each stage.</div>
+  <div class="resources-grid">
+    <div class="resource-card">
+      <span class="resource-icon">🎁</span>
+      <div class="resource-title">Free First Pack</div>
+      <div class="resource-sub">Your outreach tool. Generate a real content pack for a local business and send it as a gift. Goal is a testimonial and a paid follow-on.</div>
+    </div>
+    <div class="resource-card">
+      <span class="resource-icon">📦</span>
+      <div class="resource-title">One Time Pack — $97</div>
+      <div class="resource-sub">For businesses not ready to commit monthly. Six posts, two platforms, photos, hashtags. Deliver via the locked delivery page. Unlock on Zelle payment.</div>
+    </div>
+    <div class="resource-card">
+      <span class="resource-icon">📅</span>
+      <div class="resource-title">Starter Monthly — $397</div>
+      <div class="resource-sub">Eight posts per month, two platforms. Weekly delivery. Best for businesses just getting started with consistent posting.</div>
+    </div>
+    <div class="resource-card">
+      <span class="resource-icon">🚀</span>
+      <div class="resource-title">Growth Monthly — $697</div>
+      <div class="resource-sub">Sixteen posts per month, four platforms, photos, music, voiceovers, Stories, and Carousels. Your flagship offering. Most clients land here.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Richcrest <span>AI</span></div>
+  <div class="footer-links">
+    <a href="studio.html">Studio</a>
+    <a href="graphic-generator.html">Graphics</a>
+    <a href="story-generator.html">Stories</a>
+    <a href="intake.html">Intake</a>
+    <a href="delivery.html">Delivery</a>
+    <a href="index.html">Site</a>
+  </div>
+  <div class="footer-copy">2026 Richcrest AI</div>
+</footer>
+
+<script>
+// ── API Key management ──
+function checkApiKey() {
+  const key = sessionStorage.getItem('rc_api_key');
+  const dot = document.getElementById('apiDot');
+  const status = document.getElementById('apiStatus');
+  const banner = document.getElementById('apiBanner');
+  if (key && key.startsWith('sk-ant-')) {
+    dot.classList.add('connected');
+    status.textContent = 'API Key Active';
+    banner.classList.add('hidden');
+  } else {
+    dot.classList.remove('connected');
+    status.textContent = 'API Key Not Set';
+    banner.classList.remove('hidden');
+  }
+}
+
+function saveApiKey() {
+  const key = document.getElementById('apiKeyInput').value.trim();
+  if (!key.startsWith('sk-ant-')) {
+    alert('That does not look like a valid Anthropic API key. It should start with sk-ant-');
+    return;
+  }
+  sessionStorage.setItem('rc_api_key', key);
+  checkApiKey();
+  document.getElementById('apiKeyInput').value = '';
+}
+
+// ── Stats from session ──
+function loadStats() {
+  const packs = parseInt(sessionStorage.getItem('rc_packs_generated') || '0');
+  const graphics = parseInt(sessionStorage.getItem('rc_graphics_created') || '0');
+  const slides = parseInt(sessionStorage.getItem('rc_slides_built') || '0');
+  document.getElementById('packsGenerated').textContent = packs;
+  document.getElementById('graphicsCreated').textContent = graphics;
+  document.getElementById('slidesBuilt').textContent = slides;
+}
+
+// ── Init ──
+window.addEventListener('load', () => {
+  checkApiKey();
+  loadStats();
+});
+</script>
+</body>
+</html>
