@@ -3,665 +3,516 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Your Content Pack — Richcrest AI</title>
+<title>Richcrest AI — Content Delivery</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 <style>
   *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
   :root {
-    --white: #ffffff;
-    --off-white: #f8f6f2;
-    --warm: #f0ede7;
-    --border: #e8e4dc;
-    --border2: #d8d3c8;
-    --black: #0f0e0c;
-    --dark: #1c1a17;
-    --gray: #6b6560;
-    --light-gray: #9e9890;
-    --accent: #2350d4;
-    --accent-dark: #1a3fad;
-    --accent-dim: rgba(35,80,212,0.07);
-    --accent-mid: rgba(35,80,212,0.14);
-    --green: #15803d;
-    --green-dim: rgba(21,128,61,0.08);
-    --red: #dc2626;
-    --red-dim: rgba(220,38,38,0.07);
-    --gold: #d97706;
-    --gold-dim: rgba(217,119,6,0.08);
+    --black:#0a0a0a; --surface:#141414; --surface2:#1a1a1a;
+    --border:#222; --border2:#2a2a2a;
+    --white:#fff; --gray:#888; --light:#ccc;
+    --accent:#6c47ff; --accent-dim:rgba(108,71,255,0.12);
+    --green:#12b76a; --green-dim:rgba(18,183,106,0.12);
+    --gold:#f5a623; --gold-dim:rgba(245,166,35,0.1);
+    --red:#f87171; --red-dim:rgba(248,113,113,0.1);
   }
-
-  body {
-    background: var(--off-white);
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    color: var(--dark);
-    min-height: 100vh;
-  }
+  body { background:var(--black); color:var(--white); font-family:'Plus Jakarta Sans',sans-serif; min-height:100vh; }
 
   /* NAV */
-  nav {
-    background: var(--white);
-    border-bottom: 1px solid var(--border);
-    padding: 0 40px;
-    display: flex; align-items: center; justify-content: space-between;
-    height: 64px;
-    position: sticky; top: 0; z-index: 50;
-  }
-  .nav-logo { display:flex; align-items:center; gap:9px; text-decoration:none; }
-  .nav-mark { width:30px; height:30px; background:var(--accent); border-radius:8px; display:flex; align-items:center; justify-content:center; color:white; font-size:14px; }
-  .nav-name { font-family:'Fraunces',serif; font-size:17px; font-weight:700; color:var(--black); }
-  .nav-name span { color:var(--accent); }
+  nav { padding:0 40px; height:62px; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+  .logo { display:flex; align-items:center; gap:9px; text-decoration:none; }
+  .logo-mark { width:30px; height:30px; background:var(--accent); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14px; }
+  .logo-name { font-family:'Fraunces',serif; font-size:17px; font-weight:700; color:var(--white); }
+  .logo-name span { color:var(--accent); }
   .nav-right { display:flex; align-items:center; gap:12px; }
   .nav-client { font-size:13px; color:var(--gray); }
-  .nav-status-badge {
-    font-size:11px; font-weight:700; padding:5px 12px; border-radius:20px;
-    letter-spacing:0.5px; text-transform:uppercase;
-  }
-  .badge-locked { background:var(--gold-dim); color:var(--gold); border:1px solid rgba(217,119,6,0.2); }
-  .badge-unlocked { background:var(--green-dim); color:var(--green); border:1px solid rgba(21,128,61,0.2); }
+  .nav-status { font-size:11px; font-weight:700; padding:4px 12px; border-radius:20px; }
+  .status-pending { background:var(--gold-dim); color:var(--gold); border:1px solid rgba(245,166,35,0.25); }
+  .status-paid { background:var(--green-dim); color:var(--green); border:1px solid rgba(18,183,106,0.25); display:none; }
 
-  /* HERO BAND */
-  .hero-band {
-    background: var(--white);
-    border-bottom: 1px solid var(--border);
-    padding: 32px 40px;
-  }
-  .hero-band-inner { max-width: 1080px; margin: 0 auto; }
-  .hero-eyebrow { font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
-  .hero-title { font-family:'Fraunces',serif; font-size:32px; font-weight:800; letter-spacing:-0.5px; color:var(--black); margin-bottom:6px; }
-  .hero-sub { font-size:14px; color:var(--gray); line-height:1.6; }
+  /* HERO */
+  .hero { padding:36px 40px; background:var(--surface); border-bottom:1px solid var(--border); }
+  .hero-eyebrow { font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+  .hero-title { font-family:'Fraunces',serif; font-size:32px; font-weight:800; color:var(--white); margin-bottom:6px; letter-spacing:-0.5px; }
+  .hero-sub { font-size:14px; color:var(--gray); }
 
   /* LOCK BANNER */
   .lock-banner {
-    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-    border: 1px solid rgba(217,119,6,0.25);
-    border-radius: 14px;
-    padding: 24px 28px;
-    margin: 28px auto;
-    max-width: 1080px;
-    display: flex; align-items: center; gap: 20px;
+    margin:32px 40px; border-radius:14px;
+    background:var(--gold-dim); border:1px solid rgba(245,166,35,0.2);
+    padding:20px 24px; display:flex; align-items:center; gap:16px;
   }
-  .lock-banner.hidden { display:none; }
-  .lock-icon { font-size:36px; flex-shrink:0; }
-  .lock-text { flex:1; }
-  .lock-title { font-family:'Fraunces',serif; font-size:18px; font-weight:700; color:#92400e; margin-bottom:4px; }
-  .lock-sub { font-size:13px; color:#b45309; line-height:1.6; }
-  .lock-actions { display:flex; flex-direction:column; gap:8px; align-items:flex-end; flex-shrink:0; }
-  .pay-btn {
-    background:var(--gold); color:white; border:none; border-radius:10px;
-    padding:12px 24px; font-family:'Plus Jakarta Sans',sans-serif;
-    font-size:13px; font-weight:700; cursor:pointer; transition:all 0.2s;
-    text-decoration:none; display:inline-block; text-align:center; white-space:nowrap;
-  }
-  .pay-btn:hover { background:#b45309; transform:translateY(-1px); }
-  .lock-note { font-size:10px; color:#b45309; text-align:center; }
+  .lock-icon { font-size:28px; flex-shrink:0; }
+  .lock-content { flex:1; }
+  .lock-title { font-family:'Fraunces',serif; font-size:17px; font-weight:700; color:var(--gold); margin-bottom:4px; }
+  .lock-sub { font-size:13px; color:rgba(245,166,35,0.7); line-height:1.5; }
+  .lock-btn { background:var(--gold); color:#000; border:none; border-radius:10px; padding:11px 22px; font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; font-weight:700; cursor:pointer; white-space:nowrap; flex-shrink:0; }
+  .lock-btn:hover { background:#e8961a; }
 
   /* UNLOCK BANNER */
   .unlock-banner {
-    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-    border: 1px solid rgba(21,128,61,0.2);
-    border-radius: 14px;
-    padding: 20px 28px;
-    margin: 28px auto;
-    max-width: 1080px;
-    display: none; align-items: center; gap: 16px;
+    margin:32px 40px; border-radius:14px;
+    background:var(--green-dim); border:1px solid rgba(18,183,106,0.2);
+    padding:20px 24px; display:none; align-items:center; gap:16px;
   }
   .unlock-banner.visible { display:flex; }
-  .unlock-icon { font-size:28px; }
-  .unlock-title { font-family:'Fraunces',serif; font-size:16px; font-weight:700; color:#166534; }
-  .unlock-sub { font-size:12px; color:#15803d; margin-top:2px; }
+  .unlock-title { font-family:'Fraunces',serif; font-size:17px; font-weight:700; color:var(--green); margin-bottom:4px; }
+  .unlock-sub { font-size:13px; color:rgba(18,183,106,0.7); }
 
-  /* ADMIN PANEL */
-  .admin-panel {
-    background: var(--white); border: 1px solid var(--border);
-    border-radius: 14px; padding: 20px 24px;
-    margin: 0 auto 24px; max-width: 1080px;
-    display: none;
-  }
-  .admin-panel.visible { display:block; }
-  .admin-title { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--light-gray); margin-bottom:14px; }
-  .admin-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
-  .admin-input {
-    background:var(--off-white); border:1px solid var(--border2);
-    border-radius:8px; color:var(--dark); font-family:'Plus Jakarta Sans',sans-serif;
-    font-size:13px; padding:9px 13px; outline:none; flex:1; min-width:200px;
-  }
-  .admin-input:focus { border-color:var(--accent); }
-  .admin-btn {
-    padding:9px 20px; border-radius:8px; font-family:'Plus Jakarta Sans',sans-serif;
-    font-size:13px; font-weight:600; cursor:pointer; border:none; transition:all 0.2s;
-    white-space:nowrap;
-  }
-  .admin-unlock { background:var(--green); color:white; }
-  .admin-unlock:hover { background:#166534; }
-  .admin-lock { background:var(--off-white); color:var(--gray); border:1px solid var(--border2); }
-  .admin-lock:hover { border-color:var(--red); color:var(--red); }
-  .admin-note { font-size:11px; color:var(--light-gray); margin-top:10px; }
-
-  /* CONTENT AREA */
-  .content-wrap { max-width:1080px; margin:0 auto; padding:0 0 60px; }
+  /* SECTION */
+  .section { padding:0 40px 48px; }
+  .section-eyebrow { font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+  .section-title { font-family:'Fraunces',serif; font-size:22px; font-weight:800; color:var(--white); margin-bottom:24px; }
 
   /* POSTS GRID */
-  .posts-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .posts-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
 
   /* POST CARD */
-  .post-card {
-    background:var(--white); border:1px solid var(--border);
-    border-radius:16px; overflow:hidden;
-    position:relative; transition:all 0.25s;
-  }
-  .post-card:hover { box-shadow:0 8px 32px rgba(0,0,0,0.08); transform:translateY(-2px); }
+  .post-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; transition:border-color 0.2s; }
+  .post-card:hover { border-color:var(--border2); }
 
-  /* WATERMARK OVERLAY */
-  .watermark-overlay {
-    position:absolute; inset:0; z-index:10;
-    background:rgba(255,255,255,0.15);
-    backdrop-filter:blur(3px);
-    display:flex; flex-direction:column;
-    align-items:center; justify-content:center;
-    gap:10px; pointer-events:none;
-  }
-  .watermark-overlay.hidden { display:none; }
+  .card-img-wrap { position:relative; background:var(--surface2); height:180px; overflow:hidden; }
+  .card-img { width:100%; height:100%; object-fit:cover; display:block; }
+  .card-img-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:32px; color:var(--border2); }
 
-  /* Diagonal watermark text */
-  .watermark-text {
+  /* Watermark */
+  .card-img-wrap::after {
+    content:'RICHCREST AI • UNPAID • RICHCREST AI • UNPAID • RICHCREST AI • UNPAID';
     position:absolute; inset:0;
     display:flex; align-items:center; justify-content:center;
-    overflow:hidden; pointer-events:none;
+    font-size:13px; font-weight:800; letter-spacing:2px;
+    color:rgba(108,71,255,0.25); pointer-events:none;
+    transform:rotate(-35deg); white-space:nowrap;
+    font-family:'Plus Jakarta Sans',sans-serif;
+    text-shadow:0 0 20px rgba(108,71,255,0.1);
   }
-  .watermark-text::before {
-    content:'RICHCREST AI  •  UNPAID  •  RICHCREST AI  •  UNPAID  •';
-    font-family:'Fraunces',serif;
-    font-size:15px; font-weight:700; letter-spacing:3px;
-    color:rgba(35,80,212,0.18);
-    transform:rotate(-35deg);
-    white-space:nowrap;
-    display:block; width:200%;
-    text-align:center; line-height:3;
-  }
+  .post-card.unlocked .card-img-wrap::after { display:none; }
 
-  .watermark-badge {
-    background:rgba(35,80,212,0.9); color:white;
-    font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase;
-    padding:6px 14px; border-radius:20px;
-    display:flex; align-items:center; gap:6px;
-    box-shadow:0 4px 12px rgba(35,80,212,0.3);
-    position:relative; z-index:2;
-  }
-
-  /* Card content */
-  .card-img-wrap { position:relative; }
-  .card-img { width:100%; height:160px; object-fit:cover; display:block; background:var(--off-white); }
-  .card-img-placeholder { width:100%; height:160px; background:linear-gradient(135deg,#e8effe 0%,#c7d5fc 100%); display:flex; align-items:center; justify-content:center; font-size:36px; }
-  .img-overlay { position:absolute; inset:0; background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,0.5) 100%); }
-  .img-badges { position:absolute; top:10px; left:10px; right:10px; display:flex; justify-content:space-between; }
-  .plat-badge { background:rgba(0,0,0,0.6); backdrop-filter:blur(8px); border-radius:20px; padding:4px 10px; font-size:11px; font-weight:600; color:white; display:flex; align-items:center; gap:5px; }
+  .card-badges { position:absolute; top:10px; left:10px; right:10px; display:flex; justify-content:space-between; align-items:center; }
+  .plat-badge { background:rgba(0,0,0,0.7); backdrop-filter:blur(8px); border-radius:20px; padding:4px 10px; font-size:11px; font-weight:600; color:white; display:flex; align-items:center; gap:4px; }
   .type-badge { border-radius:20px; padding:3px 9px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
-  .t-hook { background:rgba(245,166,35,0.85); color:white; }
-  .t-promo { background:rgba(108,71,255,0.85); color:white; }
-  .t-story { background:rgba(18,183,106,0.85); color:white; }
-  .t-engage { background:rgba(248,113,113,0.85); color:white; }
+  .t-hook { background:rgba(245,166,35,0.85); color:#000; }
+  .t-promo { background:rgba(108,71,255,0.85); color:#fff; }
+  .t-story { background:rgba(18,183,106,0.85); color:#fff; }
+  .t-engage { background:rgba(248,113,113,0.85); color:#fff; }
 
-  .card-body { padding:16px; }
-  .card-caption { font-size:13px; line-height:1.68; color:var(--dark); white-space:pre-wrap; word-break:break-word; margin-bottom:8px; }
-  .card-hashtags { font-size:11.5px; color:var(--accent); line-height:1.6; margin-bottom:10px; }
+  .card-body { padding:18px; }
 
-  .card-why {
-    background:var(--accent-dim); border:1px solid var(--accent-mid);
-    border-radius:8px; padding:10px 12px; margin-bottom:10px;
-  }
-  .why-label { font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--accent); margin-bottom:4px; }
-  .why-text { font-size:11px; color:var(--gray); line-height:1.55; }
+  /* Blur locked content */
+  .card-caption-wrap { position:relative; margin-bottom:12px; }
+  .card-caption { font-size:13px; line-height:1.7; color:var(--light); white-space:pre-wrap; word-break:break-word; }
+  .post-card.locked .card-caption { filter:blur(5px); user-select:none; pointer-events:none; }
 
-  .card-music {
-    background:var(--off-white); border:1px solid var(--border);
-    border-radius:8px; padding:9px 12px; display:flex; align-items:center; gap:9px;
-  }
-  .music-icon { font-size:14px; }
-  .music-title { font-size:11px; font-weight:600; color:var(--dark); }
-  .music-sub { font-size:10px; color:var(--light-gray); margin-top:1px; }
+  .card-hashtags { font-size:11.5px; color:var(--accent); line-height:1.6; margin-bottom:12px; }
+  .post-card.locked .card-hashtags { filter:blur(5px); user-select:none; }
+
+  /* Why it works */
+  .card-why { background:var(--accent-dim); border:1px solid rgba(108,71,255,0.15); border-radius:8px; padding:10px 13px; margin-bottom:12px; }
+  .why-label { font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:4px; }
+  .why-text { font-size:12px; color:var(--gray); line-height:1.5; }
+  .post-card.locked .card-why { filter:blur(5px); }
+
+  /* Music */
+  .card-music { background:var(--surface2); border:1px solid var(--border2); border-radius:8px; padding:9px 12px; display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  .music-icon { font-size:16px; flex-shrink:0; }
+  .music-title { font-size:11px; font-weight:600; color:var(--white); }
+  .music-sub { font-size:10px; color:var(--gray); }
   .music-link { font-size:10px; color:var(--accent); text-decoration:none; font-weight:500; white-space:nowrap; margin-left:auto; }
 
-  .card-footer {
-    padding:11px 16px 14px; border-top:1px solid var(--border);
-    display:flex; align-items:center; justify-content:space-between;
-  }
-  .card-time { font-size:10px; color:var(--light-gray); }
-  .card-actions { display:flex; gap:6px; }
+  /* Card footer */
+  .card-footer { padding:12px 18px; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .best-time { font-size:11px; color:var(--gray); }
 
-  .copy-btn {
-    background:var(--off-white); border:1px solid var(--border2);
-    border-radius:7px; color:var(--gray); font-family:'Plus Jakarta Sans',sans-serif;
-    font-size:11px; font-weight:600; padding:6px 12px;
-    cursor:pointer; transition:all 0.2s;
-  }
-  .copy-btn:hover { border-color:var(--accent); color:var(--accent); }
+  .card-actions { display:flex; gap:8px; }
+  .copy-btn { background:var(--surface2); border:1px solid var(--border2); border-radius:7px; padding:6px 14px; font-size:12px; font-weight:600; color:var(--light); cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; transition:all 0.2s; }
+  .copy-btn:hover { border-color:var(--accent); color:var(--white); }
   .copy-btn.copied { border-color:var(--green); color:var(--green); }
-  .copy-btn:disabled { opacity:0.4; cursor:not-allowed; }
+  .post-card.locked .copy-btn { opacity:0.4; pointer-events:none; }
 
-  .approve-btn {
-    background:var(--green); color:white; border:none;
-    border-radius:7px; font-family:'Plus Jakarta Sans',sans-serif;
-    font-size:11px; font-weight:600; padding:6px 12px;
-    cursor:pointer; transition:all 0.2s;
-  }
-  .approve-btn:hover { background:#166534; }
-  .approve-btn.approved { background:var(--off-white); color:var(--green); border:1px solid rgba(21,128,61,0.3); cursor:default; }
+  .approve-btn { background:var(--green); color:#fff; border:none; border-radius:7px; padding:6px 14px; font-size:12px; font-weight:600; cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; transition:all 0.2s; display:none; }
+  .approve-btn:hover { background:#0ea55a; }
+  .approve-btn.approved { background:var(--surface2); color:var(--green); border:1px solid rgba(18,183,106,0.3); cursor:default; }
+  .post-card.unlocked .approve-btn { display:inline-flex; }
 
-  /* SCHEDULE STRIP */
-  .schedule-strip {
-    background:var(--white); border:1px solid var(--border);
-    border-radius:14px; padding:18px 24px; margin-top:20px;
-    display:flex; align-items:center; justify-content:space-between; gap:16px;
-  }
-  .strip-left { display:flex; align-items:center; gap:12px; }
-  .strip-icon { font-size:22px; }
-  .strip-title { font-family:'Fraunces',serif; font-size:15px; font-weight:700; color:var(--black); }
-  .strip-sub { font-size:12px; color:var(--gray); margin-top:2px; }
-  .strip-btn {
-    background:var(--accent); color:white; border:none; border-radius:9px;
-    padding:10px 20px; font-family:'Plus Jakarta Sans',sans-serif;
-    font-size:13px; font-weight:600; cursor:pointer; white-space:nowrap;
-    transition:all 0.2s;
-  }
-  .strip-btn:hover { background:var(--accent-dark); }
-  .strip-btn:disabled { background:var(--border2); color:var(--light-gray); cursor:not-allowed; }
+  /* Schedule strip */
+  .schedule-strip { margin:0 40px 48px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  .strip-left { display:flex; align-items:center; gap:14px; }
+  .strip-icon { font-size:24px; }
+  .strip-title { font-family:'Fraunces',serif; font-size:15px; font-weight:700; color:var(--white); margin-bottom:2px; }
+  .strip-sub { font-size:12px; color:var(--gray); }
+  .strip-btn { background:var(--surface2); color:var(--light); border:1px solid var(--border2); border-radius:8px; padding:9px 18px; font-family:'Plus Jakarta Sans',sans-serif; font-size:12px; font-weight:600; cursor:pointer; transition:all 0.2s; }
+  .strip-btn:hover { border-color:var(--accent); color:var(--white); }
 
-  /* APPROVAL SUMMARY */
-  .approval-bar {
-    background:var(--white); border:1px solid var(--border);
-    border-radius:14px; padding:16px 24px; margin-bottom:20px;
-    display:flex; align-items:center; justify-content:space-between; gap:16px;
-    flex-wrap:wrap;
-  }
-  .approval-left { display:flex; align-items:center; gap:14px; }
-  .approval-stat { text-align:center; }
-  .approval-num { font-family:'Fraunces',serif; font-size:24px; font-weight:800; color:var(--accent); line-height:1; }
-  .approval-label { font-size:10px; color:var(--light-gray); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
-  .approval-divider { width:1px; height:36px; background:var(--border); }
-
-  /* EMPTY STATE */
-  .empty-state {
-    text-align:center; padding:80px 20px;
-    background:var(--white); border:1px solid var(--border);
-    border-radius:16px;
-  }
-  .empty-icon { font-size:48px; margin-bottom:16px; opacity:0.4; }
-  .empty-title { font-family:'Fraunces',serif; font-size:22px; font-weight:700; color:var(--dark); margin-bottom:8px; }
-  .empty-sub { font-size:14px; color:var(--gray); line-height:1.7; max-width:360px; margin:0 auto; }
-
-  /* SECTION HEADER */
-  .section-header { margin-bottom:18px; }
-  .section-label { font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:6px; display:block; }
-  .section-title { font-family:'Fraunces',serif; font-size:22px; font-weight:800; color:var(--black); }
-
-  @media (max-width:768px) {
-    nav { padding:0 20px; }
-    .hero-band { padding:24px 20px; }
-    .lock-banner { flex-direction:column; text-align:center; }
-    .lock-actions { align-items:center; width:100%; }
-    .pay-btn { width:100%; }
-    .posts-grid { grid-template-columns:1fr; }
-    .content-wrap { padding:0 16px 60px; }
-    .admin-row { flex-direction:column; }
-    .admin-input { width:100%; }
-  }
+  /* ADMIN PANEL */
+  .admin-panel { position:fixed; bottom:24px; right:24px; z-index:200; }
+  .admin-toggle { background:var(--surface); border:1px solid var(--border2); border-radius:10px; padding:8px 14px; font-size:11px; font-weight:600; color:var(--gray); cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; }
+  .admin-panel-box { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; width:280px; position:absolute; bottom:44px; right:0; display:none; box-shadow:0 8px 32px rgba(0,0,0,0.5); }
+  .admin-panel-box.visible { display:block; }
+  .admin-title { font-size:13px; font-weight:700; color:var(--white); margin-bottom:14px; }
+  .admin-input { width:100%; background:var(--surface2); border:1px solid var(--border2); border-radius:8px; padding:9px 12px; color:var(--white); font-family:'Plus Jakarta Sans',sans-serif; font-size:12px; margin-bottom:10px; outline:none; }
+  .admin-input:focus { border-color:var(--accent); }
+  .admin-btns { display:flex; gap:8px; }
+  .admin-unlock { background:var(--green); color:#fff; border:none; border-radius:8px; padding:9px 16px; font-family:'Plus Jakarta Sans',sans-serif; font-size:12px; font-weight:700; cursor:pointer; flex:1; }
+  .admin-lock { background:var(--surface2); color:var(--gray); border:1px solid var(--border2); border-radius:8px; padding:9px 16px; font-family:'Plus Jakarta Sans',sans-serif; font-size:12px; font-weight:600; cursor:pointer; flex:1; }
+  .admin-status { font-size:11px; color:var(--gray); margin-top:10px; text-align:center; }
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="/">
-    <div class="nav-mark">✦</div>
-    <div class="nav-name">Richcrest <span>AI</span></div>
+  <a class="logo" href="dashboard.html">
+    <div class="logo-mark">✦</div>
+    <div class="logo-name">Richcrest <span>AI</span></div>
   </a>
   <div class="nav-right">
-    <div class="nav-client" id="clientName"></div>
-    <div class="nav-status-badge badge-locked" id="statusBadge">🔒 Payment Pending</div>
+    <div class="nav-client">Pristine Home Cleaning</div>
+    <div class="nav-status status-pending" id="navStatus">🔒 Payment Pending</div>
+    <div class="nav-status status-paid" id="navStatusPaid">✓ Unlocked</div>
   </div>
 </nav>
 
-<!-- HERO BAND -->
-<div class="hero-band">
-  <div class="hero-band-inner">
-    <div class="hero-eyebrow">Your Content Pack</div>
-    <div class="hero-title" id="heroTitle">Content Pack Ready</div>
-    <div class="hero-sub" id="heroSub">Review your posts below. Once payment is confirmed your content will be fully unlocked and ready to copy and post.</div>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Your Content Pack</div>
+  <h1 class="hero-title">Week of June 26, 2026 Content Pack</h1>
+  <div class="hero-sub">Growth Plan — 6 posts across 4 platforms. Review below.</div>
+</div>
+
+<!-- LOCK BANNER -->
+<div class="lock-banner" id="lockBanner">
+  <div class="lock-icon">🔒</div>
+  <div class="lock-content">
+    <div class="lock-title">Your content is ready — complete payment to unlock</div>
+    <div class="lock-sub">You can see exactly what you are getting. Once payment is confirmed your full content pack unlocks instantly and you can copy and post everything.</div>
+  </div>
+  <button class="lock-btn" onclick="window.location.href='mailto:marcus@richcrest.ai?subject=Payment for Content Pack'">View Pricing & Pay</button>
+</div>
+
+<!-- UNLOCK BANNER -->
+<div class="unlock-banner" id="unlockBanner">
+  <div class="lock-icon">✅</div>
+  <div class="lock-content">
+    <div class="unlock-title">Content unlocked — ready to copy and post</div>
+    <div class="unlock-sub">All posts are now available. Click Approve on posts you love and Copy to grab the caption.</div>
   </div>
 </div>
 
-<div style="max-width:1080px;margin:0 auto;padding:0 0 0;">
-
-  <!-- LOCK BANNER -->
-  <div class="lock-banner" id="lockBanner">
-    <div class="lock-icon">🔒</div>
-    <div class="lock-text">
-      <div class="lock-title">Your content is ready — complete payment to unlock</div>
-      <div class="lock-sub">You can see exactly what you are getting. Once payment is confirmed your full content pack unlocks instantly and you can copy and post everything.</div>
-    </div>
-    <div class="lock-actions">
-      <a class="pay-btn" href="https://richcrest.ai/pricing" id="payLink">View Pricing & Pay</a>
-      <div class="lock-note">Questions? Reply to your delivery email</div>
-    </div>
-  </div>
-
-  <!-- UNLOCK BANNER -->
-  <div class="unlock-banner" id="unlockBanner">
-    <div class="unlock-icon">✅</div>
-    <div>
-      <div class="unlock-title">Payment confirmed. Your content is fully unlocked.</div>
-      <div class="unlock-sub">Copy each post below and start posting. Your next content pack arrives next week.</div>
-    </div>
-  </div>
-
-  <!-- ADMIN PANEL -->
-  <div class="admin-panel" id="adminPanel">
-    <div class="admin-title">Admin Controls</div>
-    <div class="admin-row">
-      <input class="admin-input" type="password" id="adminKey" placeholder="Enter admin password to unlock for client..." />
-      <button class="admin-btn admin-unlock" onclick="adminUnlock()">Unlock for Client</button>
-      <button class="admin-btn admin-lock" onclick="adminLock()">Re-lock</button>
-    </div>
-    <div class="admin-note">Enter the admin password to mark this client as paid and unlock all content. The client sees the unlocked version on their end.</div>
-  </div>
-
-</div>
-
-<!-- CONTENT WRAP -->
-<div class="content-wrap" id="mainContent" style="padding:0 0 60px;">
-
-  <!-- APPROVAL BAR -->
-  <div class="approval-bar" id="approvalBar" style="display:none">
-    <div class="approval-left">
-      <div class="approval-stat">
-        <div class="approval-num" id="approvedCount">0</div>
-        <div class="approval-label">Approved</div>
-      </div>
-      <div class="approval-divider"></div>
-      <div class="approval-stat">
-        <div class="approval-num" id="totalCount">0</div>
-        <div class="approval-label">Total Posts</div>
-      </div>
-    </div>
-    <div style="font-size:13px;color:var(--gray)">Tap Approve on posts you want to use. Then copy and post.</div>
-  </div>
-
-  <div class="section-header">
-    <span class="section-label">Weekly Content Pack</span>
-    <div class="section-title" id="packTitle">Your Posts</div>
-  </div>
+<!-- POSTS -->
+<div class="section">
+  <div class="section-eyebrow">Weekly Content Pack</div>
+  <div class="section-title">Pristine Home Cleaning — 6 Posts</div>
 
   <div class="posts-grid" id="postsGrid">
-    <div class="empty-state">
-      <div class="empty-icon">✦</div>
-      <div class="empty-title">Content loading...</div>
-      <div class="empty-sub">Your posts will appear here once the content pack is generated.</div>
-    </div>
-  </div>
 
-  <div class="schedule-strip" id="scheduleStrip" style="display:none">
-    <div class="strip-left">
-      <div class="strip-icon">🗓️</div>
-      <div>
-        <div class="strip-title">Ready to schedule your posts?</div>
-        <div class="strip-sub">Connect Buffer or Later to auto-post everything on the optimal days and times.</div>
+    <!-- POST 1 -->
+    <div class="post-card locked" id="card-0">
+      <div class="card-img-wrap">
+        <img class="card-img" src="https://images.pexels.com/photos/4107120/pexels-photo-4107120.jpeg?w=600&q=70" onerror="this.style.display='none'" />
+        <div class="card-badges">
+          <div class="plat-badge">📷 Instagram</div>
+          <div class="type-badge t-hook">Hook</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-caption-wrap">
+          <div class="card-caption">The call we get most often starts the same way. Someone has had three different cleaners in six months. Different face every time. Nobody knows where anything is. Nobody knows what products to avoid. We built our entire service around fixing that one problem. Same team. Every single visit.</div>
+        </div>
+        <div class="card-hashtags">#PristineHomeCleaning #EcoFriendlyCleaning #TrustedTeam #BusyHomeowners #LocalCleaning</div>
+        <div class="card-why">
+          <div class="why-label">Why it works</div>
+          <div class="why-text">Opens with a real scenario the target customer has lived through. Positions consistency as the core differentiator without making outcome claims.</div>
+        </div>
+        <div class="card-music">
+          <div class="music-icon">🎵</div>
+          <div><div class="music-title">Warm Mornings</div><div class="music-sub">Warm & Cozy</div></div>
+          <a class="music-link" href="https://pixabay.com/music/" target="_blank">Browse →</a>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="best-time">Best: Tue Thu at 6pm</div>
+        <div class="card-actions">
+          <button class="approve-btn" onclick="approvePost(this)">✓ Approve</button>
+          <button class="copy-btn" onclick="copyPost(this, 0)">⎘ Copy</button>
+        </div>
       </div>
     </div>
-    <button class="strip-btn" id="scheduleBtn" disabled>Connect Scheduler</button>
-  </div>
 
+    <!-- POST 2 -->
+    <div class="post-card locked" id="card-1">
+      <div class="card-img-wrap">
+        <img class="card-img" src="https://images.pexels.com/photos/6195124/pexels-photo-6195124.jpeg?w=600&q=70" onerror="this.style.display='none'" />
+        <div class="card-badges">
+          <div class="plat-badge">📷 Instagram</div>
+          <div class="type-badge t-engage">Engage</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-caption-wrap">
+          <div class="card-caption">What is the one room in your home you always put off cleaning. For most people it is behind the stove or under the bathroom sink. Those are also the first places we check. Drop your answer below.</div>
+        </div>
+        <div class="card-hashtags">#HomeCleaning #CleanHome #GilbertAZ #EastValley #PristineHomeCleaning</div>
+        <div class="card-why">
+          <div class="why-label">Why it works</div>
+          <div class="why-text">Question format drives comments. Specific details about hidden spots show cleaning expertise without bragging.</div>
+        </div>
+        <div class="card-music">
+          <div class="music-icon">🎵</div>
+          <div><div class="music-title">Sunday Ease</div><div class="music-sub">Relaxed</div></div>
+          <a class="music-link" href="https://pixabay.com/music/" target="_blank">Browse →</a>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="best-time">Best: Sat at 10am</div>
+        <div class="card-actions">
+          <button class="approve-btn" onclick="approvePost(this)">✓ Approve</button>
+          <button class="copy-btn" onclick="copyPost(this, 1)">⎘ Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 3 -->
+    <div class="post-card locked" id="card-2">
+      <div class="card-img-wrap">
+        <div class="card-img-placeholder">🧹</div>
+        <div class="card-badges">
+          <div class="plat-badge">👥 Facebook</div>
+          <div class="type-badge t-hook">Hook</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-caption-wrap">
+          <div class="card-caption">A question that comes up constantly from local homeowners. Will the cleaning crew be different every time. We get it. You want consistency, not a rotating door of strangers in your home. That is exactly why we work differently here. The same team shows up on your schedule, every single visit. How many times have you had to re-explain your home to a new cleaner.</div>
+        </div>
+        <div class="card-hashtags">#PristineHomeCleaningLocal #LocalCleaningBusiness #EcoFriendlyCleaners #TrustedTeam #BusyHomeowners</div>
+        <div class="card-why">
+          <div class="why-label">Why it works</div>
+          <div class="why-text">Addresses the consistency objection directly. Uses a real client concern and ends with a question that invites replies.</div>
+        </div>
+        <div class="card-music">
+          <div class="music-icon">🎵</div>
+          <div><div class="music-title">Neighborhood</div><div class="music-sub">Community Feel</div></div>
+          <a class="music-link" href="https://pixabay.com/music/" target="_blank">Browse →</a>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="best-time">Best: Wed Fri at 11am</div>
+        <div class="card-actions">
+          <button class="approve-btn" onclick="approvePost(this)">✓ Approve</button>
+          <button class="copy-btn" onclick="copyPost(this, 2)">⎘ Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 4 -->
+    <div class="post-card locked" id="card-3">
+      <div class="card-img-wrap">
+        <div class="card-img-placeholder">👥</div>
+        <div class="card-badges">
+          <div class="plat-badge">👥 Facebook</div>
+          <div class="type-badge t-engage">Engage</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-caption-wrap">
+          <div class="card-caption">We are curious. What made you start looking for a house cleaning service. Was it a busy season at work. A new baby. Just running out of hours in the weekend. Drop your story below. We read every comment.</div>
+        </div>
+        <div class="card-hashtags">#PristineHomeCleaning #EcoFriendlyCleaning #LocalCleaningService #BusyParents #HomeCleaning</div>
+        <div class="card-why">
+          <div class="why-label">Why it works</div>
+          <div class="why-text">Short, direct, ends with invitation. Humanizes the brand and builds community without making any promotional claims.</div>
+        </div>
+        <div class="card-music">
+          <div class="music-icon">🎵</div>
+          <div><div class="music-title">Easy Sunday</div><div class="music-sub">Warm</div></div>
+          <a class="music-link" href="https://pixabay.com/music/" target="_blank">Browse →</a>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="best-time">Best: Tue Thu at 6pm</div>
+        <div class="card-actions">
+          <button class="approve-btn" onclick="approvePost(this)">✓ Approve</button>
+          <button class="copy-btn" onclick="copyPost(this, 3)">⎘ Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 5 -->
+    <div class="post-card locked" id="card-4">
+      <div class="card-img-wrap">
+        <div class="card-img-placeholder">📱</div>
+        <div class="card-badges">
+          <div class="plat-badge">📱 TikTok</div>
+          <div class="type-badge t-hook">Hook</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-caption-wrap">
+          <div class="card-caption">Stop hiring cleaners until you see this. Most cleaning services send whoever is available. We send the same two people every single time. They know where your vacuum lives. They know which products to avoid. That is the difference between a service you keep and one you cancel.</div>
+        </div>
+        <div class="card-hashtags">#CleaningTips #HomeCleaning #TikTokCleaning #PristineHome #EcoFriendly</div>
+        <div class="card-why">
+          <div class="why-label">Why it works</div>
+          <div class="why-text">Pattern interrupt opener. Specific details about what familiarity looks like in practice. Clear differentiation in under 60 words.</div>
+        </div>
+        <div class="card-music">
+          <div class="music-icon">🎵</div>
+          <div><div class="music-title">Trending Audio</div><div class="music-sub">Check TikTok trending</div></div>
+          <a class="music-link" href="https://www.tiktok.com/music/" target="_blank">Browse →</a>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="best-time">Best: Fri Sat at 7pm</div>
+        <div class="card-actions">
+          <button class="approve-btn" onclick="approvePost(this)">✓ Approve</button>
+          <button class="copy-btn" onclick="copyPost(this, 4)">⎘ Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- POST 6 -->
+    <div class="post-card locked" id="card-5">
+      <div class="card-img-wrap">
+        <div class="card-img-placeholder">🐦</div>
+        <div class="card-badges">
+          <div class="plat-badge">𝕏 X</div>
+          <div class="type-badge t-promo">Promo</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-caption-wrap">
+          <div class="card-caption">Most cleaning services are selling a price. Good ones are selling time back. Same team every visit. This is not a bonus. It is the whole product.</div>
+        </div>
+        <div class="card-hashtags">#HomeCleaning #LocalBusiness</div>
+        <div class="card-why">
+          <div class="why-label">Why it works</div>
+          <div class="why-text">Under 160 characters. Sharp opinion that reframes the value proposition. Platform native for X.</div>
+        </div>
+        <div class="card-music">
+          <div class="music-icon">🎵</div>
+          <div><div class="music-title">No music needed</div><div class="music-sub">Text only post</div></div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="best-time">Best: Tue Thu at 9am</div>
+        <div class="card-actions">
+          <button class="approve-btn" onclick="approvePost(this)">✓ Approve</button>
+          <button class="copy-btn" onclick="copyPost(this, 5)">⎘ Copy</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SCHEDULE STRIP -->
+<div class="schedule-strip">
+  <div class="strip-left">
+    <div class="strip-icon">🗓️</div>
+    <div>
+      <div class="strip-title">Ready to schedule</div>
+      <div class="strip-sub">Connect Buffer, Later, or Hootsuite to auto-post all 6 posts</div>
+    </div>
+  </div>
+  <button class="strip-btn">Connect Scheduler</button>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-panel">
+  <button class="admin-toggle" onclick="toggleAdmin()">⚙ Admin</button>
+  <div class="admin-panel-box" id="adminBox">
+    <div class="admin-title">Admin Unlock</div>
+    <input type="password" class="admin-input" id="adminPass" placeholder="Enter admin password" />
+    <div class="admin-btns">
+      <button class="admin-unlock" onclick="unlockContent()">Unlock</button>
+      <button class="admin-lock" onclick="lockContent()">Lock</button>
+    </div>
+    <div class="admin-status" id="adminStatus"></div>
+  </div>
 </div>
 
 <script>
-// ── CONFIG ──
-// To use this page:
-// 1. Set ADMIN_PASSWORD to something only you know
-// 2. Edit the CONTENT object with the client name and their generated posts
-// 3. Set PAID to false when you send it, true after they pay
-// 4. Share the URL with the client
-
 const ADMIN_PASSWORD = 'richcrest2026';
-const PAID_KEY = 'paid_status_' + window.location.search;
 
-// ── CLIENT AND CONTENT DATA ──
-// Replace this with the actual generated content for each client
-const CLIENT = {
-  name: 'Pristine Home Cleaning',
-  period: 'Week of June 26, 2026',
-  plan: 'Growth Plan'
-};
-
-const POSTS = [
-  {
-    platform: 'Instagram',
-    type: 'story',
-    caption: "Your home should feel like a sanctuary, not another thing on your to-do list. That's why our team shows up the same time, every visit. Fridays just got a whole lot more relaxing. 🌿",
-    hashtags: '#HomeCleaningAZ #CleanHome #LocalBusiness #GilbertAZ #HouseCleaning',
-    best_time: 'Best: Tue, Thu at 6pm',
-    why: 'Opens with the emotional payoff the customer actually wants. Positions the service as a lifestyle upgrade not a chore.',
-    music: { title: 'Warm Mornings', mood: 'Calm & Relaxing', url: 'https://pixabay.com/music/search/acoustic/' },
-    photo_emoji: '🏡'
-  },
-  {
-    platform: 'Facebook',
-    type: 'engage',
-    caption: "We have cleaned hundreds of homes this year. The thing clients tell us most?\n\n\"I wish I found you sooner.\"\n\nWhat would you do with an extra 4 hours every weekend? Drop it in the comments.",
-    hashtags: '#HomeServices #LocalBusiness #WeekendVibes #HouseCleaning',
-    best_time: 'Best: Wed, Fri at 11am',
-    why: 'The question at the end drives comments which tells Facebook this post is worth showing to more people.',
-    music: null,
-    photo_emoji: '💬'
-  },
-  {
-    platform: 'TikTok',
-    type: 'hook',
-    caption: "POV: You hired a cleaner for the first time and now you will never go back 😌✨\n\nThis is what Fridays are supposed to feel like.",
-    hashtags: '#CleanTok #HomeLife #HouseCleaning #CleanHome #SatisfyingClean',
-    best_time: 'Best: Fri at 7pm',
-    why: 'POV format is native TikTok language. Taps directly into the emotional before and after every potential client imagines.',
-    music: { title: 'Good Vibes', mood: 'Fun & Upbeat', url: 'https://pixabay.com/music/search/happy/' },
-    photo_emoji: '🎵'
-  },
-  {
-    platform: 'Instagram',
-    type: 'promo',
-    caption: "Not all cleaning services are the same. Here is what makes us different.\n\n✓ Same trusted team every visit\n✓ Eco-friendly products only\n✓ Fully insured and bonded\n✓ 100% satisfaction guarantee\n\nYour home deserves the best.",
-    hashtags: '#HomeCleaning #EcoFriendly #TrustedService #CleanHome #LocalBusiness',
-    best_time: 'Best: Mon at 8am',
-    why: 'The checklist format stops the scroll and answers the top objections a new client has before they even ask.',
-    music: null,
-    photo_emoji: '✨'
-  },
-  {
-    platform: 'Facebook',
-    type: 'story',
-    caption: "Behind the scenes: what a deep clean actually looks like.\n\nWe start top to bottom, room by room. Every surface. Every corner. The kind of clean you feel when you walk in the door.\n\nBook your first deep clean this month.",
-    hashtags: '#DeepClean #BehindTheScenes #HomeServices #CleanHome',
-    best_time: 'Best: Thu at 12pm',
-    why: 'Behind the scenes content builds trust faster than any promotional post because it shows not tells.',
-    music: null,
-    photo_emoji: '🧹'
-  },
-  {
-    platform: 'X',
-    type: 'engage',
-    caption: "The best investment a busy homeowner can make is not paying someone to clean their house. It is paying someone to give them their weekend back.",
-    hashtags: '#HomeLife',
-    best_time: 'Best: Tue at 9am',
-    why: 'Reframes the price objection as a value exchange. Designed to be saved and shared.',
-    music: null,
-    photo_emoji: '💡'
-  }
+const captions = [
+  'The call we get most often starts the same way. Someone has had three different cleaners in six months. Different face every time. Nobody knows where anything is. Nobody knows what products to avoid. We built our entire service around fixing that one problem. Same team. Every single visit.',
+  'What is the one room in your home you always put off cleaning. For most people it is behind the stove or under the bathroom sink. Those are also the first places we check. Drop your answer below.',
+  'A question that comes up constantly from local homeowners. Will the cleaning crew be different every time. We get it. You want consistency, not a rotating door of strangers in your home. That is exactly why we work differently here. The same team shows up on your schedule, every single visit. How many times have you had to re-explain your home to a new cleaner.',
+  'We are curious. What made you start looking for a house cleaning service. Was it a busy season at work. A new baby. Just running out of hours in the weekend. Drop your story below. We read every comment.',
+  'Stop hiring cleaners until you see this. Most cleaning services send whoever is available. We send the same two people every single time. They know where your vacuum lives. They know which products to avoid. That is the difference between a service you keep and one you cancel.',
+  'Most cleaning services are selling a price. Good ones are selling time back. Same team every visit. This is not a bonus. It is the whole product.'
 ];
 
-// ── STATE ──
-let isPaid = false;
-let approvedPosts = new Set();
-
-function pIcon(p) {
-  return { Instagram:'📸', Facebook:'👥', TikTok:'🎵', X:'✖' }[p] || '📱';
+function toggleAdmin() {
+  document.getElementById('adminBox').classList.toggle('visible');
 }
 
-function typeClass(t) {
-  return { hook:'t-hook', promo:'t-promo', story:'t-story', engage:'t-engage' }[t] || 't-promo';
-}
-
-// ── CHECK PAID STATUS ──
-function checkPaidStatus() {
-  const stored = localStorage.getItem(PAID_KEY);
-  if (stored === 'true') {
-    isPaid = true;
+function unlockContent() {
+  const pass = document.getElementById('adminPass').value;
+  if (pass !== ADMIN_PASSWORD) {
+    document.getElementById('adminStatus').textContent = 'Incorrect password.';
+    document.getElementById('adminStatus').style.color = 'var(--red)';
+    return;
   }
-  renderPage();
+  document.querySelectorAll('.post-card').forEach(card => {
+    card.classList.remove('locked');
+    card.classList.add('unlocked');
+  });
+  document.getElementById('lockBanner').style.display = 'none';
+  document.getElementById('unlockBanner').classList.add('visible');
+  document.getElementById('navStatus').style.display = 'none';
+  document.getElementById('navStatusPaid').style.display = 'flex';
+  document.getElementById('adminStatus').textContent = 'All content unlocked.';
+  document.getElementById('adminStatus').style.color = 'var(--green)';
+  localStorage.setItem('rc_delivery_unlocked', 'true');
 }
 
-// ── RENDER ──
-function renderPage() {
-  // Client name
-  document.getElementById('clientName').textContent = CLIENT.name;
-  document.getElementById('heroTitle').textContent = CLIENT.period + ' Content Pack';
-  document.getElementById('heroSub').textContent = CLIENT.plan + ' — ' + POSTS.length + ' posts across ' + [...new Set(POSTS.map(p=>p.platform))].length + ' platforms. Review below.';
-  document.getElementById('packTitle').textContent = CLIENT.name + ' — ' + POSTS.length + ' Posts';
-
-  // Status
-  const badge = document.getElementById('statusBadge');
-  const lockBanner = document.getElementById('lockBanner');
-  const unlockBanner = document.getElementById('unlockBanner');
-  const scheduleStrip = document.getElementById('scheduleStrip');
-  const scheduleBtn = document.getElementById('scheduleBtn');
-  const approvalBar = document.getElementById('approvalBar');
-
-  if (isPaid) {
-    badge.textContent = '✅ Unlocked';
-    badge.className = 'nav-status-badge badge-unlocked';
-    lockBanner.classList.add('hidden');
-    unlockBanner.classList.add('visible');
-    scheduleStrip.style.display = 'flex';
-    scheduleBtn.disabled = false;
-    approvalBar.style.display = 'flex';
-    document.getElementById('totalCount').textContent = POSTS.length;
-  } else {
-    badge.textContent = '🔒 Payment Pending';
-    badge.className = 'nav-status-badge badge-locked';
-    lockBanner.classList.remove('hidden');
-    unlockBanner.classList.remove('visible');
-    scheduleStrip.style.display = 'none';
-    approvalBar.style.display = 'none';
-  }
-
-  renderPosts();
+function lockContent() {
+  document.querySelectorAll('.post-card').forEach(card => {
+    card.classList.add('locked');
+    card.classList.remove('unlocked');
+  });
+  document.getElementById('lockBanner').style.display = 'flex';
+  document.getElementById('unlockBanner').classList.remove('visible');
+  document.getElementById('navStatus').style.display = 'flex';
+  document.getElementById('navStatusPaid').style.display = 'none';
+  document.getElementById('adminStatus').textContent = 'Content locked.';
+  localStorage.removeItem('rc_delivery_unlocked');
 }
 
-function renderPosts() {
-  const grid = document.getElementById('postsGrid');
-  grid.innerHTML = POSTS.map((post, i) => {
-    const isApproved = approvedPosts.has(i);
-    const copyText = (post.caption + '\n\n' + post.hashtags).trim();
-
-    return `
-      <div class="post-card" id="card-${i}">
-        <div class="card-img-wrap">
-          <div class="card-img-placeholder">${post.photo_emoji}</div>
-          <div class="img-overlay"></div>
-          <div class="img-badges">
-            <div class="plat-badge">${pIcon(post.platform)} ${post.platform}</div>
-            <div class="type-badge ${typeClass(post.type)}">${post.type}</div>
-          </div>
-        </div>
-
-        <!-- WATERMARK -->
-        <div class="watermark-overlay ${isPaid ? 'hidden' : ''}" id="wm-${i}">
-          <div class="watermark-text"></div>
-          <div class="watermark-badge">🔒 Unlock to Copy & Post</div>
-        </div>
-
-        <div class="card-body">
-          <div class="card-caption">${post.caption}</div>
-          <div class="card-hashtags">${post.hashtags}</div>
-          ${post.why ? `<div class="card-why"><div class="why-label">Why it works</div><div class="why-text">${post.why}</div></div>` : ''}
-          ${post.music ? `
-          <div class="card-music">
-            <div class="music-icon">🎵</div>
-            <div>
-              <div class="music-title">${post.music.title}</div>
-              <div class="music-sub">${post.music.mood}</div>
-            </div>
-            <a class="music-link" href="${post.music.url}" target="_blank" ${!isPaid ? 'onclick="return false;" style="pointer-events:none;opacity:0.4"' : ''}>Browse →</a>
-          </div>` : ''}
-        </div>
-
-        <div class="card-footer">
-          <div class="card-time">${post.best_time}</div>
-          <div class="card-actions">
-            ${isPaid ? `
-            <button class="approve-btn ${isApproved ? 'approved' : ''}" onclick="toggleApprove(${i})">
-              ${isApproved ? '✓ Approved' : 'Approve'}
-            </button>
-            <button class="copy-btn" onclick="copyPost(${JSON.stringify(copyText)}, this)">⎘ Copy</button>
-            ` : `
-            <button class="copy-btn" disabled>🔒 Locked</button>
-            `}
-          </div>
-        </div>
-      </div>`;
-  }).join('');
-}
-
-// ── COPY ──
-function copyPost(text, btn) {
-  navigator.clipboard.writeText(text).then(() => {
-    btn.classList.add('copied');
+function copyPost(btn, idx) {
+  navigator.clipboard.writeText(captions[idx]).then(() => {
     btn.textContent = '✓ Copied';
-    setTimeout(() => { btn.classList.remove('copied'); btn.textContent = '⎘ Copy'; }, 2000);
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '⎘ Copy'; btn.classList.remove('copied'); }, 2000);
   });
 }
 
-// ── APPROVE ──
-function toggleApprove(i) {
-  if (approvedPosts.has(i)) {
-    approvedPosts.delete(i);
-  } else {
-    approvedPosts.add(i);
-  }
-  document.getElementById('approvedCount').textContent = approvedPosts.size;
-  renderPosts();
+function approvePost(btn) {
+  if (btn.classList.contains('approved')) return;
+  btn.classList.add('approved');
+  btn.textContent = '✓ Approved';
 }
 
-// ── ADMIN UNLOCK ──
-function adminUnlock() {
-  const key = document.getElementById('adminKey').value;
-  if (key === ADMIN_PASSWORD) {
-    isPaid = true;
-    localStorage.setItem(PAID_KEY, 'true');
-    renderPage();
-    document.getElementById('adminKey').value = '';
-    alert('Content unlocked for this client.');
-  } else {
-    alert('Incorrect password.');
-  }
-}
-
-function adminLock() {
-  isPaid = false;
-  localStorage.removeItem(PAID_KEY);
-  approvedPosts.clear();
-  renderPage();
-}
-
-// ── SHOW ADMIN PANEL ──
-// Press Shift+A to toggle admin panel
-document.addEventListener('keydown', e => {
-  if (e.shiftKey && e.key === 'A') {
-    const panel = document.getElementById('adminPanel');
-    panel.classList.toggle('visible');
+// Check if previously unlocked
+window.addEventListener('load', () => {
+  if (localStorage.getItem('rc_delivery_unlocked') === 'true') {
+    document.getElementById('adminPass').value = ADMIN_PASSWORD;
+    unlockContent();
+    document.getElementById('adminPass').value = '';
   }
 });
 
-// ── INIT ──
-checkPaidStatus();
+// Close admin on outside click
+document.addEventListener('click', e => {
+  const panel = document.getElementById('adminBox');
+  const toggle = document.querySelector('.admin-toggle');
+  if (!panel.contains(e.target) && e.target !== toggle) {
+    panel.classList.remove('visible');
+  }
+});
 </script>
 </body>
 </html>
