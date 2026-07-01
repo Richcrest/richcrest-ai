@@ -1204,13 +1204,40 @@ async function generate() {
 }
 
   // ── Session storage for API key ──
-  // Saves key for the browser session so you don't retype it every time
-  // Clears automatically when you close the browser tab
   const savedKey = sessionStorage.getItem('rc_api_key');
   if (savedKey) {
     const keyInput = document.getElementById('apiKeyInput');
     if (keyInput) keyInput.value = savedKey;
   }
+
+  // ── Auto-load client brief from brief loader ──
+  try {
+    const brief = JSON.parse(sessionStorage.getItem('rc_current_brief') || 'null');
+    if (brief) {
+      if (brief.bizName && document.getElementById('bizName')) document.getElementById('bizName').value = brief.bizName;
+      if (brief.bizType && document.getElementById('bizType')) document.getElementById('bizType').value = brief.bizType;
+      if (brief.city && document.getElementById('city')) document.getElementById('city').value = brief.city;
+      if (brief.targetCustomer && document.getElementById('targetCustomer')) document.getElementById('targetCustomer').value = brief.targetCustomer;
+      if (brief.differentiator && document.getElementById('differentiator')) document.getElementById('differentiator').value = brief.differentiator;
+      if (brief.offer && document.getElementById('offer')) document.getElementById('offer').value = brief.offer;
+      if (brief.compliments && document.getElementById('compliments')) document.getElementById('compliments').value = brief.compliments;
+      if (brief.examplePost && document.getElementById('ex1')) document.getElementById('ex1').value = brief.examplePost;
+      if (brief.bannedWords && brief.bannedWords.length && document.getElementById('avoidWords')) {
+        document.getElementById('avoidWords').value = brief.bannedWords.join(', ');
+      }
+      if (brief.tone) {
+        document.querySelectorAll('.pill[data-t]').forEach(p => {
+          p.classList.toggle('active', p.dataset.t === brief.tone || brief.tone.includes(p.dataset.t));
+        });
+      }
+      if (brief.platforms) {
+        document.querySelectorAll('.pill[data-p]').forEach(p => {
+          p.classList.toggle('active', brief.platforms.some(pl => pl.toLowerCase().includes(p.dataset.p.toLowerCase())));
+        });
+      }
+      console.log('Brief loaded from brief loader:', brief.bizName);
+    }
+  } catch(e) { console.log('No brief to load'); }
 
   document.getElementById('apiKeyInput').addEventListener('input', function() {
     if (this.value.trim().startsWith('sk-ant-')) {
