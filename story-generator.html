@@ -1092,8 +1092,36 @@ function downloadAllSlides() {
   });
 }
 
+// ── Auto-load client brief into story generator ──
+function loadBriefIntoStory() {
+  try {
+    const brief = JSON.parse(sessionStorage.getItem('rc_current_brief') || 'null');
+    if (!brief) return;
+    if (brief.bizName) document.getElementById('bizName').value = brief.bizName;
+    if (brief.color1) { document.getElementById('color1').value = brief.color1; document.getElementById('hex1').value = brief.color1; }
+    if (brief.color2) { document.getElementById('color2').value = brief.color2; document.getElementById('hex2').value = brief.color2; }
+    if (brief.slide1) document.getElementById('s1').value = brief.slide1;
+    if (brief.slide2) document.getElementById('s2').value = brief.slide2;
+    if (brief.slide3) document.getElementById('s3').value = brief.slide3;
+    if (brief.slide4) document.getElementById('s4').value = brief.slide4;
+    if (brief.slide5) document.getElementById('s5').value = brief.slide5;
+    if (brief.phone) document.getElementById('s5sub').value = brief.phone || 'Link in bio';
+    // Carousel fields
+    if (brief.slide1) document.getElementById('c1').value = brief.slide1;
+    if (brief.slide2) document.getElementById('c2body').value = brief.slide2;
+    if (brief.slide3) document.getElementById('c3body').value = brief.slide3;
+    if (brief.slide4) document.getElementById('c4body').value = brief.slide4;
+    if (brief.slide5) document.getElementById('c5').value = brief.slide5;
+    // Animated
+    if (brief.graphicHook) document.getElementById('animHook').value = brief.graphicHook;
+    if (brief.bizName) document.getElementById('animSub').value = brief.bizName;
+    console.log('Brief loaded into story generator');
+  } catch(e) {}
+}
+
 // ── Init ──
 window.addEventListener('load', () => {
+  loadBriefIntoStory();
   document.getElementById('progressFill').style.width = '0%';
 });
 </script>
