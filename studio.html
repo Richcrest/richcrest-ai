@@ -1031,7 +1031,7 @@ Key differentiator: ${differentiator || 'professional quality service'}
 ${offerStr}
 ${reviewStr}
 ${complimentStr}
-${examplesSection ? 'Style reference: ' + ex1.substring(0, 150) : ''}
+${ex1 ? 'Style reference: ' + ex1.substring(0, 150) : ''}
 
 ${tierInstructions[proofTier]}
 
@@ -1044,7 +1044,7 @@ Then respond in EXACTLY this format:
 |CAPTION|${selectedHook} [your continuation here]
 |HASHTAGS|#tag1 #tag2 #tag3 #tag4 #tag5
 |BEST_TIME|Best: day and time
-|PHOTO_QUERY|three word Pexels search
+|PHOTO_QUERY|three word Pexels image search specific to ${bizType} — e.g. 'home cleaning professional' or 'barber haircut shop' — never use generic business or corporate terms
 |SCORE|85
 |WHY|One sentence on why this post works
 |PROOF_TYPE|Proof type used
@@ -1127,7 +1127,7 @@ async function generate() {
           caption: 'Generation failed. Please try again.',
           hashtags: '#LocalBusiness #SmallBusiness',
           best_time: 'Best: Tue-Thu at 6pm',
-          photo_query: bizType + ' professional',
+          photo_query: bizType.toLowerCase().includes('clean') ? 'house cleaning service' : bizType.toLowerCase().includes('barber') ? 'barbershop haircut' : bizType.toLowerCase().includes('train') ? 'personal trainer gym' : bizType.toLowerCase().includes('restaurant') ? 'restaurant chef food' : bizType.toLowerCase().includes('real') ? 'real estate home keys' : bizType + ' local service',
           score: 0,
           why: 'Error: ' + err.message
         }))
@@ -1143,7 +1143,20 @@ async function generate() {
     setStep(3, 'active');
     let photos = new Array(posts.length).fill(null);
     if (features.photos) {
-      photos = await Promise.all(posts.map(p => fetchPhoto(p.photo_query || bizType)));
+      // Build smart photo query based on business type
+    const smartPhotoQuery = (query) => {
+      if (!query || query.length < 3) {
+        const bt = bizType.toLowerCase();
+        if (bt.includes('clean')) return 'house cleaning service';
+        if (bt.includes('barber')) return 'barbershop haircut';
+        if (bt.includes('train')) return 'personal trainer gym';
+        if (bt.includes('restaurant')) return 'restaurant chef food';
+        if (bt.includes('real estate')) return 'real estate home keys';
+        return bizType + ' local service';
+      }
+      return query;
+    };
+    photos = await Promise.all(posts.map(p => fetchPhoto(smartPhotoQuery(p.photo_query))));
     }
     setStep(3, 'done', photos.filter(Boolean).length + ' photos matched');
 
