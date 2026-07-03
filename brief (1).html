@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Richcrest AI — Client Brief Loader</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --black:#0a0a0a; --surface:#141414; --surface2:#1a1a1a;
+    --border:#222; --border2:#2a2a2a;
+    --white:#fff; --gray:#888; --light:#ccc;
+    --accent:#6c47ff; --accent-dim:rgba(108,71,255,0.1);
+    --green:#12b76a; --green-dim:rgba(18,183,106,0.1);
+    --gold:#f5a623; --gold-dim:rgba(245,166,35,0.1);
+  }
+  body { background:var(--black); color:var(--white); font-family:'Plus Jakarta Sans',sans-serif; min-height:100vh; }
+
+  /* NAV */
+  nav { padding:0 40px; height:62px; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+  .logo { display:flex; align-items:center; gap:9px; text-decoration:none; }
+  .logo-mark { width:28px; height:28px; background:var(--accent); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:13px; }
+  .logo-name { font-family:'Fraunces',serif; font-size:16px; font-weight:700; color:var(--white); }
+  .logo-name span { color:var(--accent); }
+  .nav-right { display:flex; align-items:center; gap:10px; }
+  .back-btn { font-size:12px; color:var(--gray); text-decoration:none; border:1px solid var(--border2); padding:6px 12px; border-radius:7px; transition:all 0.2s; }
+  .back-btn:hover { color:var(--white); border-color:#444; }
+  .nav-badge { font-size:11px; font-weight:600; color:var(--green); background:var(--green-dim); border:1px solid rgba(18,183,106,0.25); padding:4px 10px; border-radius:20px; }
+
+  /* HERO */
+  .hero { padding:40px 40px 32px; background:linear-gradient(135deg, #0f0c1a 0%, var(--black) 60%); border-bottom:1px solid var(--border); }
+  .hero-eyebrow { font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+  .hero-title { font-family:'Fraunces',serif; font-size:32px; font-weight:800; letter-spacing:-0.5px; margin-bottom:8px; }
+  .hero-sub { font-size:14px; color:var(--gray); line-height:1.6; max-width:560px; }
+
+  /* MAIN LAYOUT */
+  .main { display:grid; grid-template-columns:1fr 380px; gap:0; min-height:calc(100vh - 180px); }
+
+  /* LEFT - FORM */
+  .form-panel { padding:32px 40px; border-right:1px solid var(--border); overflow-y:auto; }
+
+  .form-section { margin-bottom:32px; }
+  .form-section-title { font-family:'Fraunces',serif; font-size:16px; font-weight:700; color:var(--white); margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+  .form-section-sub { font-size:12px; color:var(--gray); margin-bottom:16px; }
+  .form-section-num { width:24px; height:24px; background:var(--accent); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0; }
+
+  .field-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .field-grid.single { grid-template-columns:1fr; }
+  .field-grid.triple { grid-template-columns:1fr 1fr 1fr; }
+
+  .field { display:flex; flex-direction:column; gap:5px; }
+  .field label { font-size:11px; font-weight:600; color:var(--light); text-transform:uppercase; letter-spacing:0.5px; }
+  .field label span { color:var(--gray); text-transform:none; font-weight:400; letter-spacing:0; }
+
+  input[type=text], input[type=url], input[type=tel], textarea, select {
+    background:var(--surface2); border:1px solid var(--border2);
+    border-radius:8px; color:var(--white);
+    font-family:'Plus Jakarta Sans',sans-serif; font-size:13px;
+    padding:10px 13px; width:100%; outline:none;
+    transition:border-color 0.2s;
+  }
+  input:focus, textarea:focus, select:focus { border-color:var(--accent); }
+  textarea { resize:vertical; min-height:80px; line-height:1.5; }
+  select option { background:#1a1a1a; }
+
+  /* Platform checkboxes */
+  .platform-grid { display:flex; gap:8px; flex-wrap:wrap; }
+  .platform-pill {
+    padding:7px 14px; border-radius:20px; font-size:12px; font-weight:500;
+    border:1px solid var(--border2); background:var(--surface2); color:var(--gray);
+    cursor:pointer; transition:all 0.18s; user-select:none;
+    display:flex; align-items:center; gap:5px;
+  }
+  .platform-pill:hover { border-color:#444; color:var(--white); }
+  .platform-pill.active { border-color:var(--accent); background:var(--accent-dim); color:var(--white); }
+
+  /* Tone pills */
+  .tone-grid { display:flex; gap:8px; flex-wrap:wrap; }
+  .tone-pill {
+    padding:7px 14px; border-radius:20px; font-size:12px; font-weight:500;
+    border:1px solid var(--border2); background:var(--surface2); color:var(--gray);
+    cursor:pointer; transition:all 0.18s; user-select:none;
+  }
+  .tone-pill:hover { border-color:#444; color:var(--white); }
+  .tone-pill.active { border-color:var(--accent); background:var(--accent-dim); color:var(--white); }
+
+  /* Proof tier */
+  .tier-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .tier-card {
+    background:var(--surface2); border:1px solid var(--border2);
+    border-radius:10px; padding:12px; cursor:pointer;
+    transition:all 0.18s; user-select:none; text-align:center;
+  }
+  .tier-card:hover { border-color:#444; }
+  .tier-card.active { border-color:var(--accent); background:var(--accent-dim); }
+  .tier-card-num { font-family:'Fraunces',serif; font-size:22px; font-weight:800; color:var(--accent); margin-bottom:4px; }
+  .tier-card-label { font-size:11px; font-weight:600; color:var(--white); margin-bottom:3px; }
+  .tier-card-sub { font-size:10px; color:var(--gray); line-height:1.4; }
+
+  /* Banned words */
+  .banned-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+  .banned-tag { background:rgba(248,113,113,0.1); border:1px solid rgba(248,113,113,0.2); border-radius:20px; padding:3px 10px; font-size:11px; color:#f87171; display:flex; align-items:center; gap:5px; }
+  .banned-tag button { background:none; border:none; color:#f87171; cursor:pointer; font-size:12px; padding:0; line-height:1; }
+
+  /* RIGHT - LAUNCH PANEL */
+  .launch-panel { padding:28px 24px; background:var(--surface); position:sticky; top:62px; height:calc(100vh - 62px); overflow-y:auto; display:flex; flex-direction:column; gap:16px; }
+
+  .launch-title { font-family:'Fraunces',serif; font-size:18px; font-weight:800; margin-bottom:4px; }
+  .launch-sub { font-size:12px; color:var(--gray); line-height:1.5; margin-bottom:8px; }
+
+  /* Brief preview */
+  .brief-preview { background:var(--black); border:1px solid var(--border); border-radius:12px; padding:16px; flex:1; overflow-y:auto; }
+  .preview-title { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--gray); margin-bottom:12px; }
+  .preview-item { margin-bottom:10px; }
+  .preview-label { font-size:10px; font-weight:600; color:var(--accent); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:2px; }
+  .preview-value { font-size:12px; color:var(--light); line-height:1.5; }
+  .preview-empty { font-size:12px; color:var(--border2); font-style:italic; }
+
+  /* Launch buttons */
+  .launch-buttons { display:flex; flex-direction:column; gap:10px; }
+
+  .launch-btn {
+    display:flex; align-items:center; gap:12px;
+    padding:14px 16px; border-radius:12px;
+    border:1px solid var(--border2); background:var(--surface2);
+    cursor:pointer; transition:all 0.2s; text-decoration:none;
+    font-family:'Plus Jakarta Sans',sans-serif;
+  }
+  .launch-btn:hover { transform:translateY(-2px); box-shadow:0 4px 20px rgba(0,0,0,0.3); }
+  .launch-btn-icon { font-size:22px; flex-shrink:0; width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; }
+  .launch-btn-text { flex:1; }
+  .launch-btn-label { font-size:13px; font-weight:700; color:var(--white); }
+  .launch-btn-sub { font-size:11px; color:var(--gray); margin-top:1px; }
+  .launch-btn-arrow { font-size:16px; color:var(--gray); }
+
+  .btn-studio { border-color:rgba(108,71,255,0.3); }
+  .btn-studio:hover { border-color:var(--accent); background:var(--accent-dim); }
+  .btn-studio .launch-btn-icon { background:var(--accent-dim); }
+
+  .btn-graphic { border-color:rgba(35,80,212,0.3); }
+  .btn-graphic:hover { border-color:#2350d4; background:rgba(35,80,212,0.08); }
+  .btn-graphic .launch-btn-icon { background:rgba(35,80,212,0.1); }
+
+  .btn-story { border-color:rgba(18,183,106,0.3); }
+  .btn-story:hover { border-color:var(--green); background:var(--green-dim); }
+  .btn-story .launch-btn-icon { background:var(--green-dim); }
+
+  .btn-all {
+    background:var(--accent); border-color:var(--accent);
+    justify-content:center; text-align:center;
+    font-size:14px; font-weight:700; color:white;
+    border-radius:12px; padding:14px;
+  }
+  .btn-all:hover { background:#5a3ae0; transform:translateY(-2px); }
+
+  /* Save/Load buttons */
+  .save-row { display:flex; gap:8px; }
+  .save-btn { flex:1; background:var(--surface2); border:1px solid var(--border2); border-radius:8px; padding:9px; font-family:'Plus Jakarta Sans',sans-serif; font-size:12px; font-weight:600; color:var(--light); cursor:pointer; transition:all 0.2s; }
+  .save-btn:hover { border-color:var(--accent); color:var(--white); }
+  .save-btn.green { border-color:rgba(18,183,106,0.3); color:var(--green); }
+  .save-btn.green:hover { background:var(--green-dim); }
+
+  /* Saved clients */
+  .saved-section { border-top:1px solid var(--border); padding-top:14px; }
+  .saved-title { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--gray); margin-bottom:10px; }
+  .saved-list { display:flex; flex-direction:column; gap:6px; max-height:160px; overflow-y:auto; }
+  .saved-item { background:var(--black); border:1px solid var(--border); border-radius:8px; padding:9px 12px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; transition:all 0.2s; }
+  .saved-item:hover { border-color:var(--accent); }
+  .saved-item-name { font-size:12px; font-weight:600; color:var(--white); }
+  .saved-item-type { font-size:10px; color:var(--gray); margin-top:1px; }
+  .saved-item-del { background:none; border:none; color:var(--gray); cursor:pointer; font-size:14px; padding:0; }
+  .saved-item-del:hover { color:#f87171; }
+  .saved-empty { font-size:12px; color:var(--gray); font-style:italic; }
+
+  /* Status toast */
+  .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(100px); background:var(--green); color:white; font-size:13px; font-weight:600; padding:12px 24px; border-radius:10px; transition:transform 0.3s; z-index:999; white-space:nowrap; }
+  .toast.show { transform:translateX(-50%) translateY(0); }
+
+  @media(max-width:900px) {
+    .main { grid-template-columns:1fr; }
+    .launch-panel { position:static; height:auto; }
+    nav { padding:0 20px; }
+    .hero { padding:32px 20px 24px; }
+    .form-panel { padding:24px 20px; }
+    .field-grid { grid-template-columns:1fr; }
+    .field-grid.triple { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="dashboard.html">
+    <div class="logo-mark">✦</div>
+    <div class="logo-name">Richcrest <span>AI</span></div>
+  </a>
+  <div class="nav-right">
+    <a class="back-btn" href="dashboard.html">← Dashboard</a>
+    <div class="nav-badge">Client Brief Loader</div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">One Brief. Three Tools. Ready to Go.</div>
+  <h1 class="hero-title">Fill this once. Launch everything.</h1>
+  <p class="hero-sub">Enter your client's details below. Click any tool button on the right and it opens pre-filled with everything already loaded. No copy-pasting. No repeating yourself.</p>
+</div>
+
+<div class="main">
+
+  <!-- LEFT FORM -->
+  <div class="form-panel">
+
+    <!-- Section 1: Business Info -->
+    <div class="form-section">
+      <div class="form-section-title"><div class="form-section-num">1</div> Business Info</div>
+      <div class="form-section-sub">The basics that go into every tool automatically.</div>
+      <div class="field-grid">
+        <div class="field">
+          <label>Business Name <span>*</span></label>
+          <input type="text" id="bizName" placeholder="Pristine Home Cleaning" oninput="updatePreview()" />
+        </div>
+        <div class="field">
+          <label>Business Type <span>*</span></label>
+          <select id="bizType" onchange="updatePreview()">
+            <option value="">Select type</option>
+            <option>Cleaning Company</option>
+            <option>Barbershop</option>
+            <option>Personal Trainer</option>
+            <option>Restaurant</option>
+            <option>Real Estate Agent</option>
+            <option>Landscaping</option>
+            <option>Plumbing</option>
+            <option>HVAC</option>
+            <option>Auto Detailing</option>
+            <option>Other Local Business</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>City <span>*</span></label>
+          <input type="text" id="city" placeholder="Gilbert AZ" oninput="updatePreview()" />
+        </div>
+        <div class="field">
+          <label>Neighborhood <span>optional</span></label>
+          <input type="text" id="neighborhood" placeholder="Val Vista Lakes area" oninput="updatePreview()" />
+        </div>
+        <div class="field">
+          <label>Instagram Handle <span>optional</span></label>
+          <input type="text" id="instagram" placeholder="@pristinehomecleaning" oninput="updatePreview()" />
+        </div>
+        <div class="field">
+          <label>Phone / Booking Link <span>optional</span></label>
+          <input type="text" id="phone" placeholder="480-555-0100 or link" oninput="updatePreview()" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Customer & Offer -->
+    <div class="form-section">
+      <div class="form-section-title"><div class="form-section-num">2</div> Customer and Offer</div>
+      <div class="form-section-sub">Who you serve and what you are promoting this week.</div>
+      <div class="field-grid">
+        <div class="field">
+          <label>Target Customer <span>*</span></label>
+          <input type="text" id="targetCustomer" placeholder="Busy parents in Gilbert with young kids" oninput="updatePreview()" />
+        </div>
+        <div class="field">
+          <label>Current Offer / Promotion <span>optional</span></label>
+          <input type="text" id="offer" placeholder="15% off first clean for neighbors" oninput="updatePreview()" />
+        </div>
+      </div>
+      <div class="field-grid single" style="margin-top:14px">
+        <div class="field">
+          <label>Key Differentiator <span>— what makes you different</span></label>
+          <input type="text" id="differentiator" placeholder="Same team every visit, eco-friendly products, fully insured" oninput="updatePreview()" />
+        </div>
+      </div>
+      <div class="field-grid single" style="margin-top:14px">
+        <div class="field">
+          <label>What Customers Always Say <span>— compliments you hear most</span></label>
+          <input type="text" id="compliments" placeholder="They always say they wish they found us sooner" oninput="updatePreview()" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Brand Voice -->
+    <div class="form-section">
+      <div class="form-section-title"><div class="form-section-num">3</div> Brand Voice</div>
+      <div class="form-section-sub">How the content should sound. Pick one tone and paste an example if you have one.</div>
+
+      <div style="margin-bottom:14px">
+        <label style="font-size:11px;font-weight:600;color:var(--light);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:8px">Tone</label>
+        <div class="tone-grid">
+          <div class="tone-pill active" onclick="setTone(this,'warm and friendly')">Warm</div>
+          <div class="tone-pill" onclick="setTone(this,'professional and trustworthy')">Professional</div>
+          <div class="tone-pill" onclick="setTone(this,'bold and direct')">Bold</div>
+          <div class="tone-pill" onclick="setTone(this,'casual and conversational')">Casual</div>
+          <div class="tone-pill" onclick="setTone(this,'authoritative and expert')">Expert</div>
+          <div class="tone-pill" onclick="setTone(this,'community-focused and neighborly')">Neighborly</div>
+        </div>
+      </div>
+
+      <div class="field-grid single">
+        <div class="field">
+          <label>Example Post <span>— paste one they love for voice matching</span></label>
+          <div style="font-size:11px;color:var(--gray);line-height:1.5;margin-bottom:2px">
+            Tip: the AI matches structure, not just tone. Lead with the searchable answer (what a customer would type into search), state the value plainly, then close — not a clever line first. See the placeholder below for the pattern.
+          </div>
+          <textarea id="examplePost" placeholder="e.g. Weekend guests coming and no time to deep clean? [Business] gets your [city] home guest-ready in one visit — [key differentiator]. [Simple CTA]." oninput="updatePreview()"></textarea>
+        </div>
+      </div>
+
+      <div style="margin-top:14px">
+        <label style="font-size:11px;font-weight:600;color:var(--light);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px">Words to Never Use</label>
+        <div style="display:flex;gap:8px">
+          <input type="text" id="bannedWordInput" placeholder="Type a word and press Enter" onkeydown="addBannedWord(event)" style="flex:1" />
+          <button onclick="addBannedWordBtn()" style="background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:0 14px;color:var(--light);font-family:inherit;font-size:12px;cursor:pointer;white-space:nowrap">+ Add</button>
+        </div>
+        <div class="banned-tags" id="bannedTags"></div>
+      </div>
+    </div>
+
+    <!-- Section 4: Platforms -->
+    <div class="form-section">
+      <div class="form-section-title"><div class="form-section-num">4</div> Platforms</div>
+      <div class="form-section-sub">Select all platforms you want content for.</div>
+      <div class="platform-grid">
+        <div class="platform-pill active" onclick="togglePlatform(this,'Instagram')">📷 Instagram</div>
+        <div class="platform-pill active" onclick="togglePlatform(this,'Facebook')">👥 Facebook</div>
+        <div class="platform-pill" onclick="togglePlatform(this,'TikTok')">📱 TikTok</div>
+        <div class="platform-pill" onclick="togglePlatform(this,'X')">𝕏 X</div>
+      </div>
+    </div>
+
+    <!-- Section 5: Proof Tier -->
+    <div class="form-section">
+      <div class="form-section-title"><div class="form-section-num">5</div> Proof Tier</div>
+      <div class="form-section-sub">How much proof does this client have? This determines the content angle automatically.</div>
+      <div class="tier-grid">
+        <div class="tier-card" onclick="setTier(this,1)">
+          <div class="tier-card-num">1</div>
+          <div class="tier-card-label">No Proof Yet</div>
+          <div class="tier-card-sub">New business. No reviews. No results yet.</div>
+        </div>
+        <div class="tier-card active" onclick="setTier(this,2)">
+          <div class="tier-card-num">2</div>
+          <div class="tier-card-label">Some Proof</div>
+          <div class="tier-card-sub">A few reviews, some photos, light results.</div>
+        </div>
+        <div class="tier-card" onclick="setTier(this,3)">
+          <div class="tier-card-num">3</div>
+          <div class="tier-card-label">Strong Proof</div>
+          <div class="tier-card-sub">Solid reviews, results, case studies.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 6: Story Slides -->
+    <div class="form-section">
+      <div class="form-section-title"><div class="form-section-num">6</div> Story and Carousel Slides</div>
+      <div class="form-section-sub">Pre-fill the five slide community hook framework. These load directly into the story generator.</div>
+      <div class="field-grid single">
+        <div class="field">
+          <label>Slide 1 — Hook <span>must name city in first 4 words</span></label>
+          <input type="text" id="slide1" placeholder="Gilbert homeowners — this one is for you" oninput="updatePreview()" />
+        </div>
+        <div class="field" style="margin-top:10px">
+          <label>Slide 2 — The Problem</label>
+          <textarea id="slide2" style="min-height:60px" placeholder="Most cleaning services send a different person every visit. You end up re-explaining everything every time." oninput="updatePreview()"></textarea>
+        </div>
+        <div class="field" style="margin-top:10px">
+          <label>Slide 3 — Your Solution</label>
+          <textarea id="slide3" style="min-height:60px" placeholder="We send the same trusted team every single visit. They know your home, your products, and your routine." oninput="updatePreview()"></textarea>
+        </div>
+        <div class="field" style="margin-top:10px">
+          <label>Slide 4 — Proof or Trust Signal</label>
+          <textarea id="slide4" style="min-height:60px" placeholder="Fully insured, background checked, and backed by our 100% satisfaction guarantee." oninput="updatePreview()"></textarea>
+        </div>
+        <div class="field" style="margin-top:10px">
+          <label>Slide 5 — CTA with Scarcity</label>
+          <input type="text" id="slide5" placeholder="3 spots left in Gilbert this month. DM us to claim yours." oninput="updatePreview()" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 7: Brand Colors -->
+    <div class="form-section">
+      <div class="form-section-title"><div class="form-section-num">7</div> Brand Colors</div>
+      <div class="form-section-sub">These load into the graphic generator automatically.</div>
+      <div class="field-grid triple">
+        <div class="field">
+          <label>Primary Color</label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="color" id="color1" value="#2350d4" style="width:44px;height:38px;border-radius:7px;padding:2px;cursor:pointer;border:1px solid var(--border2);background:var(--surface2)" oninput="syncColor()" />
+            <input type="text" id="hex1" value="#2350d4" style="flex:1" oninput="syncColorFromHex()" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Accent Color</label>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input type="color" id="color2" value="#ffffff" style="width:44px;height:38px;border-radius:7px;padding:2px;cursor:pointer;border:1px solid var(--border2);background:var(--surface2)" oninput="syncColor2()" />
+            <input type="text" id="hex2" value="#ffffff" style="flex:1" oninput="syncColorFromHex2()" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Hook Text <span>for graphic</span></label>
+          <input type="text" id="graphicHook" placeholder="Same team. Every single visit." oninput="updatePreview()" />
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT LAUNCH PANEL -->
+  <div class="launch-panel">
+
+    <div>
+      <div class="launch-title">Ready to Launch</div>
+      <div class="launch-sub">Fill in the brief on the left. Click any button below to open that tool with everything pre-loaded.</div>
+    </div>
+
+    <!-- Brief Preview -->
+    <div class="brief-preview">
+      <div class="preview-title">Brief Summary</div>
+      <div id="previewContent">
+        <div class="preview-empty">Fill in the form to see your brief summary here.</div>
+      </div>
+    </div>
+
+    <!-- Save/Load -->
+    <div class="save-row">
+      <button class="save-btn green" onclick="saveBrief()">💾 Save Client</button>
+      <button class="save-btn" onclick="clearForm()">✕ Clear</button>
+    </div>
+
+    <!-- Saved Clients -->
+    <div class="saved-section">
+      <div class="saved-title">Saved Clients</div>
+      <div class="saved-list" id="savedList">
+        <div class="saved-empty">No saved clients yet.</div>
+      </div>
+    </div>
+
+    <!-- Launch Buttons -->
+    <div class="launch-buttons">
+      <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gray)">Open Tool With This Brief</div>
+
+      <a class="launch-btn btn-studio" href="#" onclick="launchTool('studio', event)">
+        <div class="launch-btn-icon">✦</div>
+        <div class="launch-btn-text">
+          <div class="launch-btn-label">Content Studio</div>
+          <div class="launch-btn-sub">Generate captions and hashtags</div>
+        </div>
+        <div class="launch-btn-arrow">→</div>
+      </a>
+
+      <a class="launch-btn btn-graphic" href="#" onclick="launchTool('graphic', event)">
+        <div class="launch-btn-icon">🎨</div>
+        <div class="launch-btn-text">
+          <div class="launch-btn-label">Graphic Generator</div>
+          <div class="launch-btn-sub">Build branded post graphics</div>
+        </div>
+        <div class="launch-btn-arrow">→</div>
+      </a>
+
+      <a class="launch-btn btn-story" href="#" onclick="launchTool('story', event)">
+        <div class="launch-btn-icon">📱</div>
+        <div class="launch-btn-text">
+          <div class="launch-btn-label">Story and Carousel</div>
+          <div class="launch-btn-sub">Build slides and animations</div>
+        </div>
+        <div class="launch-btn-arrow">→</div>
+      </a>
+
+      <button class="btn-all" onclick="launchAll()">✦ Open All Three Tools</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── State ──
+let currentTone = 'warm and friendly';
+let currentTier = 2;
+let selectedPlatforms = ['Instagram', 'Facebook'];
+let bannedWords = [];
+
+// ── Tone ──
+function setTone(el, tone) {
+  document.querySelectorAll('.tone-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  currentTone = tone;
+  updatePreview();
+}
+
+// ── Tier ──
+function setTier(el, tier) {
+  document.querySelectorAll('.tier-card').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentTier = tier;
+  updatePreview();
+}
+
+// ── Platforms ──
+function togglePlatform(el, platform) {
+  el.classList.toggle('active');
+  if (el.classList.contains('active')) {
+    if (!selectedPlatforms.includes(platform)) selectedPlatforms.push(platform);
+  } else {
+    selectedPlatforms = selectedPlatforms.filter(p => p !== platform);
+  }
+  updatePreview();
+}
+
+// ── Banned words ──
+function addBannedWord(e) {
+  if (e.key === 'Enter') addBannedWordBtn();
+}
+function addBannedWordBtn() {
+  const input = document.getElementById('bannedWordInput');
+  const word = input.value.trim();
+  if (!word || bannedWords.includes(word)) return;
+  bannedWords.push(word);
+  input.value = '';
+  renderBannedTags();
+  updatePreview();
+}
+function removeBannedWord(word) {
+  bannedWords = bannedWords.filter(w => w !== word);
+  renderBannedTags();
+  updatePreview();
+}
+function renderBannedTags() {
+  const container = document.getElementById('bannedTags');
+  container.innerHTML = bannedWords.map(w =>
+    `<div class="banned-tag">${w} <button onclick="removeBannedWord('${w}')">✕</button></div>`
+  ).join('');
+}
+
+// ── Color sync ──
+function syncColor() {
+  document.getElementById('hex1').value = document.getElementById('color1').value;
+  updatePreview();
+}
+function syncColorFromHex() {
+  const v = document.getElementById('hex1').value;
+  if (/^#[0-9A-Fa-f]{6}$/.test(v)) document.getElementById('color1').value = v;
+  updatePreview();
+}
+function syncColor2() {
+  document.getElementById('hex2').value = document.getElementById('color2').value;
+  updatePreview();
+}
+function syncColorFromHex2() {
+  const v = document.getElementById('hex2').value;
+  if (/^#[0-9A-Fa-f]{6}$/.test(v)) document.getElementById('color2').value = v;
+  updatePreview();
+}
+
+// ── Collect brief data ──
+function collectBrief() {
+  return {
+    bizName: document.getElementById('bizName').value.trim(),
+    bizType: document.getElementById('bizType').value,
+    city: document.getElementById('city').value.trim(),
+    neighborhood: document.getElementById('neighborhood').value.trim(),
+    instagram: document.getElementById('instagram').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    targetCustomer: document.getElementById('targetCustomer').value.trim(),
+    offer: document.getElementById('offer').value.trim(),
+    differentiator: document.getElementById('differentiator').value.trim(),
+    compliments: document.getElementById('compliments').value.trim(),
+    examplePost: document.getElementById('examplePost').value.trim(),
+    graphicHook: document.getElementById('graphicHook').value.trim(),
+    slide1: document.getElementById('slide1').value.trim(),
+    slide2: document.getElementById('slide2').value.trim(),
+    slide3: document.getElementById('slide3').value.trim(),
+    slide4: document.getElementById('slide4').value.trim(),
+    slide5: document.getElementById('slide5').value.trim(),
+    color1: document.getElementById('hex1').value,
+    color2: document.getElementById('hex2').value,
+    tone: currentTone,
+    tier: currentTier,
+    platforms: [...selectedPlatforms],
+    bannedWords: [...bannedWords]
+  };
+}
+
+// ── Preview ──
+function updatePreview() {
+  const b = collectBrief();
+  const isEmpty = !b.bizName && !b.bizType && !b.city;
+
+  const container = document.getElementById('previewContent');
+  if (isEmpty) {
+    container.innerHTML = '<div class="preview-empty">Fill in the form to see your brief summary here.</div>';
+    return;
+  }
+
+  const items = [
+    ['Business', b.bizName || '—'],
+    ['Type', b.bizType || '—'],
+    ['Location', [b.city, b.neighborhood].filter(Boolean).join(', ') || '—'],
+    ['Target Customer', b.targetCustomer || '—'],
+    ['Offer', b.offer || 'None'],
+    ['Differentiator', b.differentiator || '—'],
+    ['Tone', b.tone],
+    ['Proof Tier', 'Tier ' + b.tier],
+    ['Platforms', b.platforms.join(', ') || 'None selected'],
+    ['Brand Colors', b.color1 + ' / ' + b.color2],
+    ['Graphic Hook', b.graphicHook || '—'],
+    ['Banned Words', b.bannedWords.length ? b.bannedWords.join(', ') : 'None']
+  ];
+
+  container.innerHTML = items.map(([label, value]) => `
+    <div class="preview-item">
+      <div class="preview-label">${label}</div>
+      <div class="preview-value">${value}</div>
+    </div>
+  `).join('');
+}
+
+// ── Save to sessionStorage ──
+function saveBrief() {
+  const b = collectBrief();
+  if (!b.bizName) { showToast('Enter a business name first'); return; }
+  const clients = JSON.parse(sessionStorage.getItem('rc_clients') || '{}');
+  clients[b.bizName] = b;
+  sessionStorage.setItem('rc_clients', JSON.stringify(clients));
+  sessionStorage.setItem('rc_current_brief', JSON.stringify(b));
+  renderSavedList();
+  showToast('✓ ' + b.bizName + ' saved');
+}
+
+function loadBrief(name) {
+  const clients = JSON.parse(sessionStorage.getItem('rc_clients') || '{}');
+  const b = clients[name];
+  if (!b) return;
+  populateForm(b);
+  sessionStorage.setItem('rc_current_brief', JSON.stringify(b));
+  showToast('Loaded: ' + name);
+}
+
+function deleteSaved(name) {
+  const clients = JSON.parse(sessionStorage.getItem('rc_clients') || '{}');
+  delete clients[name];
+  sessionStorage.setItem('rc_clients', JSON.stringify(clients));
+  renderSavedList();
+}
+
+function populateForm(b) {
+  document.getElementById('bizName').value = b.bizName || '';
+  document.getElementById('bizType').value = b.bizType || '';
+  document.getElementById('city').value = b.city || '';
+  document.getElementById('neighborhood').value = b.neighborhood || '';
+  document.getElementById('instagram').value = b.instagram || '';
+  document.getElementById('phone').value = b.phone || '';
+  document.getElementById('targetCustomer').value = b.targetCustomer || '';
+  document.getElementById('offer').value = b.offer || '';
+  document.getElementById('differentiator').value = b.differentiator || '';
+  document.getElementById('compliments').value = b.compliments || '';
+  document.getElementById('examplePost').value = b.examplePost || '';
+  document.getElementById('graphicHook').value = b.graphicHook || '';
+  document.getElementById('slide1').value = b.slide1 || '';
+  document.getElementById('slide2').value = b.slide2 || '';
+  document.getElementById('slide3').value = b.slide3 || '';
+  document.getElementById('slide4').value = b.slide4 || '';
+  document.getElementById('slide5').value = b.slide5 || '';
+  document.getElementById('hex1').value = b.color1 || '#2350d4';
+  document.getElementById('color1').value = b.color1 || '#2350d4';
+  document.getElementById('hex2').value = b.color2 || '#ffffff';
+  document.getElementById('color2').value = b.color2 || '#ffffff';
+
+  currentTone = b.tone || 'warm and friendly';
+  currentTier = b.tier || 2;
+  selectedPlatforms = b.platforms || ['Instagram', 'Facebook'];
+  bannedWords = b.bannedWords || [];
+
+  // Update tone pills
+  document.querySelectorAll('.tone-pill').forEach(p => {
+    p.classList.toggle('active', p.textContent.trim().toLowerCase() === currentTone.split(' ')[0].toLowerCase() ||
+      p.onclick.toString().includes(currentTone));
+  });
+
+  // Update tier cards
+  document.querySelectorAll('.tier-card').forEach((c, i) => {
+    c.classList.toggle('active', i + 1 === currentTier);
+  });
+
+  // Update platform pills
+  document.querySelectorAll('.platform-pill').forEach(p => {
+    const platform = p.textContent.trim().replace(/^[^\w]+/, '').split(' ')[0];
+    p.classList.toggle('active', selectedPlatforms.some(sp => sp.toLowerCase().includes(platform.toLowerCase())));
+  });
+
+  renderBannedTags();
+  updatePreview();
+}
+
+function clearForm() {
+  document.querySelectorAll('input[type=text], input[type=url], input[type=tel], textarea').forEach(el => el.value = '');
+  document.getElementById('bizType').value = '';
+  document.getElementById('color1').value = '#2350d4';
+  document.getElementById('hex1').value = '#2350d4';
+  document.getElementById('color2').value = '#ffffff';
+  document.getElementById('hex2').value = '#ffffff';
+  currentTone = 'warm and friendly';
+  currentTier = 2;
+  selectedPlatforms = ['Instagram', 'Facebook'];
+  bannedWords = [];
+  document.querySelectorAll('.tone-pill').forEach((p, i) => p.classList.toggle('active', i === 0));
+  document.querySelectorAll('.tier-card').forEach((c, i) => c.classList.toggle('active', i === 1));
+  document.querySelectorAll('.platform-pill').forEach((p, i) => p.classList.toggle('active', i < 2));
+  renderBannedTags();
+  updatePreview();
+}
+
+function renderSavedList() {
+  const clients = JSON.parse(sessionStorage.getItem('rc_clients') || '{}');
+  const list = document.getElementById('savedList');
+  const names = Object.keys(clients);
+  if (!names.length) {
+    list.innerHTML = '<div class="saved-empty">No saved clients yet.</div>';
+    return;
+  }
+  list.innerHTML = names.map(name => `
+    <div class="saved-item" onclick="loadBrief('${name}')">
+      <div>
+        <div class="saved-item-name">${name}</div>
+        <div class="saved-item-type">${clients[name].bizType || ''} · ${clients[name].city || ''}</div>
+      </div>
+      <button class="saved-item-del" onclick="event.stopPropagation(); deleteSaved('${name}')">✕</button>
+    </div>
+  `).join('');
+}
+
+// ── Launch tools ──
+function launchTool(tool, e) {
+  e.preventDefault();
+  const b = collectBrief();
+  if (!b.bizName) { showToast('Enter a business name first'); return; }
+  sessionStorage.setItem('rc_current_brief', JSON.stringify(b));
+
+  const urls = {
+    studio: 'studio.html',
+    graphic: 'graphic-generator.html',
+    story: 'story-generator.html'
+  };
+
+  window.open(urls[tool], '_blank');
+  showToast('Opening ' + tool + ' with brief loaded');
+}
+
+function launchAll() {
+  const b = collectBrief();
+  if (!b.bizName) { showToast('Enter a business name first'); return; }
+  sessionStorage.setItem('rc_current_brief', JSON.stringify(b));
+  setTimeout(() => window.open('studio.html', '_blank'), 0);
+  setTimeout(() => window.open('graphic-generator.html', '_blank'), 300);
+  setTimeout(() => window.open('story-generator.html', '_blank'), 600);
+  showToast('Opening all three tools');
+}
+
+// ── Toast ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── Init ──
+window.addEventListener('load', () => {
+  renderSavedList();
+  // Auto-load last brief if exists
+  const last = sessionStorage.getItem('rc_current_brief');
+  if (last) {
+    try { populateForm(JSON.parse(last)); } catch(e) {}
+  }
+  updatePreview();
+});
+</script>
+</body>
+</html>
