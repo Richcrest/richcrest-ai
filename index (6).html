@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCOS | Richcrest Creative Operating System</title>
+  <style>
+:root {
+  --bg: #07111f;
+  --panel: #0d1b2e;
+  --panel-light: #13243b;
+  --text: #eef6ff;
+  --muted: #a9b8c9;
+  --accent: #28f0c8;
+  --accent-2: #7b61ff;
+  --line: rgba(255,255,255,0.12);
+  --shadow: 0 20px 60px rgba(0,0,0,0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(40,240,200,0.16), transparent 32rem),
+    radial-gradient(circle at top right, rgba(123,97,255,0.18), transparent 32rem),
+    var(--bg);
+  color: var(--text);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.hero {
+  min-height: 88vh;
+  padding: 28px clamp(20px, 5vw, 72px);
+  display: flex;
+  flex-direction: column;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-mark {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #06101d;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+
+.brand small {
+  display: block;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 22px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.nav-links a:hover {
+  color: var(--accent);
+}
+
+.hero-content {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  align-items: center;
+  gap: clamp(32px, 6vw, 80px);
+  padding-top: 60px;
+}
+
+.eyebrow {
+  color: var(--accent);
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  margin-bottom: 14px;
+}
+
+h1 {
+  font-size: clamp(44px, 8vw, 92px);
+  line-height: 0.92;
+  letter-spacing: -0.07em;
+  margin: 0 0 24px;
+  max-width: 960px;
+}
+
+h2 {
+  font-size: clamp(28px, 4vw, 48px);
+  letter-spacing: -0.045em;
+  line-height: 1;
+  margin: 0 0 16px;
+}
+
+h3 {
+  margin: 0 0 10px;
+  letter-spacing: -0.025em;
+}
+
+p {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.hero-copy {
+  max-width: 760px;
+  font-size: 18px;
+}
+
+.hero-actions,
+.form-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.btn {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 13px 20px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn.primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #06101d;
+  border-color: transparent;
+}
+
+.btn.secondary {
+  background: rgba(255,255,255,0.04);
+  color: var(--text);
+}
+
+.hero-card,
+.panel,
+.output-panel,
+.library-card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.035));
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+}
+
+.hero-card {
+  padding: 34px;
+}
+
+.card-label {
+  color: var(--accent);
+  font-weight: 800;
+  margin-top: 0;
+}
+
+.section {
+  padding: 80px clamp(20px, 5vw, 72px);
+}
+
+.intro-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  padding-top: 30px;
+}
+
+.panel {
+  padding: 30px;
+}
+
+.panel ul {
+  color: var(--muted);
+  padding-left: 20px;
+  line-height: 1.9;
+}
+
+.section-heading {
+  max-width: 760px;
+  margin-bottom: 32px;
+}
+
+.builder {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+label {
+  color: var(--text);
+  font-weight: 800;
+  font-size: 13px;
+  display: grid;
+  gap: 8px;
+}
+
+.full {
+  grid-column: 1 / -1;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--line);
+  color: var(--text);
+  border-radius: 16px;
+  padding: 14px 14px;
+  outline: none;
+  font: inherit;
+}
+
+select option {
+  color: #07111f;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--accent);
+}
+
+.output-panel {
+  padding: 20px;
+  position: sticky;
+  top: 18px;
+}
+
+.output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.copy-btn {
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 9px 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+  color: #dff9ff;
+  background: rgba(0,0,0,0.22);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 18px;
+  min-height: 520px;
+  line-height: 1.55;
+}
+
+.library-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.library-card {
+  padding: 24px;
+}
+
+footer {
+  border-top: 1px solid var(--line);
+  padding: 28px clamp(20px, 5vw, 72px);
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .hero-content,
+  .intro-grid,
+  .builder,
+  .library-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .output-panel {
+    position: static;
+  }
+
+  .nav {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 620px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    font-size: 44px;
+  }
+
+  .hero {
+    min-height: auto;
+  }
+}
+
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <nav class="nav">
+      <div class="brand">
+        <span class="brand-mark">RC</span>
+        <div>
+          <strong>Richcrest</strong>
+          <small>Creative Operating System</small>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="#builder">Prompt Builder</a>
+        <a href="#libraries">Libraries</a>
+        <a href="#workflow">Workflow</a>
+      </div>
+    </nav>
+
+    <section class="hero-content">
+      <div>
+        <p class="eyebrow">RCOS v1.0</p>
+        <h1>Stop writing prompts. Start directing commercials.</h1>
+        <p class="hero-copy">
+          Build cinematic commercial ads and authentic UGC product reviews using a repeatable creative system:
+          psychology, story, camera language, lighting, motion, and final Higgsfield-ready prompts.
+        </p>
+        <div class="hero-actions">
+          <a href="#builder" class="btn primary">Build a Prompt</a>
+          <a href="#workflow" class="btn secondary">View System</a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <p class="card-label">Core Rule</p>
+        <h2>The prompt is the last step.</h2>
+        <p>Every piece starts with emotion, story, subject, camera, lighting, movement, and outcome.</p>
+      </div>
+    </section>
+  </header>
+
+  <main>
+    <section class="section intro-grid" id="workflow">
+      <article class="panel">
+        <h2>Pipeline 1: Cinematic Commercial</h2>
+        <p>Premium, polished, high-production advertising inspired by Nike, Apple, Rolex, Porsche, and luxury campaigns.</p>
+        <ul>
+          <li>Hero reveal</li>
+          <li>Feature demo</li>
+          <li>Beauty shot</li>
+          <li>Final CTA</li>
+        </ul>
+      </article>
+
+      <article class="panel">
+        <h2>Pipeline 2: UGC Product Review</h2>
+        <p>Authentic creator-style content built for TikTok, Instagram Reels, Amazon reviews, and Shopify product ads.</p>
+        <ul>
+          <li>Hook</li>
+          <li>Problem</li>
+          <li>Demo</li>
+          <li>Reaction</li>
+          <li>Recommendation</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="section builder-section" id="builder">
+      <div class="section-heading">
+        <p class="eyebrow">Prompt Builder</p>
+        <h2>Assemble a production-ready creative brief</h2>
+        <p>Select the creative ingredients, then generate a structured prompt you can paste into Claude or Higgsfield.</p>
+      </div>
+
+      <div class="builder">
+        <form id="promptForm" class="form-grid">
+          <label>
+            Project Name
+            <input id="projectName" type="text" placeholder="Luxury Burger Launch" />
+          </label>
+
+          <label>
+            Content Type
+            <select id="contentType">
+              <option value="commercial">Cinematic Commercial</option>
+              <option value="ugc">UGC Product Review</option>
+              <option value="bundle">Commercial + UGC Bundle</option>
+            </select>
+          </label>
+
+          <label>
+            Niche
+            <select id="niche">
+              <option>Product Brands</option>
+              <option>Food & Beverage</option>
+              <option>Fitness & Wellness</option>
+              <option>Restaurant</option>
+              <option>Gym</option>
+              <option>Boutique</option>
+              <option>Coffee Shop</option>
+              <option>Studio / Salon / Tattoo</option>
+              <option>Amazon / Shopify Product</option>
+              <option>Kickstarter Product</option>
+            </select>
+          </label>
+
+          <label>
+            Product / Business
+            <input id="subject" type="text" placeholder="Black and red basketball sneaker" />
+          </label>
+
+          <label>
+            Primary Emotion
+            <select id="emotion">
+              <option>Luxury</option>
+              <option>Desire</option>
+              <option>Trust</option>
+              <option>Excitement</option>
+              <option>Comfort</option>
+              <option>Curiosity</option>
+              <option>Power</option>
+              <option>Transformation</option>
+              <option>Urgency</option>
+            </select>
+          </label>
+
+          <label>
+            Story Framework
+            <select id="story">
+              <option>Hero Reveal</option>
+              <option>Problem → Solution</option>
+              <option>Transformation</option>
+              <option>Process / Craftsmanship</option>
+              <option>Luxury Lifestyle</option>
+              <option>Honest Review</option>
+              <option>First Impression</option>
+              <option>Unboxing</option>
+              <option>Amazon Find</option>
+              <option>Worth It?</option>
+            </select>
+          </label>
+
+          <label>
+            Brand Personality
+            <select id="personality">
+              <option>Athletic / Bold</option>
+              <option>Luxury / Elegant</option>
+              <option>Friendly / Local</option>
+              <option>Rugged / Durable</option>
+              <option>Innovative / Minimal</option>
+              <option>Playful / Bright</option>
+            </select>
+          </label>
+
+          <label>
+            Environment
+            <select id="environment">
+              <option>Dark premium studio</option>
+              <option>Minimal white product studio</option>
+              <option>Modern gym</option>
+              <option>Warm restaurant kitchen</option>
+              <option>Cozy coffee shop</option>
+              <option>Luxury apartment</option>
+              <option>Industrial warehouse</option>
+              <option>Rainy basketball court</option>
+              <option>Creator bedroom / home setup</option>
+              <option>Natural kitchen counter</option>
+            </select>
+          </label>
+
+          <label>
+            Camera Language
+            <select id="camera">
+              <option>Low-angle slow push-in</option>
+              <option>270-degree hero orbit</option>
+              <option>Macro slider detail shot</option>
+              <option>Handheld creator-style follow</option>
+              <option>Overhead top-down reveal</option>
+              <option>Fast whip pan transition</option>
+              <option>FPV product fly-through</option>
+              <option>Locked-off symmetrical frame</option>
+              <option>Slow dolly left</option>
+              <option>Crash zoom into detail</option>
+            </select>
+          </label>
+
+          <label>
+            Lighting Style
+            <select id="lighting">
+              <option>Hard rim light with soft overhead spotlight</option>
+              <option>Apple-style clean studio lighting</option>
+              <option>Warm restaurant practical lighting</option>
+              <option>Moody sports arena lighting</option>
+              <option>Soft window-light UGC setup</option>
+              <option>Luxury editorial lighting</option>
+              <option>Neon edge lighting</option>
+              <option>Golden-hour lifestyle light</option>
+            </select>
+          </label>
+
+          <label>
+            Motion / Physics
+            <select id="motion">
+              <option>Steam, reflections, and slow atmospheric particles</option>
+              <option>Electricity, rain ripples, dust lift</option>
+              <option>Liquid pour, splash, and macro droplets</option>
+              <option>Floating product rotation with soft shadows</option>
+              <option>Hands demonstrating the product naturally</option>
+              <option>Chalk burst, sweat, fast impact motion</option>
+              <option>Fabric movement, hair movement, lifestyle motion</option>
+              <option>Packaging opens, product slides out, reveal moment</option>
+            </select>
+          </label>
+
+          <label>
+            Platform
+            <select id="platform">
+              <option>9:16 Reels / TikTok / Shorts</option>
+              <option>1:1 Instagram Feed</option>
+              <option>16:9 YouTube / Website</option>
+            </select>
+          </label>
+
+          <label>
+            CTA
+            <input id="cta" type="text" placeholder="Shop Now / Order Today / Book Now" />
+          </label>
+
+          <label class="full">
+            Extra Creative Notes
+            <textarea id="notes" placeholder="Add any product details, colors, vibe, offer, or specific scene idea."></textarea>
+          </label>
+
+          <div class="form-actions full">
+            <button type="button" class="btn primary" id="generateBtn">Generate RCOS Prompt</button>
+            <button type="reset" class="btn secondary">Reset</button>
+          </div>
+        </form>
+
+        <aside class="output-panel">
+          <div class="output-header">
+            <h3>Generated Output</h3>
+            <button id="copyBtn" class="copy-btn" type="button">Copy</button>
+          </div>
+          <pre id="output" aria-live="polite">Your RCOS creative brief and prompt will appear here.</pre>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="libraries">
+      <div class="section-heading">
+        <p class="eyebrow">Libraries</p>
+        <h2>Creative modules to keep expanding</h2>
+      </div>
+
+      <div class="library-grid">
+        <article class="library-card">
+          <h3>Emotion Library</h3>
+          <p>Luxury, desire, trust, excitement, comfort, curiosity, power, transformation.</p>
+        </article>
+        <article class="library-card">
+          <h3>Story Library</h3>
+          <p>Hero reveal, problem-solution, transformation, honest review, unboxing, worth it.</p>
+        </article>
+        <article class="library-card">
+          <h3>Camera Library</h3>
+          <p>Push-in, orbit, macro slider, handheld follow, overhead reveal, whip pan, FPV.</p>
+        </article>
+        <article class="library-card">
+          <h3>Lighting Library</h3>
+          <p>Luxury editorial, warm restaurant, clean studio, moody sports, soft UGC window light.</p>
+        </article>
+        <article class="library-card">
+          <h3>Motion Library</h3>
+          <p>Steam, smoke, rain, sparks, floating products, liquid pours, chalk bursts, packaging reveals.</p>
+        </article>
+        <article class="library-card">
+          <h3>CTA Library</h3>
+          <p>Shop now, order today, book now, back the campaign, try it today, take your first bite.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Richcrest Creative Operating System — built to direct commercials, not just write prompts.</p>
+  </footer>
+
+  <script>
+const generateBtn = document.getElementById("generateBtn");
+const copyBtn = document.getElementById("copyBtn");
+const output = document.getElementById("output");
+
+const field = (id) => {
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : "";
+};
+
+const emotionMap = {
+  Luxury: "premium, elegant, refined, quiet confidence, expensive visual restraint",
+  Desire: "irresistible, crave-worthy, bold, sensory, visually tempting",
+  Trust: "authentic, honest, transparent, natural, believable",
+  Excitement: "fast, energetic, explosive, dynamic, high-impact",
+  Comfort: "warm, cozy, soft, relaxed, familiar",
+  Curiosity: "mysterious, unexpected, revealing, discovery-driven",
+  Power: "dominant, athletic, intense, larger-than-life",
+  Transformation: "before-to-after, growth, improvement, momentum",
+  Urgency: "fast decision, limited-time energy, strong call-to-action"
+};
+
+const commercialStructure = `COMMERCIAL STRUCTURE
+1. Hook: Open with the strongest visual frame immediately.
+2. Build: Show the product, service, or experience in motion.
+3. Payoff: Reveal the outcome or premium result.
+4. CTA: End with one clear action.`;
+
+const ugcStructure = `UGC REVIEW STRUCTURE
+1. Hook: Start like a real creator with a direct opinion or discovery.
+2. Problem: Explain what made the product useful or interesting.
+3. Demo: Show the product being used naturally.
+4. Reaction: Give a believable first-person response.
+5. CTA: Recommend the viewer try, shop, book, or order.`;
+
+function generatePrompt() {
+  const projectName = field("projectName") || "Untitled RCOS Project";
+  const contentType = field("contentType");
+  const niche = field("niche");
+  const subject = field("subject") || "[Add product or business]";
+  const emotion = field("emotion");
+  const story = field("story");
+  const personality = field("personality");
+  const environment = field("environment");
+  const camera = field("camera");
+  const lighting = field("lighting");
+  const motion = field("motion");
+  const platform = field("platform");
+  const cta = field("cta") || "[Add CTA]";
+  const notes = field("notes") || "No extra notes.";
+
+  let typeLabel = "Cinematic Commercial";
+  let structure = commercialStructure;
+
+  if (contentType === "ugc") {
+    typeLabel = "UGC Product Review";
+    structure = ugcStructure;
+  }
+
+  if (contentType === "bundle") {
+    typeLabel = "Commercial + UGC Bundle";
+    structure = `${commercialStructure}\n\n${ugcStructure}`;
+  }
+
+  const psychology = emotionMap[emotion] || emotion;
+
+  const prompt = `RCOS CREATIVE BRIEF
+
+Project:
+${projectName}
+
+Content Type:
+${typeLabel}
+
+Niche:
+${niche}
+
+Hero Subject:
+${subject}
+
+Primary Emotion:
+${emotion} — ${psychology}
+
+Story Framework:
+${story}
+
+Brand Personality:
+${personality}
+
+Platform / Aspect Ratio:
+${platform}
+
+Environment:
+${environment}
+
+Camera Language:
+${camera}
+
+Lighting:
+${lighting}
+
+Motion + Physics:
+${motion}
+
+CTA:
+${cta}
+
+Extra Notes:
+${notes}
+
+${structure}
+
+
+HIGGSFIELD-READY PROMPT
+
+Create a ${platform.toLowerCase()} ${typeLabel.toLowerCase()} for ${subject}. The creative direction should feel ${emotion.toLowerCase()}, with a ${personality.toLowerCase()} brand personality. Set the scene in a ${environment.toLowerCase()}. Use ${camera.toLowerCase()} as the main camera language. Light the scene with ${lighting.toLowerCase()}. Add realistic motion details: ${motion.toLowerCase()}.
+
+The story follows a ${story.toLowerCase()} structure. Make the first second visually powerful and easy to understand on a phone screen. Keep the subject as the clear hero of the frame. Use cinematic depth, clean composition, realistic texture, and intentional pacing. End on a polished final hero frame with readable on-screen text: "${cta}".
+
+STYLE NOTES
+- Concrete and sensory visual details.
+- Motion should feel physically believable.
+- One hero subject only.
+- Clean phone-first composition.
+- Premium commercial finish.
+- Avoid cluttered text.
+- Keep final CTA short and readable.`;
+
+  output.textContent = prompt;
+}
+
+// Reliable copy: try the async Clipboard API, fall back to selecting the
+// text and using execCommand, and finally to a manual-select message.
+async function copyOutput() {
+  const text = output.textContent || "";
+  if (!text.trim() || text.startsWith("Your RCOS creative brief")) {
+    flashCopyLabel("Generate first");
+    return;
+  }
+
+  // Preferred path: async Clipboard API (needs https or localhost + focus).
+  if (navigator.clipboard && window.isSecureContext) {
+    try {
+      await navigator.clipboard.writeText(text);
+      flashCopyLabel("Copied");
+      return;
+    } catch (err) {
+      // fall through to the legacy path
+    }
+  }
+
+  // Legacy fallback: select the <pre> contents and execCommand('copy').
+  try {
+    const range = document.createRange();
+    range.selectNodeContents(output);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    const ok = document.execCommand("copy");
+    selection.removeAllRanges();
+    flashCopyLabel(ok ? "Copied" : "Press Ctrl+C");
+  } catch (err) {
+    flashCopyLabel("Press Ctrl+C");
+  }
+}
+
+function flashCopyLabel(message) {
+  const original = "Copy";
+  copyBtn.textContent = message;
+  setTimeout(() => {
+    copyBtn.textContent = original;
+  }, 1400);
+}
+
+if (generateBtn) generateBtn.addEventListener("click", generatePrompt);
+if (copyBtn) copyBtn.addEventListener("click", copyOutput);
+
+  </script>
+</body>
+</html>
