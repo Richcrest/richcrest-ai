@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard.html
+Disallow: /brief.html
+Disallow: /studio.html
+Disallow: /graphic-generator.html
+Disallow: /story-generator.html
+Disallow: /delivery.html
+Disallow: /thank-you.html
+
+Sitemap: https://richcrest.ai/sitemap.xml
