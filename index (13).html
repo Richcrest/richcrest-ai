@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Richcrest AI: Cinematic Commercials & UGC Video Campaigns for Product, Food, and Fitness Brands</title>
+<meta name="description" content="AI-directed commercial video and UGC product reviews for product brands, restaurants, and fitness businesses. Full campaigns, Hero Commercial, UGC Review, social cuts, delivered in days, starting at $397." />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://richcrest.ai/" />
+<meta name="theme-color" content="#0a0a0a" />
+
+<!-- Open Graph / Facebook / iMessage / Slack link previews -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://richcrest.ai/" />
+<meta property="og:site_name" content="Richcrest AI" />
+<meta property="og:title" content="Richcrest AI: Cinematic Commercials & UGC Video Campaigns" />
+<meta property="og:description" content="AI-directed commercial video and UGC product reviews for product brands, restaurants, and fitness businesses. Full campaigns delivered in days, starting at $397." />
+<meta property="og:image" content="https://richcrest.ai/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Richcrest AI: Cinematic Commercials & UGC Video Campaigns" />
+<meta name="twitter:description" content="AI-directed commercial video and UGC product reviews for product brands, restaurants, and fitness businesses. Full campaigns delivered in days, starting at $397." />
+<meta name="twitter:image" content="https://richcrest.ai/og-image.png" />
+
+<link rel="icon" type="image/png" href="favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --black:#0a0a0a; --surface:#141414; --surface2:#1a1a1a;
+    --border:#222; --border2:#2a2a2a;
+    --white:#fff; --gray:#888; --light:#ccc;
+    --accent:#6c47ff; --accent-dim:rgba(108,71,255,0.1);
+    --green:#12b76a; --green-dim:rgba(18,183,106,0.1);
+    --gold:#f5a623; --gold-dim:rgba(245,166,35,0.1);
+  }
+  html { scroll-behavior:smooth; }
+  body { background:var(--black); color:var(--white); font-family:'Plus Jakarta Sans',sans-serif; }
+
+  /* ── NAV ── */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:0 40px; height:64px;
+    background:rgba(10,10,10,0.92); backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .logo-mark { width:32px; height:32px; background:var(--accent); border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; }
+  .logo-name { font-family:'Fraunces',serif; font-size:18px; font-weight:700; color:var(--white); }
+  .logo-name span { color:var(--accent); }
+  .nav-links { display:flex; align-items:center; gap:28px; }
+  .nav-links a { font-size:13px; color:var(--gray); text-decoration:none; font-weight:500; transition:color 0.2s; }
+  .nav-links a:hover { color:var(--white); }
+  .nav-cta { background:var(--accent); color:white; border:none; border-radius:9px; padding:9px 20px; font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; font-weight:700; cursor:pointer; text-decoration:none; transition:all 0.2s; }
+  .nav-cta:hover { background:#5a3ae0; }
+
+  /* ── CATEGORY SWITCHER ── */
+  .switcher-bar {
+    position:fixed; top:64px; left:0; right:0; z-index:99;
+    background:var(--surface); border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center; gap:8px; padding:10px;
+  }
+  .switcher-label { font-size:12px; color:var(--gray); margin-right:4px; }
+  .switcher-btn {
+    padding:7px 18px; border-radius:20px; font-size:12px; font-weight:600;
+    border:1px solid var(--border2); background:transparent; color:var(--gray);
+    cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; transition:all 0.2s;
+  }
+  .switcher-btn:hover { border-color:#444; color:var(--white); }
+  .switcher-btn.active { background:var(--accent); border-color:var(--accent); color:white; }
+
+  /* ── HERO ── */
+  .hero {
+    padding:160px 40px 100px;
+    display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;
+    max-width:1200px; margin:0 auto;
+  }
+  .hero-eyebrow { font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+  .hero-eyebrow::before { content:''; width:24px; height:2px; background:var(--accent); }
+  .hero-title { font-family:'Fraunces',serif; font-size:clamp(36px,4.5vw,58px); font-weight:800; line-height:1.06; letter-spacing:-1.5px; margin-bottom:24px; }
+  .hero-title .accent { color:var(--accent); font-style:italic; }
+  .hero-title .strike { text-decoration:line-through; color:var(--gray); font-style:normal; }
+  .hero-sub { font-size:16px; color:var(--gray); line-height:1.75; margin-bottom:36px; max-width:480px; }
+  .hero-sub strong { color:var(--white); font-weight:600; }
+  .hero-ctas { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:28px; }
+  .btn-primary { background:var(--accent); color:white; border:none; border-radius:10px; padding:14px 28px; font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:700; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:8px; transition:all 0.2s; }
+  .btn-primary:hover { background:#5a3ae0; transform:translateY(-2px); box-shadow:0 8px 32px rgba(108,71,255,0.35); }
+  .btn-ghost { background:transparent; color:var(--light); border:1px solid var(--border2); border-radius:10px; padding:14px 28px; font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:600; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:8px; transition:all 0.2s; }
+  .btn-ghost:hover { border-color:var(--accent); color:var(--white); }
+  .hero-trust { display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+  .trust-item { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--gray); }
+  .trust-dot { width:6px; height:6px; border-radius:50%; background:var(--green); }
+
+  /* ── HERO MOCKUP (campaign preview card) ── */
+  .hero-right { position:relative; }
+  .phone-mockup {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:20px; overflow:hidden;
+    box-shadow:0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(108,71,255,0.1);
+    max-width:340px; margin:0 auto;
+  }
+  .mockup-header { padding:14px 16px 10px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+  .mockup-platform { font-size:12px; font-weight:600; color:var(--light); display:flex; align-items:center; gap:6px; }
+  .mockup-badge { font-size:10px; font-weight:700; background:var(--accent-dim); color:var(--accent); border:1px solid rgba(108,71,255,0.2); padding:3px 9px; border-radius:20px; text-transform:uppercase; letter-spacing:0.5px; }
+  .mockup-img { width:100%; height:180px; overflow:hidden; position:relative; display:flex; align-items:center; justify-content:center; transition:background 0.3s; }
+  .mockup-img video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; }
+  .mockup-video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; }
+  .mockup-play { width:52px; height:52px; border-radius:50%; background:rgba(0,0,0,0.35); border:1.5px solid rgba(255,255,255,0.6); display:flex; align-items:center; justify-content:center; font-size:18px; color:white; backdrop-filter:blur(4px); z-index:2; cursor:pointer; }
+  .mockup-img-overlay { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.35) 100%); pointer-events:none; }
+  .mockup-runtime { position:absolute; bottom:10px; right:12px; font-size:10px; font-weight:700; color:white; background:rgba(0,0,0,0.5); padding:3px 8px; border-radius:6px; z-index:2; }
+  .mockup-body { padding:14px 16px; }
+  .mockup-caption { font-size:12.5px; line-height:1.65; color:var(--light); margin-bottom:8px; font-style:italic; }
+  .mockup-tags { font-size:11px; color:var(--accent); margin-bottom:10px; }
+  .mockup-footer { display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border); padding:10px 16px; }
+  .mockup-time { font-size:11px; color:var(--gray); }
+  .mockup-copy { background:var(--surface2); border:1px solid var(--border2); border-radius:6px; padding:5px 12px; font-size:11px; font-weight:600; color:var(--light); cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; }
+
+  /* Mini cards */
+  .mini-cards { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
+  .mini-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:12px; }
+  .mini-card-top { font-size:11px; font-weight:600; color:var(--light); margin-bottom:6px; display:flex; align-items:center; gap:5px; }
+  .mini-card-text { font-size:11px; color:var(--gray); line-height:1.5; }
+  .mini-card-tags { font-size:10px; color:var(--accent); margin-top:5px; }
+
+  /* Floating badge */
+  .float-badge {
+    position:absolute; top:-16px; right:-16px;
+    background:var(--green); color:white;
+    border-radius:12px; padding:8px 14px;
+    font-size:11px; font-weight:700; line-height:1.3;
+    box-shadow:0 4px 20px rgba(18,183,106,0.4);
+    text-align:center; z-index:2;
+  }
+
+  /* ── SECTION BASE ── */
+  section { padding:96px 40px; }
+  .section-inner { max-width:1200px; margin:0 auto; }
+  .section-eyebrow { font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:12px; }
+  .section-title { font-family:'Fraunces',serif; font-size:clamp(28px,3.5vw,44px); font-weight:800; letter-spacing:-1px; line-height:1.1; margin-bottom:16px; }
+  .section-sub { font-size:15px; color:var(--gray); max-width:560px; line-height:1.7; margin-bottom:48px; }
+
+  /* ── PAIN SECTION ── */
+  .pain-section { background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+  .pain-grid { display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+  .pain-card { background:var(--black); border:1px solid var(--border); border-radius:16px; padding:32px; position:relative; overflow:hidden; }
+  .pain-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--accent); }
+  .pain-card.green::before { background:var(--green); }
+  .pain-icon { font-size:32px; margin-bottom:16px; display:block; }
+  .pain-title { font-family:'Fraunces',serif; font-size:22px; font-weight:700; margin-bottom:12px; }
+  .pain-list { list-style:none; display:flex; flex-direction:column; gap:10px; }
+  .pain-list li { display:flex; align-items:flex-start; gap:10px; font-size:13px; color:var(--gray); line-height:1.5; }
+  .pain-list li::before { content:'→'; color:var(--accent); font-weight:700; flex-shrink:0; margin-top:1px; }
+  .pain-card.green .pain-list li::before { color:var(--green); }
+  .pain-solution { margin-top:20px; padding:14px 16px; background:var(--accent-dim); border:1px solid rgba(108,71,255,0.15); border-radius:10px; font-size:13px; color:var(--light); line-height:1.5; }
+  .pain-card.green .pain-solution { background:var(--green-dim); border-color:rgba(18,183,106,0.15); }
+
+  /* ── OFFER SECTION ── */
+  .offer-section { background:var(--black); }
+  .offer-frame { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:48px; margin-bottom:48px; position:relative; overflow:hidden; }
+  .offer-frame::before { content:''; position:absolute; top:0; right:0; width:400px; height:400px; background:radial-gradient(circle, rgba(108,71,255,0.08) 0%, transparent 70%); pointer-events:none; }
+  .offer-eyebrow { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+  .offer-title { font-family:'Fraunces',serif; font-size:28px; font-weight:800; margin-bottom:6px; }
+  .offer-sub { font-size:14px; color:var(--gray); margin-bottom:32px; max-width:560px; line-height:1.6; }
+  .deliverable-list { display:flex; flex-direction:column; gap:12px; margin-bottom:32px; }
+  .deliverable-item { display:flex; align-items:center; gap:14px; padding:14px 18px; background:var(--black); border:1px solid var(--border); border-radius:10px; }
+  .deliverable-icon { font-size:20px; width:36px; text-align:center; flex-shrink:0; }
+  .deliverable-text { flex:1; }
+  .deliverable-title { font-size:13px; font-weight:700; color:var(--white); }
+  .deliverable-sub { font-size:12px; color:var(--gray); margin-top:2px; }
+  .deliverable-check { color:var(--green); font-size:16px; flex-shrink:0; }
+
+  /* Pricing cards */
+  .pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .price-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px; position:relative; transition:border-color 0.2s; }
+  .price-card:hover { border-color:rgba(108,71,255,0.3); }
+  .price-card.featured { border-color:var(--accent); background:linear-gradient(135deg, rgba(108,71,255,0.08) 0%, var(--surface) 100%); }
+  .price-popular { position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--accent); color:white; font-size:10px; font-weight:700; padding:4px 14px; border-radius:20px; white-space:nowrap; letter-spacing:0.5px; text-transform:uppercase; }
+  .price-name { font-size:12px; font-weight:700; color:var(--gray); text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+  .price-amount { font-family:'Fraunces',serif; font-size:42px; font-weight:800; color:var(--white); line-height:1; margin-bottom:4px; }
+  .price-amount span { font-size:18px; font-weight:400; color:var(--gray); }
+  .price-period { font-size:12px; color:var(--gray); margin-bottom:20px; }
+  .price-features { list-style:none; display:flex; flex-direction:column; gap:8px; margin-bottom:24px; }
+  .price-features li { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--light); }
+  .price-features li::before { content:'✓'; color:var(--green); font-weight:700; flex-shrink:0; }
+  .price-cta { width:100%; background:var(--surface2); border:1px solid var(--border2); border-radius:9px; padding:11px; font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; font-weight:700; color:var(--light); cursor:pointer; transition:all 0.2s; text-decoration:none; display:block; text-align:center; }
+  .price-cta:hover { border-color:var(--accent); color:var(--white); }
+  .price-card.featured .price-cta { background:var(--accent); border-color:var(--accent); color:white; }
+  .price-card.featured .price-cta:hover { background:#5a3ae0; }
+  .price-bonus { margin-top:14px; padding:10px 12px; background:var(--gold-dim); border:1px solid rgba(245,166,35,0.25); border-radius:8px; font-size:11px; color:var(--gold); line-height:1.5; }
+
+  /* ── HOW IT WORKS ── */
+  .how-section { background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+  .steps-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:0; position:relative; }
+  .steps-grid::before { content:''; position:absolute; top:28px; left:10%; right:10%; height:1px; background:linear-gradient(to right, var(--accent), var(--green)); z-index:0; }
+  .step { text-align:center; position:relative; z-index:1; padding:0 12px; }
+  .step-num { width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-size:20px; font-weight:800; margin:0 auto 16px; border:2px solid var(--border2); background:var(--surface); }
+  .step-title { font-size:13px; font-weight:700; color:var(--white); margin-bottom:6px; }
+  .step-sub { font-size:12px; color:var(--gray); line-height:1.5; }
+
+  /* ── OBJECTION SECTION ── */
+  .objection-section { background:var(--black); }
+  .objections-list { display:flex; flex-direction:column; gap:2px; max-width:800px; }
+  .obj-item { border:1px solid var(--border); border-radius:12px; overflow:hidden; transition:border-color 0.2s; }
+  .obj-item:hover { border-color:rgba(108,71,255,0.3); }
+  .obj-q { padding:20px 24px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; gap:16px; }
+  .obj-q-text { font-size:15px; font-weight:600; color:var(--light); }
+  .obj-icon { font-size:20px; flex-shrink:0; width:32px; height:32px; background:var(--accent-dim); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--accent); font-size:14px; font-weight:700; transition:transform 0.2s; }
+  .obj-a { padding:0 24px 20px; font-size:14px; color:var(--gray); line-height:1.7; display:none; }
+  .obj-a strong { color:var(--white); }
+  .obj-item.open .obj-a { display:block; }
+  .obj-item.open .obj-icon { transform:rotate(45deg); background:var(--accent); color:white; }
+  .obj-item.open { border-color:rgba(108,71,255,0.3); background:rgba(108,71,255,0.03); }
+
+  /* ── SOCIAL PROOF ── */
+  .proof-section { background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+  .proof-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:48px; }
+  .proof-card { background:var(--black); border:1px solid var(--border); border-radius:14px; padding:24px; }
+  .proof-stars { color:var(--gold); font-size:14px; margin-bottom:12px; letter-spacing:2px; }
+  .proof-text { font-size:14px; color:var(--light); line-height:1.65; margin-bottom:16px; font-style:italic; }
+  .proof-author { display:flex; align-items:center; gap:10px; }
+  .proof-avatar { width:36px; height:36px; border-radius:50%; background:var(--accent-dim); border:1px solid rgba(108,71,255,0.2); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+  .proof-name { font-size:13px; font-weight:700; color:var(--white); }
+  .proof-biz { font-size:11px; color:var(--gray); margin-top:2px; }
+
+  /* Stats */
+  .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  .stat-item { text-align:center; padding:24px; background:var(--black); border:1px solid var(--border); border-radius:14px; }
+  .stat-num { font-family:'Fraunces',serif; font-size:40px; font-weight:800; color:var(--white); line-height:1; margin-bottom:6px; }
+  .stat-label { font-size:12px; color:var(--gray); line-height:1.4; }
+
+  /* ── RISK REVERSAL ── */
+  .risk-section { background:var(--black); }
+  .risk-card { background:linear-gradient(135deg, rgba(108,71,255,0.08) 0%, rgba(18,183,106,0.05) 100%); border:1px solid rgba(108,71,255,0.2); border-radius:20px; padding:48px; display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; }
+  .risk-title { font-family:'Fraunces',serif; font-size:32px; font-weight:800; margin-bottom:16px; line-height:1.15; }
+  .risk-sub { font-size:15px; color:var(--gray); line-height:1.7; margin-bottom:28px; }
+  .risk-items { display:flex; flex-direction:column; gap:14px; }
+  .risk-item { display:flex; align-items:flex-start; gap:12px; font-size:13px; color:var(--light); line-height:1.5; }
+  .risk-item-icon { font-size:20px; flex-shrink:0; }
+  .risk-right { display:flex; flex-direction:column; gap:12px; }
+  .risk-box { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px; }
+  .risk-box-title { font-size:13px; font-weight:700; color:var(--white); margin-bottom:6px; display:flex; align-items:center; gap:8px; }
+  .risk-box-text { font-size:12px; color:var(--gray); line-height:1.5; }
+
+  /* ── CTA SECTION ── */
+  .cta-section { background:var(--surface); border-top:1px solid var(--border); }
+  .cta-inner { max-width:800px; margin:0 auto; text-align:center; }
+  .cta-title { font-family:'Fraunces',serif; font-size:clamp(32px,4vw,52px); font-weight:800; letter-spacing:-1px; line-height:1.08; margin-bottom:16px; }
+  .cta-title .accent { color:var(--accent); font-style:italic; }
+  .cta-sub { font-size:16px; color:var(--gray); line-height:1.7; margin-bottom:36px; }
+  .cta-form { background:var(--black); border:1px solid var(--border); border-radius:16px; padding:32px; max-width:480px; margin:0 auto; }
+  .form-field { margin-bottom:14px; }
+  .form-label { font-size:11px; font-weight:600; color:var(--light); display:block; margin-bottom:6px; letter-spacing:0.5px; text-transform:uppercase; }
+  .form-input { width:100%; background:var(--surface2); border:1px solid var(--border2); border-radius:9px; padding:11px 14px; color:var(--white); font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; outline:none; transition:border-color 0.2s; }
+  .form-input:focus { border-color:var(--accent); }
+  .form-select { width:100%; background:var(--surface2); border:1px solid var(--border2); border-radius:9px; padding:11px 14px; color:var(--white); font-family:'Plus Jakarta Sans',sans-serif; font-size:13px; outline:none; cursor:pointer; }
+  .form-select option { background:#1a1a1a; }
+  .form-submit { width:100%; background:var(--accent); color:white; border:none; border-radius:10px; padding:14px; font-family:'Plus Jakarta Sans',sans-serif; font-size:14px; font-weight:700; cursor:pointer; margin-top:6px; transition:all 0.2s; }
+  .form-submit:hover { background:#5a3ae0; transform:translateY(-1px); }
+  .form-note { font-size:11px; color:var(--gray); text-align:center; margin-top:12px; line-height:1.5; }
+
+  /* ── FOOTER ── */
+  footer { background:var(--black); border-top:1px solid var(--border); padding:40px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px; }
+  .footer-logo { font-family:'Fraunces',serif; font-size:16px; font-weight:700; }
+  .footer-logo span { color:var(--accent); }
+  .footer-links { display:flex; gap:24px; }
+  .footer-links a { font-size:12px; color:var(--gray); text-decoration:none; transition:color 0.2s; }
+  .footer-links a:hover { color:var(--white); }
+  .footer-copy { font-size:12px; color:var(--gray); }
+
+  /* ── EXAMPLES SECTION (campaign preview cards) ── */
+  .examples-section { background:var(--black); }
+  .examples-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+  .example-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; transition:all 0.25s; cursor:pointer; }
+  .example-card:hover { transform:translateY(-6px); border-color:var(--accent); box-shadow:0 16px 40px rgba(0,0,0,0.4); }
+  .example-video-wrap { position:relative; height:210px; overflow:hidden; display:flex; align-items:center; justify-content:center; transition:transform 0.4s; }
+  .example-video-wrap video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:1; }
+  .example-card:hover .example-video-wrap { transform:scale(1.03); }
+  .example-video-wrap::after { content:''; position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 50%, transparent 100%); pointer-events:none; }
+  .example-play { width:46px; height:46px; border-radius:50%; background:rgba(0,0,0,0.35); border:1.5px solid rgba(255,255,255,0.6); display:flex; align-items:center; justify-content:center; font-size:16px; color:white; z-index:2; backdrop-filter:blur(4px); cursor:pointer; }
+
+  /* ── VIDEO LIGHTBOX ── */
+  .video-modal {
+    display:none; position:fixed; inset:0; z-index:1000;
+    background:rgba(0,0,0,0.92); backdrop-filter:blur(6px);
+    align-items:center; justify-content:center; padding:40px 20px;
+  }
+  .video-modal.open { display:flex; }
+  .video-modal-inner { position:relative; max-width:480px; width:100%; }
+  .video-modal video { width:100%; max-height:85vh; border-radius:16px; display:block; background:#000; }
+  .video-modal-close {
+    position:absolute; top:-46px; right:0; width:36px; height:36px; border-radius:50%;
+    background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.3); color:white;
+    font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  }
+  .video-modal-close:hover { background:rgba(255,255,255,0.2); }
+  .video-modal-fullscreen {
+    position:absolute; bottom:14px; right:14px; padding:8px 14px; border-radius:8px;
+    background:rgba(0,0,0,0.55); border:1px solid rgba(255,255,255,0.3); color:white;
+    font-size:12px; font-weight:700; cursor:pointer; backdrop-filter:blur(4px);
+  }
+  .video-modal-fullscreen:hover { background:rgba(0,0,0,0.75); }
+  .example-badge { position:absolute; top:12px; left:12px; background:rgba(0,0,0,0.6); backdrop-filter:blur(8px); border-radius:20px; padding:4px 11px; font-size:10px; font-weight:700; color:white; z-index:2; }
+  .example-label { position:absolute; bottom:14px; left:14px; right:14px; z-index:2; }
+  .example-label-title { font-family:'Fraunces',serif; font-size:15px; font-weight:700; color:white; margin-bottom:2px; }
+  .example-label-sub { font-size:11px; color:rgba(255,255,255,0.7); }
+  .example-body { padding:14px 16px; }
+  .example-hook { font-size:12px; color:var(--light); line-height:1.55; margin-bottom:8px; min-height:54px; }
+  .example-tags { font-size:10px; color:var(--accent); }
+
+  /* ── MOBILE ── */
+  @media(max-width:900px) {
+    nav { padding:0 20px; }
+    .nav-links { display:none; }
+    .hero { grid-template-columns:1fr; padding:140px 20px 60px; gap:40px; }
+    .hero-right { order:-1; }
+    .phone-mockup { max-width:100%; }
+    .float-badge { top:-10px; right:0; }
+    section { padding:60px 20px; }
+    .pain-grid { grid-template-columns:1fr; }
+    .pricing-grid { grid-template-columns:1fr; }
+    .steps-grid { grid-template-columns:1fr 1fr; gap:24px; }
+    .steps-grid::before { display:none; }
+    .proof-grid { grid-template-columns:1fr; }
+    .stats-row { grid-template-columns:1fr 1fr; }
+    .risk-card { grid-template-columns:1fr; gap:32px; }
+    footer { flex-direction:column; text-align:center; }
+    .switcher-bar { flex-wrap:wrap; gap:6px; }
+    .examples-grid { grid-template-columns:1fr 1fr; }
+  }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Richcrest AI",
+  "url": "https://richcrest.ai/",
+  "description": "AI-directed commercial video production and UGC product review campaigns for product brands, restaurants, and fitness businesses.",
+  "areaServed": {
+    "@type": "Place",
+    "name": "East Valley, Arizona"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressRegion": "AZ",
+    "addressCountry": "US"
+  },
+  "priceRange": "$397–$1,997",
+  "makesOffer": [
+    { "@type": "Offer", "name": "Single Campaign", "price": "397", "priceCurrency": "USD" },
+    { "@type": "Offer", "name": "Growth Campaign", "price": "997", "priceCurrency": "USD" },
+    { "@type": "Offer", "name": "Full Studio", "price": "1997", "priceCurrency": "USD" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "AI video looks fake or cheap. Won't mine too?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "That happens when someone writes a prompt straight into an AI tool with no direction behind it. We do not do that. Every campaign starts with a creative brief: emotion, story framework, camera language, lighting, and motion, all decided before anything is generated."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "I don't have footage, actors, or a film crew.",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You do not need any of that. No filming required on your end. We produce the Hero Commercial and UGC review from your product details, brand direction, and a creative brief."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "It's too expensive. I cannot justify this right now.",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A single entry-level commercial from a traditional studio runs $2,500 to $5,000, and a UGC review video alone averages $500 to $1,200 on top of that. Our Single Campaign starts at $397 and includes both, plus six more deliverables."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if I don't like the campaign?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We revise until it's right, every campaign. We also start with a free campaign concept before you pay anything, so you see the direction before you commit to production."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I just get social posts instead of video?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Our original weekly social content system is available as a standalone add-on starting at $397/mo, or bundled free into the Full Studio plan."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I know this will actually convert?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Each campaign is directed to build the specific emotion your category needs: premium feel for product brands, craving for food, transformation for fitness, and trust for UGC reviews."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="/">
+    <div class="logo-mark">✦</div>
+    <div class="logo-name">Richcrest <span>AI</span></div>
+  </a>
+  <div class="nav-links">
+    <a href="#how">How It Works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#objections">FAQ</a>
+    <a href="#start">Get Started</a>
+  </div>
+  <a class="nav-cta" href="#start">See Your Free Campaign Concept</a>
+</nav>
+
+<!-- CATEGORY SWITCHER -->
+<div class="switcher-bar">
+  <span class="switcher-label">I'm building for:</span>
+  <button class="switcher-btn active" onclick="setCategory('product', this)">🎯 Product Brands</button>
+  <button class="switcher-btn" onclick="setCategory('food', this)">🍔 Food &amp; Beverage</button>
+  <button class="switcher-btn" onclick="setCategory('fitness', this)">💪 Fitness &amp; Wellness</button>
+  <button class="switcher-btn" onclick="setCategory('ugc', this)">🎬 UGC Reviews</button>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow" id="heroEyebrow">For Shopify, Amazon &amp; Kickstarter Brands</div>
+    <h1 class="hero-title" id="heroTitle">Your product deserves a commercial.<br><span class="accent">Not a photo dump.</span></h1>
+    <p class="hero-sub" id="heroSub">We direct and produce cinematic Hero Commercials and authentic UGC reviews for product brands, engineered to make the product feel premium before anyone reads the price. <strong>A full campaign, not a single clip.</strong></p>
+    <div class="hero-ctas">
+      <a class="btn-primary" href="#start">See Your Free Campaign Concept →</a>
+      <a class="btn-ghost" href="#how">How It Works</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item"><div class="trust-dot"></div>No filming required</div>
+      <div class="trust-item"><div class="trust-dot"></div>Direction-first, not just prompts</div>
+      <div class="trust-item"><div class="trust-dot"></div>First concept free</div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="float-badge">✓ Full Campaign<br>Delivered</div>
+    <div class="phone-mockup">
+      <div class="mockup-header">
+        <div class="mockup-platform">🎬 Campaign Preview</div>
+        <div class="mockup-badge" id="mockBadge">Hero Commercial</div>
+      </div>
+      <div class="mockup-img" id="mockImg" style="background:linear-gradient(135deg, rgba(108,71,255,0.35), rgba(20,20,20,0.9));">
+        <video id="mockVideo" src="vid-product.mp4" poster="poster-product.jpg" autoplay muted loop playsinline></video>
+        <div class="mockup-play" onclick="event.stopPropagation(); openVideoModal(document.getElementById('mockVideo').currentSrc || document.getElementById('mockVideo').src, document.getElementById('mockVideo').poster)">▶</div>
+        <div class="mockup-img-overlay"></div>
+        <div class="mockup-runtime" id="mockRuntimeBadge">0:10</div>
+      </div>
+      <div class="mockup-body">
+        <div class="mockup-caption" id="mockCaption">"Every stitch, every texture, every angle, built to make it feel worth the price before a single word is said."</div>
+        <div class="mockup-tags" id="mockTags">9:16 · Kling 3.0 · Luxury / Elegant · CTA: Shop Now</div>
+      </div>
+      <div class="mockup-footer">
+        <div class="mockup-time" id="mockRuntime">Runtime: 0:10</div>
+        <button class="mockup-copy" onclick="this.textContent='✓ Copied'; setTimeout(()=>this.textContent='Copy Script',1500)">Copy Script</button>
+      </div>
+      <div class="mini-cards">
+        <div class="mini-card" style="border-top:3px solid var(--accent)">
+          <div class="mini-card-top">📱 UGC Review</div>
+          <div class="mini-card-text" id="miniFb">"Honestly did not expect much, three uses in and I'm not putting it down."</div>
+          <div class="mini-card-tags">First Impression</div>
+        </div>
+        <div class="mini-card" style="border-top:3px solid var(--green)">
+          <div class="mini-card-top">⚡ 6-Sec Hook</div>
+          <div class="mini-card-text" id="miniTt">"This is the last one of these you'll ever need to buy."</div>
+          <div class="mini-card-tags">Scroll-Stopper</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAIN SECTION -->
+<section class="pain-section" id="pain">
+  <div class="section-inner">
+    <div class="section-eyebrow">Who This Is For</div>
+    <h2 class="section-title">Four production systems. One goal each.</h2>
+    <p class="section-sub">Every category has a different job to do on camera. We direct for that job first, then let AI execute the production.</p>
+    <div class="pain-grid">
+      <div class="pain-card" id="painCard1">
+        <span class="pain-icon">🎯</span>
+        <h3 class="pain-title">The Product Brand Founder</h3>
+        <ul class="pain-list">
+          <li>Your product photos look fine but nothing feels premium enough to justify the price</li>
+          <li>A real commercial production would cost thousands and take weeks you don't have</li>
+          <li>Every competitor's Amazon listing and Shopify page looks the same as yours</li>
+          <li>You have no in-house video team and no time to learn one</li>
+          <li>You know UGC-style reviews convert but you have no real customers filming yet</li>
+        </ul>
+        <div class="pain-solution">What we actually solve: A directed Hero Commercial and UGC review that make the product feel premium, built in days, not a production cycle.</div>
+      </div>
+      <div class="pain-card green" id="painCard2">
+        <span class="pain-icon">📈</span>
+        <h3 class="pain-title">What a Directed Campaign Does</h3>
+        <ul class="pain-list">
+          <li>A premium-feeling commercial changes how buyers perceive the price before checkout</li>
+          <li>UGC-style reviews lower the trust barrier that stock photography can't touch</li>
+          <li>Platform-cut social ads mean the same campaign works on Shopify, Amazon, and TikTok</li>
+          <li>A 6-second hook stops the scroll before a viewer even reaches the pitch</li>
+          <li>One campaign becomes reusable assets across every channel you sell on</li>
+        </ul>
+        <div class="pain-solution">The brands converting right now are not the ones with the best product photos. They are the ones with a directed campaign behind the product.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXAMPLES SECTION -->
+<section class="examples-section" id="examples">
+  <div class="section-inner">
+    <div class="section-eyebrow">Real Campaigns, Real Categories</div>
+    <h2 class="section-title">This is what a directed campaign looks like.</h2>
+    <p class="section-sub">Every campaign starts with a Creative Brief, psychology, story, camera, lighting, and motion chosen before a single prompt is written. Then it gets produced.</p>
+
+    <div class="examples-grid">
+
+      <div class="example-card" onclick="setCategory('product', document.querySelectorAll('.switcher-btn')[0])">
+        <div class="example-video-wrap">
+          <video src="vid-product.mp4" poster="poster-product.jpg" autoplay muted loop playsinline></video>
+          <div class="example-play" onclick="event.stopPropagation(); const v=this.closest('.example-video-wrap').querySelector('video'); openVideoModal(v.currentSrc||v.src, v.poster);">▶</div>
+          <div class="example-badge">🎬 Hero Commercial</div>
+          <div class="example-label">
+            <div class="example-label-title">Product Brands</div>
+            <div class="example-label-sub">Make it feel premium</div>
+          </div>
+        </div>
+        <div class="example-body">
+          <div class="example-hook">A floating headphone rotation under a single spotlight, the product becomes the hero of the frame, no price in sight.</div>
+          <div class="example-tags">#ProductLaunch #TechCommercial</div>
+        </div>
+      </div>
+
+      <div class="example-card" onclick="setCategory('food', document.querySelectorAll('.switcher-btn')[1])">
+        <div class="example-video-wrap">
+          <video src="vid-food.mp4" poster="poster-food.jpg" autoplay muted loop playsinline></video>
+          <div class="example-play" onclick="event.stopPropagation(); const v=this.closest('.example-video-wrap').querySelector('video'); openVideoModal(v.currentSrc||v.src, v.poster);">▶</div>
+          <div class="example-badge">🎬 Hero Commercial</div>
+          <div class="example-label">
+            <div class="example-label-title">Food &amp; Beverage</div>
+            <div class="example-label-sub">Make people crave it</div>
+          </div>
+        </div>
+        <div class="example-body">
+          <div class="example-hook">"Taste the Crave", a stacked burger reveal with steam and cheese pull, built so the viewer feels hungry before the CTA even appears.</div>
+          <div class="example-tags">#LocalEats #ChefLife</div>
+        </div>
+      </div>
+
+      <div class="example-card" onclick="setCategory('fitness', document.querySelectorAll('.switcher-btn')[2])">
+        <div class="example-video-wrap">
+          <video src="vid-fitness.mp4" poster="poster-fitness.jpg" autoplay muted loop playsinline></video>
+          <div class="example-play" onclick="event.stopPropagation(); const v=this.closest('.example-video-wrap').querySelector('video'); openVideoModal(v.currentSrc||v.src, v.poster);">▶</div>
+          <div class="example-badge">🎬 Hero Commercial</div>
+          <div class="example-label">
+            <div class="example-label-title">Fitness &amp; Wellness</div>
+            <div class="example-label-sub">Sell the transformation</div>
+          </div>
+        </div>
+        <div class="example-body">
+          <div class="example-hook">Hood up, head down, dumbbell curls in a dark room, no flashy physique, just quiet, relatable effort that feels bigger than the room it's shot in.</div>
+          <div class="example-tags">#GetStrong #TransformationTuesday</div>
+        </div>
+      </div>
+
+      <div class="example-card" onclick="setCategory('ugc', document.querySelectorAll('.switcher-btn')[3])">
+        <div class="example-video-wrap">
+          <video src="vid-ugc.mp4" poster="poster-ugc.jpg" autoplay muted loop playsinline></video>
+          <div class="example-play" onclick="event.stopPropagation(); const v=this.closest('.example-video-wrap').querySelector('video'); openVideoModal(v.currentSrc||v.src, v.poster);">▶</div>
+          <div class="example-badge">📱 UGC Review</div>
+          <div class="example-label">
+            <div class="example-label-title">UGC Product Reviews</div>
+            <div class="example-label-sub">Build trust that converts</div>
+          </div>
+        </div>
+        <div class="example-body">
+          <div class="example-hook">A real first-person sneaker review, talking straight to camera, the honest reaction that a studio ad can never fake.</div>
+          <div class="example-tags">#HonestReview #TikTokMadeMeBuyIt</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how">
+  <div class="section-inner">
+    <div class="section-eyebrow">The Process</div>
+    <h2 class="section-title">From brief to finished campaign in five steps.</h2>
+    <p class="section-sub">No prompt-writing on your end. No production meetings. You give us the direction inputs once, we handle psychology, story, camera, lighting, and motion before anything is generated.</p>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num" style="color:var(--accent)">1</div>
+        <h3 class="step-title">Direction Brief</h3>
+        <div class="step-sub">Tell us the product or business, the emotion, and the platform. Takes minutes. Sets the whole campaign.</div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="color:var(--accent)">2</div>
+        <h3 class="step-title">We Direct It</h3>
+        <div class="step-sub">Story framework, camera language, lighting, and motion get chosen before a single prompt is written.</div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="color:var(--accent)">3</div>
+        <h3 class="step-title">AI Production Runs</h3>
+        <div class="step-sub">Your campaign is generated, cut, and voiced using our AI production pipeline.</div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="color:var(--accent)">4</div>
+        <h3 class="step-title">You Review</h3>
+        <div class="step-sub">Your Hero Commercial, UGC Review, and social cuts arrive together. Approve or flag revisions.</div>
+      </div>
+      <div class="step">
+        <div class="step-num" style="color:var(--green)">5</div>
+        <h3 class="step-title">You Launch</h3>
+        <div class="step-sub">Post it, run it as a paid ad, or hand it to your media buyer. The full campaign is yours.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OFFER SECTION -->
+<section class="offer-section" id="offer">
+  <div class="section-inner">
+    <div class="section-eyebrow">What You Get</div>
+    <h2 class="section-title">Not a video. A complete marketing campaign.</h2>
+    <p class="section-sub">Every campaign is built to include the full deliverable set below, so one brief produces everything the launch actually needs.</p>
+
+    <div class="offer-frame">
+      <div class="offer-eyebrow">Every Campaign Includes</div>
+      <h3 class="offer-title">The Richcrest Deliverable Set</h3>
+      <div class="offer-sub">Directed first, produced second. Every asset traces back to the same creative brief so the whole campaign feels like one idea.</div>
+      <div class="deliverable-list">
+        <div class="deliverable-item">
+          <div class="deliverable-icon">🎬</div>
+          <div class="deliverable-text">
+            <h3 class="deliverable-title">Hero Commercial</h3>
+            <div class="deliverable-sub">A cinematic, direction-first commercial built to make the product or business feel premium.</div>
+          </div>
+          <div class="deliverable-check">✓</div>
+        </div>
+        <div class="deliverable-item">
+          <div class="deliverable-icon">📱</div>
+          <div class="deliverable-text">
+            <h3 class="deliverable-title">UGC Product Review</h3>
+            <div class="deliverable-sub">Creator-style honest review or first impression that builds trust faster than any studio ad.</div>
+          </div>
+          <div class="deliverable-check">✓</div>
+        </div>
+        <div class="deliverable-item">
+          <div class="deliverable-icon">⏱️</div>
+          <div class="deliverable-text">
+            <h3 class="deliverable-title">15-Second Social Ad</h3>
+            <div class="deliverable-sub">Platform-cut for Reels, TikTok, and Shorts, optimized for the first three seconds.</div>
+          </div>
+          <div class="deliverable-check">✓</div>
+        </div>
+        <div class="deliverable-item">
+          <div class="deliverable-icon">⚡</div>
+          <div class="deliverable-text">
+            <h3 class="deliverable-title">6-Second Hook</h3>
+            <div class="deliverable-sub">The scroll-stopper, a standalone hook cut for paid ad placements and pre-roll.</div>
+          </div>
+          <div class="deliverable-check">✓</div>
+        </div>
+        <div class="deliverable-item">
+          <div class="deliverable-icon">🖼️</div>
+          <div class="deliverable-text">
+            <h3 class="deliverable-title">Thumbnail</h3>
+            <div class="deliverable-sub">A hero frame designed to earn the click before the video even plays.</div>
+          </div>
+          <div class="deliverable-check">✓</div>
+        </div>
+        <div class="deliverable-item">
+          <div class="deliverable-icon">🎙️</div>
+          <div class="deliverable-text">
+            <h3 class="deliverable-title">Voiceover Script</h3>
+            <div class="deliverable-sub">Written and directed to match the emotion of the campaign, not just narrate it.</div>
+          </div>
+          <div class="deliverable-check">✓</div>
+        </div>
+        <div class="deliverable-item">
+          <div class="deliverable-icon">📝</div>
+          <div class="deliverable-text">
+            <h3 class="deliverable-title">CTA Copy</h3>
+            <div class="deliverable-sub">The exact words that turn a watch into a click, a call, or a sale.</div>
+          </div>
+          <div class="deliverable-check">✓</div>
+        </div>
+        <div class="deliverable-item">
+          <div class="deliverable-icon">🗂️</div>
+          <div class="deliverable-text">
+            <h3 class="deliverable-title">Campaign Assets</h3>
+            <div class="deliverable-sub">Every cut, caption, and file organized and delivered ready to publish.</div>
+          </div>
+          <div class="deliverable-check">✓</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRICING -->
+    <div id="pricing">
+      <div class="section-eyebrow">Pricing</div>
+      <h2 class="section-title" style="margin-bottom:12px">Less than hiring one UGC creator. For a full campaign.</h2>
+      <p class="section-sub">A single entry-level local-business commercial from a traditional studio runs $2,500 to $5,000, and that's before you add a UGC review, which averages $500 to $1,200 per video on its own. A full 8-piece campaign here starts at $397.</p>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-name">Single Campaign</div>
+          <div class="price-amount">$397</div>
+          <div class="price-period">One-time · one product or business</div>
+          <ul class="price-features">
+            <li>Hero Commercial</li>
+            <li>UGC Product Review</li>
+            <li>15-Second Social Ad + 6-Second Hook</li>
+            <li>Thumbnail + Voiceover Script</li>
+            <li>CTA Copy + Campaign Assets</li>
+            <li>One revision round included</li>
+          </ul>
+          <a class="price-cta" href="#start">Get Started</a>
+        </div>
+        <div class="price-card featured">
+          <div class="price-popular">Most Popular</div>
+          <div class="price-name">Growth Campaign</div>
+          <div class="price-amount">$997<span>/mo</span></div>
+          <div class="price-period">2 full campaigns per month</div>
+          <ul class="price-features">
+            <li>Everything in Single Campaign, twice a month</li>
+            <li>Always-on video content, not a one-off</li>
+            <li>Priority production queue</li>
+            <li>Revisions until you love it</li>
+            <li>Reusable assets across every platform you sell on</li>
+            <li>No contract, cancel anytime</li>
+          </ul>
+          <a class="price-cta" href="#start">Get Started</a>
+        </div>
+        <div class="price-card">
+          <div class="price-name">Full Studio</div>
+          <div class="price-amount">$1,997<span>/mo</span></div>
+          <div class="price-period">Unlimited campaigns, all categories</div>
+          <ul class="price-features">
+            <li>Unlimited campaigns across products, lines, or locations</li>
+            <li>Dedicated production line, same-week turnaround</li>
+            <li>Monthly creative direction review</li>
+            <li>Priority revisions</li>
+          </ul>
+          <div class="price-bonus">🍒 Cherry on top: includes our original weekly social content system (captions, graphics, stories) at no extra cost.</div>
+          <a class="price-cta" href="#start">Get Started</a>
+        </div>
+      </div>
+      <p class="section-sub" style="margin-top:24px; margin-bottom:8px;">For comparison: a serious ongoing video marketing retainer through a traditional studio typically runs $2,000 to $8,300 a month. Full Studio is unlimited campaigns for less than that floor.</p>
+      <p class="section-sub" style="margin-bottom:0;">Prefer ongoing weekly social posts instead of video? Our original content system is available as a standalone add-on starting at $397/mo on any plan.</p>
+    </div>
+  </div>
+</section>
+
+<!-- OBJECTIONS -->
+<section class="objection-section" id="objections">
+  <div class="section-inner">
+    <div class="section-eyebrow">Common Questions</div>
+    <h2 class="section-title">The things you are probably thinking right now.</h2>
+    <p class="section-sub">We have heard every objection. Here are honest answers to the ones that come up most.</p>
+    <div class="objections-list">
+      <div class="obj-item open">
+        <div class="obj-q" onclick="toggleObj(this)">
+          <div class="obj-q-text">AI video looks fake or cheap. Won't mine too?</div>
+          <div class="obj-icon">+</div>
+        </div>
+        <div class="obj-a">That happens when someone writes a prompt straight into an AI tool with no direction behind it. <strong>We do not do that.</strong> Every campaign starts with a creative brief: emotion, story framework, camera language, lighting, and motion, all decided before anything is generated. The AI executes a director's decision, not a guess. That is the difference between a commercial and a novelty clip.</div>
+      </div>
+      <div class="obj-item">
+        <div class="obj-q" onclick="toggleObj(this)">
+          <div class="obj-q-text">I don't have footage, actors, or a film crew.</div>
+          <div class="obj-icon">+</div>
+        </div>
+        <div class="obj-a">You do not need any of that. <strong>No filming required on your end.</strong> We produce the Hero Commercial and UGC review from your product details, brand direction, and a creative brief. If you do have real product photos or footage, we can incorporate them, but it is not a requirement to get a finished campaign.</div>
+      </div>
+      <div class="obj-item">
+        <div class="obj-q" onclick="toggleObj(this)">
+          <div class="obj-q-text">It's too expensive. I cannot justify this right now.</div>
+          <div class="obj-icon">+</div>
+        </div>
+        <div class="obj-a">A single entry-level commercial from a traditional studio runs <strong>$2,500 to $5,000</strong>, and a UGC review video alone averages <strong>$500 to $1,200</strong> on top of that. Our Single Campaign starts at <strong>$397</strong> and includes both, plus six more deliverables, shipped in days instead of weeks. <strong>The question isn't whether you can afford a campaign. It's whether you can afford to keep launching without one.</strong></div>
+      </div>
+      <div class="obj-item">
+        <div class="obj-q" onclick="toggleObj(this)">
+          <div class="obj-q-text">What if I don't like the campaign?</div>
+          <div class="obj-icon">+</div>
+        </div>
+        <div class="obj-a">We revise until it's right. <strong>Every campaign.</strong> If the direction doesn't match your brand or the tone feels off, flag it and we rework it. We also start with a free campaign concept before you pay anything, so you see the direction before you commit to production.</div>
+      </div>
+      <div class="obj-item">
+        <div class="obj-q" onclick="toggleObj(this)">
+          <div class="obj-q-text">Can I just get social posts instead of video?</div>
+          <div class="obj-icon">+</div>
+        </div>
+        <div class="obj-a">Yes. <strong>Video and full campaigns are our primary focus</strong>, but our original weekly social content system, captions, branded graphics, story sequences, is still available as a standalone add-on starting at $397/mo, or bundled free into the Full Studio plan. Think of it as the cherry on top of the campaign work, not a replacement for it.</div>
+      </div>
+      <div class="obj-item">
+        <div class="obj-q" onclick="toggleObj(this)">
+          <div class="obj-q-text">How do I know this will actually convert?</div>
+          <div class="obj-icon">+</div>
+        </div>
+        <div class="obj-a">We cannot guarantee sales because we don't control the checkout page or the offer itself. What we can guarantee is that <strong>the campaign is directed to build the specific emotion your category needs</strong>, premium feel for product brands, craving for food, transformation for fitness, trust for UGC reviews. That is the leverage a real commercial gives you that a phone photo cannot.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section class="proof-section" id="proof">
+  <div class="section-inner">
+    <div class="section-eyebrow">Social Proof</div>
+    <h2 class="section-title">What brands say after their first campaign.</h2>
+    <p class="section-sub" style="margin-bottom:32px">These are the kinds of results a directed campaign produces across our four production categories.</p>
+    <div class="proof-grid">
+      <div class="proof-card">
+        <div class="proof-stars">★★★★★</div>
+        <div class="proof-text">Our Amazon listing video finally looks like it belongs next to the bigger brands in our category. The Hero Commercial alone changed how people talk about the price in the reviews.</div>
+        <div class="proof-author">
+          <div class="proof-avatar">🎯</div>
+          <div>
+            <div class="proof-name">Product Brand Founder</div>
+            <div class="proof-biz">Shopify DTC · Growth Campaign</div>
+          </div>
+        </div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-stars">★★★★★</div>
+        <div class="proof-text">I was skeptical an AI-generated commercial could feel this warm. The steam and pour shots alone made our Friday specials post outperform anything we've done with real photography.</div>
+        <div class="proof-author">
+          <div class="proof-avatar">🍔</div>
+          <div>
+            <div class="proof-name">Restaurant Owner</div>
+            <div class="proof-biz">East Valley, AZ · Single Campaign</div>
+          </div>
+        </div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-stars">★★★★★</div>
+        <div class="proof-text">The UGC review they built felt more honest than most of the real reviews we get organically. It's now the first thing we run as a paid ad.</div>
+        <div class="proof-author">
+          <div class="proof-avatar">💪</div>
+          <div>
+            <div class="proof-name">Fitness Brand Owner</div>
+            <div class="proof-biz">Phoenix, AZ · Growth Campaign</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-row" style="margin-top:20px">
+      <div class="stat-item">
+        <div class="stat-num">8</div>
+        <div class="stat-label">Deliverables in every campaign, from one brief</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">24-48hr</div>
+        <div class="stat-label">Turnaround on your free campaign concept</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">$0</div>
+        <div class="stat-label">Cost to see your first campaign concept</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">0</div>
+        <div class="stat-label">Filming, crew, or actors required on your end</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RISK REVERSAL -->
+<section class="risk-section">
+  <div class="section-inner">
+    <div class="risk-card">
+      <div>
+        <div class="section-eyebrow">Our Guarantee</div>
+        <div class="risk-title">See the concept before you pay for the campaign.</div>
+        <div class="risk-sub">We know AI video is new territory and you have every right to be cautious. So we do not ask you to pay first. We build your first campaign concept and send it to you completely free. You see the direction before you spend a dollar on production.</div>
+        <div class="risk-items">
+          <div class="risk-item"><div class="risk-item-icon">🎁</div>First campaign concept is completely free. No credit card required.</div>
+          <div class="risk-item"><div class="risk-item-icon">✏️</div>Revisions until the direction matches your brand.</div>
+          <div class="risk-item"><div class="risk-item-icon">🚫</div>No contracts on monthly plans. Cancel anytime with zero fees.</div>
+          <div class="risk-item"><div class="risk-item-icon">💬</div>If you do not love your first paid campaign, we will refund it.</div>
+        </div>
+      </div>
+      <div class="risk-right">
+        <div class="risk-box">
+          <div class="risk-box-title">🎁 Free Campaign Concept</div>
+          <div class="risk-box-text">Fill out your brief today. We build your sample campaign concept within 24-48 hours. You review it and decide if you want to move to full production. Zero pressure. Zero payment.</div>
+        </div>
+        <div class="risk-box">
+          <div class="risk-box-title">✏️ Revision Guarantee</div>
+          <div class="risk-box-text">Every campaign gets revised until the direction and tone are right. We do not move on until it feels like your brand, not a generic AI clip.</div>
+        </div>
+        <div class="risk-box">
+          <div class="risk-box-title">🔒 No Contract</div>
+          <div class="risk-box-text">Month to month on Growth and Full Studio. Cancel anytime. No notice period. No cancellation fee. We earn your business every single month or you walk.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="start">
+  <div class="section-inner">
+    <div class="cta-inner">
+      <div class="section-eyebrow" style="text-align:center">Get Your Free Campaign Concept</div>
+      <h2 class="cta-title">See what a directed campaign looks like for <span class="accent">your brand.</span></h2>
+      <p class="cta-sub">Fill out the form below. We build your free campaign concept within 24-48 hours and send it directly to your inbox. No payment. No commitment. Just the direction.</p>
+      <div class="cta-form" id="landingForm">
+        <div class="form-field">
+          <label class="form-label">Your Name</label>
+          <input type="text" class="form-input" name="name" placeholder="First name is fine" required />
+        </div>
+        <div class="form-field">
+          <label class="form-label">Brand / Business Name</label>
+          <input type="text" class="form-input" name="business_name" placeholder="e.g. Northline Supplements" required />
+        </div>
+        <div class="form-field">
+          <label class="form-label">Category</label>
+          <select class="form-select" name="business_type" required>
+            <option value="">Select your category</option>
+            <option>Product Brand (Shopify / Amazon / Kickstarter)</option>
+            <option>Food &amp; Beverage</option>
+            <option>Fitness &amp; Wellness</option>
+            <option>UGC Review Only</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" name="email" placeholder="Where we send your free concept" required />
+        </div>
+        <div class="form-field">
+          <label class="form-label">Instagram Handle <span style="color:var(--gray);font-weight:400;text-transform:none;font-size:10px">optional</span></label>
+          <input type="text" class="form-input" name="instagram" placeholder="@yourbusiness" />
+        </div>
+        <button class="form-submit" onclick="submitLandingForm(this)">Get My Free Campaign Concept →</button>
+        <div class="form-note">Takes 3 minutes to fill out. Your campaign concept arrives within 24-48 hours. No credit card. No commitment.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Richcrest <span>AI</span></div>
+  <div class="footer-links">
+    <a href="#how">How It Works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#objections">FAQ</a>
+    <a href="intake.html">Full Intake Form</a>
+    <a href="dashboard.html">Dashboard</a>
+  </div>
+  <div class="footer-copy">2026 Richcrest AI · East Valley, AZ</div>
+</footer>
+
+<script>
+// ── Category switcher ──
+const content = {
+  product: {
+    eyebrow: 'For Shopify, Amazon &amp; Kickstarter Brands'.replace('&amp;','&'),
+    title: 'Your product deserves a commercial.<br><span class="accent">Not a photo dump.</span>',
+    sub: 'We direct and produce cinematic Hero Commercials and authentic UGC reviews for product brands, engineered to make the product feel premium before anyone reads the price. <strong>A full campaign, not a single clip.</strong>',
+    badge: 'Hero Commercial',
+    caption: '"A floating headphone rotation under a single spotlight, built to make it feel worth the price before a single word is said."',
+    tags: '9:16 · Kling 3.0 · Luxury / Elegant · CTA: Shop Now',
+    gradient: 'linear-gradient(135deg, rgba(108,71,255,0.35), rgba(20,20,20,0.9))',
+    video: 'vid-product.mp4',
+    poster: 'poster-product.jpg',
+    runtime: '0:10',
+    fb: '"Honestly did not expect much, three uses in and I\'m not putting it down."',
+    tt: '"This is the last one of these you\'ll ever need to buy."'
+  },
+  food: {
+    eyebrow: 'For Restaurants, Cafés &amp; Bakeries'.replace('&amp;','&'),
+    title: 'People eat with their eyes first.<br><span class="accent">Make them crave it before they taste it.</span>',
+    sub: 'Gourmet burgers, pizza, sushi, coffee, cocktails, we turn your kitchen into cinematic commercials and honest-review UGC that fills tables on your slowest night. <strong>Every dish becomes a campaign.</strong>',
+    badge: 'Hero Commercial',
+    caption: '"Taste the Crave, a stacked burger reveal with steam and cheese pull, built so the viewer feels hungry before the CTA even appears."',
+    tags: '9:16 · Kling 3.0 · Warm Practical Lighting · CTA: Order Today',
+    gradient: 'linear-gradient(135deg, rgba(245,166,35,0.35), rgba(20,20,20,0.9))',
+    video: 'vid-food.mp4',
+    poster: 'poster-food.jpg',
+    runtime: '0:10',
+    fb: '"I don\'t even like sushi and this made me want to drive over right now."',
+    tt: '"POV: it\'s Tuesday and you finally have a reason to leave the house."'
+  },
+  fitness: {
+    eyebrow: 'For Gyms, Trainers &amp; Athletic Brands'.replace('&amp;','&'),
+    title: 'Nobody buys a workout.<br><span class="accent">They buy who they become.</span>',
+    sub: 'We build transformation-driven commercials and creator-style reviews for gyms, personal trainers, and recovery brands, content that sells the outcome, not just the reps. <strong>The result is the pitch.</strong>',
+    badge: 'Hero Commercial',
+    caption: '"Hood up, head down, dumbbell curls in a dark room, no flashy physique, just quiet, relatable effort that feels bigger than the room it\'s shot in."',
+    tags: '9:16 · Kling 3.0 · Moody Sports Lighting · CTA: Book Now',
+    gradient: 'linear-gradient(135deg, rgba(18,183,106,0.35), rgba(20,20,20,0.9))',
+    video: 'vid-fitness.mp4',
+    poster: 'poster-fitness.jpg',
+    runtime: '0:04',
+    fb: '"6 weeks in and this is the first program that actually changed how I move."',
+    tt: '"Nobody told me the hardest rep was walking through the door the first time."'
+  },
+  ugc: {
+    eyebrow: 'UGC as a Production System',
+    title: 'Every campaign needs a review nobody paid for.<br><span class="accent">Except this one, we did.</span>',
+    sub: 'Honest reviews, first impressions, TikTok hooks, Amazon listing videos, produced like a system, not a favor from a friend. <strong>Trust is the deliverable.</strong>',
+    badge: 'UGC Review',
+    caption: '"A real first-person sneaker review, talking straight to camera, the honest reaction a studio ad can never fake."',
+    tags: '9:16 · Real UGC · Trust · CTA: Try It Today',
+    gradient: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(20,20,20,0.95))',
+    video: 'vid-ugc.mp4',
+    poster: 'poster-ugc.jpg',
+    runtime: '0:15',
+    fb: '"I bought this on a whim and now I\'m the annoying friend who won\'t stop recommending it."',
+    tt: '"Wait, is this actually worth it? Let\'s find out on camera."'
+  }
+};
+
+function setCategory(type, btn) {
+  document.querySelectorAll('.switcher-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  else if (event && event.target) event.target.classList.add('active');
+  const d = content[type];
+  document.getElementById('heroEyebrow').textContent = d.eyebrow;
+  document.getElementById('heroTitle').innerHTML = d.title;
+  document.getElementById('heroSub').innerHTML = d.sub;
+  document.getElementById('mockBadge').textContent = d.badge;
+  document.getElementById('mockCaption').textContent = d.caption;
+  document.getElementById('mockTags').textContent = d.tags;
+  document.getElementById('mockImg').style.background = d.gradient;
+
+  const mockVideo = document.getElementById('mockVideo');
+  if (mockVideo && d.video) {
+    mockVideo.src = d.video;
+    mockVideo.poster = d.poster;
+    mockVideo.style.display = '';
+    mockVideo.load();
+    mockVideo.play().catch(() => {});
+  }
+  document.getElementById('mockRuntimeBadge').textContent = d.runtime;
+  document.getElementById('mockRuntime').textContent = 'Runtime: ' + d.runtime;
+
+  document.getElementById('miniFb').textContent = d.fb;
+  document.getElementById('miniTt').textContent = d.tt;
+  updatePainSection(type);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Pain points per category ──
+const painData = {
+  product: {
+    title1: 'The Product Brand Founder',
+    icon1: '🎯',
+    color1: '',
+    points1: [
+      'Your product photos look fine but nothing feels premium enough to justify the price',
+      'A real commercial production would cost thousands and take weeks you don\'t have',
+      'Every competitor\'s Amazon listing and Shopify page looks the same as yours',
+      'You have no in-house video team and no time to learn one',
+      'You know UGC-style reviews convert but you have no real customers filming yet'
+    ],
+    solution1: 'What we actually solve: A directed Hero Commercial and UGC review that make the product feel premium, built in days, not a production cycle.',
+    title2: 'What a Directed Campaign Does',
+    icon2: '📈',
+    color2: 'green',
+    points2: [
+      'A premium-feeling commercial changes how buyers perceive the price before checkout',
+      'UGC-style reviews lower the trust barrier that stock photography can\'t touch',
+      'Platform-cut social ads mean the same campaign works on Shopify, Amazon, and TikTok',
+      'A 6-second hook stops the scroll before a viewer even reaches the pitch',
+      'One campaign becomes reusable assets across every channel you sell on'
+    ],
+    solution2: 'The brands converting right now are not the ones with the best product photos. They are the ones with a directed campaign behind the product.'
+  },
+  food: {
+    title1: 'The Restaurant / Café Owner',
+    icon1: '🍔',
+    color1: '',
+    points1: [
+      'Your food is exceptional but a phone photo never makes anyone crave it',
+      'Slow nights need a reason for people to think of you first, not just good reviews',
+      'You compete with chains that have marketing budgets you cannot match',
+      'A real food commercial shoot means a crew in your kitchen for a day',
+      'You know UGC-style honest reviews build trust but nobody is filming them consistently'
+    ],
+    solution1: 'What we actually solve: Cinematic food commercials and honest-review UGC that make people crave the dish before they see the price.',
+    title2: 'What a Craving-Driven Campaign Does',
+    icon2: '🌟',
+    color2: 'green',
+    points2: [
+      'A macro pour or steam shot triggers appetite in a way a still photo cannot',
+      'Honest-review UGC reaches people who trust a stranger\'s opinion over an ad',
+      'A directed campaign fills slow nights by staying visible in the moments people decide where to eat',
+      'One campaign becomes your Instagram, TikTok, and delivery-app listing content at once',
+      'Craving compounds, the more often people see it, the more often they order it'
+    ],
+    solution2: 'The restaurants filling tables on slow nights are not the ones with the best food. They are the ones whose food looks the most impossible to ignore.'
+  },
+  fitness: {
+    title1: 'The Gym / Trainer / Athletic Brand',
+    icon1: '💪',
+    color1: '',
+    points1: [
+      'Your clients get real results but nobody outside the gym ever sees the transformation',
+      'A generic gym-equipment photo does not sell the outcome people actually want',
+      'You rely on word-of-mouth referrals that arrive in waves you can\'t control',
+      'You have no time to film, edit, or direct content between sessions',
+      'You know a real UGC review would convert better than any ad you\'ve run'
+    ],
+    solution1: 'What we actually solve: Transformation-driven commercials and creator-style reviews that sell the outcome, not just the reps.',
+    title2: 'What a Transformation Campaign Does',
+    icon2: '🏆',
+    color2: 'green',
+    points2: [
+      'A hero-orbit shot on a real result sells the identity shift, not the equipment',
+      'Creator-style reviews make the transformation feel achievable, not staged',
+      'A directed campaign fills calendar gaps by reaching people already searching for change',
+      'One campaign becomes your website, ad, and social proof at the same time',
+      'Momentum compounds, every campaign becomes proof for the next lead'
+    ],
+    solution2: 'The gyms and trainers filling every session are not the ones with the best equipment. They are the ones whose results are the most visible.'
+  },
+  ugc: {
+    title1: 'The Brand Needing Real Trust',
+    icon1: '🎬',
+    color1: '',
+    points1: [
+      'Studio ads look polished but viewers scroll past them assuming it\'s "just an ad"',
+      'You don\'t have real customers filming reviews consistently, or at all',
+      'Every UGC creator you\'ve hired has a different voice and inconsistent quality',
+      'You know first impressions and honest reviews convert but producing them takes forever',
+      'Paid ads underperform without a review-style asset to build trust first'
+    ],
+    solution1: 'What we actually solve: UGC produced as a system, built from honest reviews, first impressions, and TikTok hooks, with the trust of real content and the consistency of a production line.',
+    title2: 'What Systemized UGC Does',
+    icon2: '🔑',
+    color2: 'green',
+    points2: [
+      'An honest-review format lowers viewer skepticism before the pitch even starts',
+      'A first-impression format mirrors exactly how a real customer would discover the product',
+      'A TikTok hook format is built to stop the scroll in the first second',
+      'Consistent UGC output means your paid ads always have fresh trust-building creative',
+      'Every review ties back to the same campaign brief, so the brand voice stays consistent'
+    ],
+    solution2: 'The brands converting on cold traffic are not running the most polished ad. They are running the review that feels the most real.'
+  }
+};
+
+function updatePainSection(type) {
+  const d = painData[type];
+  if (!d) return;
+  
+  const card1 = document.getElementById('painCard1');
+  const card2 = document.getElementById('painCard2');
+  if (!card1 || !card2) return;
+
+  card1.querySelector('.pain-icon').textContent = d.icon1;
+  card1.querySelector('.pain-title').textContent = d.title1;
+  card1.querySelector('.pain-solution').textContent = d.solution1;
+  const list1 = card1.querySelector('.pain-list');
+  list1.innerHTML = d.points1.map(p => '<li>' + p + '</li>').join('');
+
+  card2.className = 'pain-card' + (d.color2 === 'green' ? ' green' : '');
+  card2.querySelector('.pain-icon').textContent = d.icon2;
+  card2.querySelector('.pain-title').textContent = d.title2;
+  card2.querySelector('.pain-solution').textContent = d.solution2;
+  const list2 = card2.querySelector('.pain-list');
+  list2.innerHTML = d.points2.map(p => '<li>' + p + '</li>').join('');
+}
+
+// ── Objection accordion ──
+// ── Video lightbox: full, uncropped playback ──
+function openVideoModal(src, poster) {
+  const modal = document.getElementById('videoModal');
+  const player = document.getElementById('videoModalPlayer');
+  player.src = src;
+  if (poster) player.poster = poster;
+  modal.classList.add('open');
+  player.currentTime = 0;
+  player.muted = false;
+  player.play().catch(() => {});
+}
+
+function closeVideoModal() {
+  const modal = document.getElementById('videoModal');
+  const player = document.getElementById('videoModalPlayer');
+  player.pause();
+  modal.classList.remove('open');
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeVideoModal();
+});
+
+function toggleObj(el) {
+  const item = el.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.obj-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// ── Form submit via fetch to Formspree then redirect ──
+async function submitLandingForm(btn) {
+  const form = document.getElementById('landingForm');
+  const name = form.querySelector('input[name="name"]').value.trim();
+  const email = form.querySelector('input[name="email"]').value.trim();
+  const bizName = form.querySelector('input[name="business_name"]').value.trim();
+  const bizType = form.querySelector('select[name="business_type"]').value;
+  const instagram = form.querySelector('input[name="instagram"]').value.trim();
+
+  if (!name || !email || !bizName || !bizType) {
+    alert('Please fill in all required fields.');
+    return;
+  }
+
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
+  try {
+    const response = await fetch('https://formspree.io/f/xeeblyzd', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        name, email,
+        business_name: bizName,
+        business_type: bizType,
+        instagram,
+        _subject: 'New Free Campaign Request, Richcrest AI'
+      })
+    });
+
+    if (response.ok) {
+      window.location.href = 'thank-you.html';
+    } else {
+      throw new Error('Failed');
+    }
+  } catch(e) {
+    btn.textContent = 'Get My Free Campaign Concept →';
+    btn.disabled = false;
+    alert('Something went wrong. Please try again.');
+  }
+}
+
+// ── Smooth scroll for nav links ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior:'smooth', block:'start' }); }
+  });
+});
+</script>
+<!-- VIDEO LIGHTBOX -->
+<div class="video-modal" id="videoModal" onclick="if(event.target === this) closeVideoModal()">
+  <div class="video-modal-inner">
+    <button class="video-modal-close" onclick="closeVideoModal()">✕</button>
+    <video id="videoModalPlayer" controls playsinline></video>
+    <button class="video-modal-fullscreen" onclick="document.getElementById('videoModalPlayer').requestFullscreen()">⛶ Fullscreen</button>
+  </div>
+</div>
+
+</body>
+</html>
